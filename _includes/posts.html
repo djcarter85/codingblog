@@ -1,0 +1,15 @@
+<section class="recent-posts">
+  <div class="container">
+
+    {% for post in site.posts %}
+    <div>
+      <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+      <p class="post-date">{{ post.date | date: "%a %d %b %Y" }}</p>
+      {% if post.summary %}
+      <p class="post-summary">{{ post.summary }}</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
