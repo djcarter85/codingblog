@@ -8,7 +8,7 @@
       {% for post in year.items %}
       <li>
         <a class="archive-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        <span class="archive-date">{{ post.date | date: "%a %d %b %Y" }}</span>
+        <span class="date">{{ post.date | date: "%e %B" }}</span>
       </li>
       {% endfor %}
     </ul>
