@@ -2,3 +2,12 @@
 permalink: /:year/:month/:day/:title/
 sass:
   sass_dir: css
+
+# Front matter defaults
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

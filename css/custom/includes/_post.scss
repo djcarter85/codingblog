@@ -1,0 +1,41 @@
+.post {
+  margin-top: 12px;
+
+.post-title{
+  margin-bottom:0;
+}
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: $primary;
+    padding-top: 10px;
+  }
+
+  .post-date {
+    color: $gray-500;
+    font-size: 1.1rem;
+  }
+
+  img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // Code heading
+  h5 {
+    font-size: 14px;
+    background-color: $gray-200;
+    padding: 6px;
+    margin-bottom: 0;
+  }
+
+  // Code
+  .highlight{
+    pre{
+      padding: 6px;
+    }
+  }
+}
