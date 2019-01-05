@@ -1,7 +1,7 @@
 <section class="recent-posts">
   <div class="container">
 
-    {% for post in site.posts %}
+    {% for post in paginator.posts %}
     <div>
       <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
       <p class="date">{{ post.date | date: "%A %e %B %Y" }}</p>

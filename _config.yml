@@ -6,6 +6,10 @@ permalink: /:year/:month/:day/:title/
 sass:
   sass_dir: css
 
+# Plugins
+plugins: [jekyll-paginate]
+paginate: 3
+
 # Front matter defaults
 defaults:
   -

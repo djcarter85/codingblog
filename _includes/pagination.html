@@ -1,0 +1,25 @@
+<div class="container">
+  <nav>
+    <ul class="pagination">
+
+      <li class="page-item {% unless paginator.previous_page %}disabled{% endunless %}">
+        <a class="page-link" href="{{ site.baseurl }}/{% unless paginator.page == 2 %}page{{paginator.previous_page}}/{% endunless %}">
+          &laquo; Newer
+        </a>
+      </li>
+
+      {% for page-number in (1..paginator.total_pages) %}
+      <li class="page-item {% if page-number == paginator.page %}active{% endif %}">
+        <a class="page-link" href="{{ site.baseurl }}/{% unless page-number == 1 %}page{{page-number}}/{% endunless %}">{{ page-number }}</a>
+      </li>
+      {% endfor %}
+
+      <li class="page-item {% unless paginator.next_page %}disabled{% endunless %}">
+        <a class="page-link" href="{{ site.baseurl }}/page{{paginator.next_page}}/">
+          Older &raquo;
+        </a>
+      </li>
+
+    </ul>
+  </nav>
+</div>
