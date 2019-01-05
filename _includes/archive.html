@@ -1,6 +1,6 @@
 <section class="archive">
   <div class="container">
-    <h2>Archive</h2>
+    <h1>Archive</h1>
     {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
     {% for year in postsByYear %}
     <h4>{{ year.name }}</h4>
@@ -13,6 +13,6 @@
       {% endfor %}
     </ul>
     {% endfor %}
-    <p><i class="fa fa-rss mr-3"></i><a href="/Feed/">RSS Feed</a></p>
+    <p class="rss"><i class="fa fa-rss mr-3"></i><a href="/Feed/">RSS Feed</a></p>
   </div>
 </section>

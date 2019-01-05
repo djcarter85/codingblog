@@ -3,7 +3,6 @@
     margin-bottom: 0;
   }
 
-  h1,
   h2,
   h3,
   h4 {
@@ -21,14 +20,23 @@
   h5 {
     font-size: 14px;
     background-color: $gray-200;
-    padding: 6px;
+    padding: 8px 10px;
     margin-bottom: 0;
   }
 
   // Code
   .highlight {
     pre {
-      padding: 6px;
+      padding: 10px;
+      font-size: 18px;
     }
+  }
+
+  code.highlighter-rouge {
+    font-size: 15px;
+    padding: 2px 5px;
+    background-color: $gray-200;
+    color: $gray-800;
+    vertical-align: center;
   }
 }

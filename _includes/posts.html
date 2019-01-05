@@ -1,12 +1,14 @@
-<section class="recent-posts">
+<section class="posts">
   <div class="container">
+
+    <h1>Recent Posts</h1>
 
     {% for post in paginator.posts %}
     <div>
       <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
       <p class="date">{{ post.date | date: "%A %e %B %Y" }}</p>
       {% if post.summary %}
-      <p class="post-summary">{{ post.summary }}</p>
+      <p class="summary">{{ post.summary }}</p>
       {% endif %}
     </div>
     {% endfor %}

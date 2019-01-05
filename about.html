@@ -4,34 +4,31 @@ title: About
 permalink: /About/
 ---
 
-<div class="container">
-  <div class="card">
-    <div class="card-body">
+<section class="about">
+  <div class="container">
+    <h1>About</h1>
 
-      <h1>About</h1>
+    <p>Hi, I’m Dan. I am</p>
 
-      <p>Hi, I’m Dan. I am</p>
+    <ul>
+      <li>a <a href="https://www.matthiasmedia.com.au/2wtl/">Christian</a>,</li>
+      <li>a software developer,</li>
+      <li>an <a href="https://www.arsenal.com/">Arsenal FC</a> fan,</li>
+      <li>but not (and have never been) a <a href="https://en.wikipedia.org/wiki/Dan_Carter">rubgy player</a>.</li>
+    </ul>
 
-      <ul>
-        <li>a <a href="https://www.matthiasmedia.com.au/2wtl/">Christian</a>,</li>
-        <li>a software developer,</li>
-        <li>an <a href="https://www.arsenal.com/">Arsenal FC</a> fan,</li>
-        <li>but not (and have never been) a <a href="https://en.wikipedia.org/wiki/Dan_Carter">rubgy player</a>.</li>
-      </ul>
+    <p>On the subject of the second of those, this is my coding blog. Someone wise (no idea who) once said
+      “expression deepens impression”; i.e. if you tell tell someone something you remember it better. Let’s hope
+      that’s the case with this blog …</p>
 
-      <p>On the subject of the second of those, this is my coding blog. Someone wise (no idea who) once said
-        “expression deepens impression”; i.e. if you tell tell someone something you remember it better. Let’s hope
-        that’s the case with this blog …</p>
+    <p>Oh yeah, and I also hope you find it useful/interesting/informative/entertaining (delete as appropriate).</p>
 
-      <p>Oh yeah, and I also hope you find it useful/interesting/informative/entertaining (delete as appropriate).</p>
+    <p>Find me in other places:</p>
 
-      <p>Find me in other places:</p>
-
-      <ul class="about">
-        {% for link in site.data.about-links %}
-        <li><i class="{{ link.icon }} mr-3"></i><a href="{{ link.url }}">{{ link.title }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
+    <ul class="links">
+      {% for link in site.data.about-links %}
+      <li><i class="{{ link.icon }} mr-3"></i><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {% endfor %}
+    </ul>
   </div>
-</div>
+</section>
