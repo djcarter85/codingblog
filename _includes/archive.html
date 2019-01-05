@@ -1,17 +1,18 @@
 <section class="archive">
   <div class="container">
     <h2>Archive</h2>
+    {% assign postsByYear = site.posts | group_by_exp:"post", "post.date | date: '%Y'" %}
+    {% for year in postsByYear %}
+    <h4>{{ year.name }}</h4>
     <ul>
-      {% for post in site.posts %}
+      {% for post in year.items %}
       <li>
         <a class="archive-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
         <span class="archive-date">{{ post.date | date: "%a %d %b %Y" }}</span>
       </li>
       {% endfor %}
     </ul>
-  </div>
-
-  <div class="container rss">
+    {% endfor %}
     <p><i class="fa fa-rss mr-3"></i><a href="/Feed/">RSS Feed</a></p>
   </div>
 </section>
