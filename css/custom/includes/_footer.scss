@@ -1,0 +1,18 @@
+.footer {
+  .row {
+    margin-top: 6px;
+    margin-top: 6px;
+  }
+
+  a {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 0;
+
+    &:hover {
+      color: $gray-500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}
