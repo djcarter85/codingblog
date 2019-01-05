@@ -2,3 +2,10 @@
   color: $gray-600;
   font-size: 18px;
 }
+
+code.highlighter-rouge {
+  font-weight: bold;
+  padding: 1px 4px;
+  background-color: $gray-200;
+  color: $gray-800;
+}
