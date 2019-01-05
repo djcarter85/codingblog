@@ -1,3 +1,6 @@
+# Site settings
+title: Dan Carter's Coding Blog
+
 # Build settings
 permalink: /:year/:month/:day/:title/
 sass:
