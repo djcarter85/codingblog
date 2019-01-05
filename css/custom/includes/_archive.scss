@@ -1,0 +1,17 @@
+.archive {
+  font-size: 20px;
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .archive-title {
+    margin-right: 12px;
+  }
+
+  .archive-date {
+    font-size: 18px;
+    color: $gray-600;
+  }
+}

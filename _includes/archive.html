@@ -1,0 +1,17 @@
+<section class="archive">
+  <div class="container">
+    <h2>Archive</h2>
+    <ul>
+      {% for post in site.posts %}
+      <li>
+        <a class="archive-title" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        <span class="archive-date">{{ post.date | date: "%a %d %b %Y" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="container rss">
+    <p><i class="fa fa-rss mr-3"></i><a href="/Feed/">RSS Feed</a></p>
+  </div>
+</section>
