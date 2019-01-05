@@ -1,0 +1,12 @@
+- title: GitHub
+  url: https://github.com/djcarter85
+  icon: fab fa-github
+- title: Email
+  url: mailto:djcarter85@gmail.com
+  icon: fa fa-envelope
+- title: Twitter
+  url: https://twitter.com/djcarter85
+  icon: fab fa-twitter
+- title: My Homepage
+  url: https://carterdan.net/
+  icon: fa fa-globe
