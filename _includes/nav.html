@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarItems">
       <ul class="navbar-nav ml-auto">
         {% for item in site.data.nav %}
-        <li class="nav-item">
+        <li class="nav-item ml-auto">
           <a class="nav-link" href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a>
         </li>
         {% endfor %}
