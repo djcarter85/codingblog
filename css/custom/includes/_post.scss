@@ -1,9 +1,7 @@
 .post {
-  margin-top: 12px;
-
-.post-title{
-  margin-bottom:0;
-}
+  .post-title {
+    margin-bottom: 0;
+  }
 
   h1,
   h2,
@@ -18,7 +16,7 @@
     font-size: 1.1rem;
   }
 
-  img{
+  img {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -33,8 +31,8 @@
   }
 
   // Code
-  .highlight{
-    pre{
+  .highlight {
+    pre {
       padding: 6px;
     }
   }
