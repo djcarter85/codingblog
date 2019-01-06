@@ -8,7 +8,7 @@ sass:
 
 # Plugins
 plugins: [jekyll-paginate]
-paginate: 3
+paginate: 8
 
 # Front matter defaults
 defaults:
