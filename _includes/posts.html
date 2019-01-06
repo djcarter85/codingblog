@@ -8,7 +8,9 @@
       <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
       <p class="date">{{ post.date | date: "%A %e %B %Y" }}</p>
       {% if post.summary %}
-      <p class="summary">{{ post.summary }}</p>
+      <p>{{ post.summary }}</p>
+      {% else %}
+      {{ post.excerpt }}
       {% endif %}
     </div>
     {% endfor %}
