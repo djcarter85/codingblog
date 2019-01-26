@@ -6,7 +6,6 @@
   h2,
   h3,
   h4 {
-    color: $primary;
     padding-top: 10px;
   }
 
@@ -18,7 +17,7 @@
 
   // Code heading
   h5 {
-    font-size: 14px;
+    font-size: 0.9rem;
     background-color: $gray-200;
     padding: 8px 10px;
     margin-bottom: 0;
@@ -28,12 +27,10 @@
   .highlight {
     pre {
       padding: 10px;
-      font-size: 18px;
     }
   }
 
   code.highlighter-rouge {
-    font-size: 15px;
     padding: 2px 5px;
     background-color: $gray-200;
     color: $gray-800;
