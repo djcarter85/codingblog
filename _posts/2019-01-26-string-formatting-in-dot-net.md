@@ -11,7 +11,7 @@ All the examples will be in C#, because this is my blog and I can do what I like
 
 ## The `ToString` method
 
-Every object in .NET has a parameterless `ToString` method (it is one of the few methods on the `System.Object` base class). By default it returns the fully qualified name of the type ([source](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring?view=netframework-4.7.2)).
+Every object in .NET has a parameterless `ToString` method (it is one of the few methods on the `System.Object` base class). By default it returns the fully qualified name of the type ([source](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring)).
 
 This is usually not very useful, so the `ToString` method is virtual to allow you to override it. When you implement any class in .NET, you can override `ToString` to do whatever you want.
 
@@ -52,7 +52,7 @@ You'll notice that anything that is not recognised as a building block (such as 
 
 All of the examples that we've seen so far have used English for any words (e.g. day and month names). This is because my computer is set up to work with British English, and .NET respects that by default. There are other formatting options that are particular to different cultures around the world; for example, in Europe it is customary to use a comma as a decimal separator rather than a full stop.
 
-Many .NET types also allow you to pass an instance of `IFormatProvider` to the `ToString` method which specifies how to deal with culture-specific formatting options. The `CultureInfo` class implements this interface, and so you can use it to specify the culture (using the [standard .NET culture specifiers](https://azuliadesigns.com/list-net-culture-country-codes/)).
+Many .NET types allow you to pass an instance of `IFormatProvider` to the `ToString` method which specifies how to deal with culture-specific formatting requirements. The `CultureInfo` class implements this interface, and uses the [standard .NET culture specifiers](https://azuliadesigns.com/list-net-culture-country-codes/).
 
 Here are some `DateTime` examples, using the same example of `var date = new System.DateTime(2019, 1, 2)`:
 
@@ -64,9 +64,9 @@ Here are some `DateTime` examples, using the same example of `var date = new Sys
 |`date.ToString("d", new CultureInfo("de-DE"))`|Mittwoch, 2. Januar 2019|
 {:.table.table-bordered}
 
-You can use [`CultureInfo.CurrentCulture`](https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/se513yha(v%3dvs.100)) to access the machine's culture, and [`Culture.InvariantCulture`](https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/4c5zdc6a(v=vs.100)) to use a non-specific culture.
+You can use `CultureInfo.CurrentCulture` to access the [machine's culture](https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.currentculture), and `Culture.InvariantCulture` to use a [non-specific culture](https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture).
 
-In many cases it is best to specify the culture, especially if you are interacting with another system that expects a value in a particular format. 
+It is usually best to specify the culture, especially if you are interacting with another system that expects a value in a particular format. 
 
 ## Composing strings
 
@@ -118,7 +118,7 @@ var output = string.Format("We sold {0} mars bars on {1:D}, each costing £{2:N2
 
 This gives `"We sold 5 mars bars on Wednesday, January 2, 2019, each costing £1.20."`.
 
-If you want to specify the culture, you can do so by passing it as the first parameter. This will use the specified culture for every conversion in the string. See [here](https://docs.microsoft.com/en-us/dotnet/api/system.string.format?view=netframework-4.7.2) for more info.
+If you want to specify the culture, you can do so by passing it as the first parameter. This will use the specified culture for every conversion in the string. See [here](https://docs.microsoft.com/en-us/dotnet/api/system.string.format) for more info.
 
 ### Methods using `string.Format` implicitly
 
@@ -128,7 +128,7 @@ There are a number of methods in the .NET framework and in third-party libraries
 
 ### String interpolation
 
-**String interpolation** is a feature that was introduced in C# 6, and it takes the `string.Format` method one step further. If you prepend a string with `$`, then anything inside curly braces gets formatted just like `string.Format`. The following does the same as the we did before.
+**String interpolation** is a feature that was introduced in C# 6, and it takes the `string.Format` method one step further. If you prepend a string with `$`, then anything inside curly braces gets formatted just like `string.Format`. The following gives identical output to the previous example.
 
 ```c#
 var output = $"We sold {amount} mars bars on {date:D}, each costing £{price:N2}.";
@@ -140,9 +140,9 @@ See [here](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tok
 
 ## Debugging
 
-If you use Visual Studio, then often you want to see the value of a variable in the debug window. By default VS will use the `ToString` method to format the object so you can see its value.
+When debugging, you often want to see the property values of a particular object. By default, the Visual Studio debug window will use the `ToString` method to format the object so you can see its value.
 
-Because the `ToString` method returns you the fully qualified type name by default, you may be tempted to override `ToString` for debugging reasons. Don't do this! If you do, it is very easy for these string representations to find their way into your production code. Instead, read [this article](https://docs.microsoft.com/en-us/visualstudio/debugger/using-the-debuggerdisplay-attribute?view=vs-2017) to find out a better way of doing it using `System.Diagnostics.DebuggerDisplayAttribute`.
+You may be tempted to override `ToString` to make debugging easier (remember, the default implementation of `ToString` simply returns the type name). Don't do this! If you do, it is very easy for these string representations to find their way into your production code. Instead, read [this article](https://docs.microsoft.com/en-us/visualstudio/debugger/using-the-debuggerdisplay-attribute) to find out a better way of doing it using `System.Diagnostics.DebuggerDisplayAttribute`.
 
 ## Summary
 
