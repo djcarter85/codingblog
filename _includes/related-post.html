@@ -1,6 +1,7 @@
 <div class="list-group related-post">
   <a href="{{ include.related.url }}" class="list-group-item list-group-item-action">
-    <h5 class="mb-1">{{ include.related.title }}</h5>
+    <p class="heading">{{ include.heading }}</p>
+    <h5>{{ include.related.title }}</h5>
     <p class="date">{{ include.related.date | date: "%e %b %Y"}}</p>
     <p class="summary">{{ include.related.summary }}</p>
   </a>

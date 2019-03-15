@@ -6,13 +6,13 @@
 
       <div class="col-md-6 my-2">
         {% if page.next %}
-        {% include related-post.html related=page.next %}
+        {% include related-post.html related=page.next heading="Up Next ..." %}
         {% endif %}
       </div>
 
       <div class="col-md-6 my-2">
         {% if page.previous %}
-        {% include related-post.html related=page.previous %}
+        {% include related-post.html related=page.previous heading="Previously ..." %}
         {% endif %}
       </div>
 
