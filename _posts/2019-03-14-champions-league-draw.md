@@ -145,7 +145,6 @@ Here's a summary of the calculated and simulated results:
 |0|22.86%|22.85%|
 |1|68.57%|68.58%|
 |2|8.57%|8.57%|
-{:.table.table-bordered}
 
 Not bad! Our simulated values were almost identical to those we'd calculated.
 

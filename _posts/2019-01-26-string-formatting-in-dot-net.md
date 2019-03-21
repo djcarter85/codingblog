@@ -21,7 +21,6 @@ Many of the built-in .NET types override this method to do something useful. For
 |---|---|---|---|
 |`System.Int32`|`-123456`|-123456|
 |`System.Decimal`|`-1.23m`|-1.23|
-{:.table.table-bordered}
 
 ### Standard format strings
 
@@ -44,7 +43,6 @@ Taking `var date = new System.DateTime(2019, 1, 2)` as an example, here are some
 |`date.ToString("dd MMM yyyy")`|02 Jan 2019|
 |`date.ToString("ddd d MMMM yyyy")`|Wed 2 January 2019|
 |`date.ToString("yyyy-MM-dd")`|2019-01-02|
-{:.table.table-bordered}
 
 You'll notice that anything that is not recognised as a building block (such as a space or hyphen) is simply output verbatim.
 
@@ -62,7 +60,6 @@ Here are some `DateTime` examples, using the same example of `var date = new Sys
 |`date.ToString("d", new CultureInfo("en-US"))`|Wednesday, January 2, 2019|
 |`date.ToString("d", new CultureInfo("fr-FR"))`|mercredi 2 janvier 2019|
 |`date.ToString("d", new CultureInfo("de-DE"))`|Mittwoch, 2. Januar 2019|
-{:.table.table-bordered}
 
 You can use `CultureInfo.CurrentCulture` to access the [machine's culture](https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.currentculture), and `Culture.InvariantCulture` to use a [non-specific culture](https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture).
 
