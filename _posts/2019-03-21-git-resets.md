@@ -1,5 +1,6 @@
 ---
 title: Git Resets
+summary: What happens when you do a reset in Git?
 ---
 
 I had a conversation with a colleague today about the `git reset` command.
