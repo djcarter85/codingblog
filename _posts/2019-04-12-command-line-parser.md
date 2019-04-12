@@ -1,5 +1,6 @@
 ---
 title: Command Line Parser for C#
+summary: I recently came across a C# library that takes care of the boilerplate code often associated with parsing, validating and using options specified as command line arguments.
 ---
 
 I recently came across [Command Line Parser](https://github.com/commandlineparser/commandline). It's a C# library (available on NuGet) that takes care of the boilerplate code often associated with parsing, validating and using options specified as command line arguments.
