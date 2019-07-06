@@ -41,7 +41,7 @@ As probabilities, this gives:
 
 ## Simulation
 
-The alternative to working out the probabilities is to let a computer simulate the draw a large number of times and look at the results. This is known as the [Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method). We'll never get the exact probabilities this way, but it can be really useful if we're dealing with a problem so big that evaluating the probablities mathematically is infeasible.
+The alternative to working out the probabilities is to let a computer simulate the draw a large number of times and look at the results. This is known as the [Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method). We'll never get the exact probabilities this way, but it can be really useful if we're dealing with a problem so big that evaluating the probabilities mathematically is infeasible.
 
 The source code for how I did this can be found at [https://github.com/djcarter85/ChampionsLeagueDraw](https://github.com/djcarter85/ChampionsLeagueDraw), but there's a summmary below.
 
