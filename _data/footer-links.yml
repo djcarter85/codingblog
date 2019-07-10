@@ -4,3 +4,6 @@
 - title: RSS
   url: /Feed/
   icon: fa fa-rss
+- title: Twitter
+  url: https://twitter.com/djcarter85
+  icon: fab fa-twitter
