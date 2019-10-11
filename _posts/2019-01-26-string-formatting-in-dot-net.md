@@ -18,7 +18,7 @@ This is usually not very useful, so the `ToString` method is virtual to allow yo
 Many of the built-in .NET types override this method to do something useful. For example, all of the number types override `ToString` to return a basically formatted number. Here are a couple of examples:
 
 |Type|Example|Output|
-|---|---|---|---|
+|---|---|---|
 |`System.Int32`|`-123456`|-123456|
 |`System.Decimal`|`-1.23m`|-1.23|
 
