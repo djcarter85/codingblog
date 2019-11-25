@@ -1,6 +1,6 @@
 ---
 title: Drag-and-drop in Windows Forms is as easy as 1-2-3 (and maybe 4)
-summary: How to support drag-and-drop in Windows Forms
+summary: How to support drag-and-drop in Windows Forms.
 ---
 
 Last week I was writing a Windows Forms application that needed to process data that had been dragged onto it.
