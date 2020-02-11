@@ -140,20 +140,16 @@ These methods could be private to the test class, but I prefer to put them in th
 We could streamline the above example even further by using the [static imports feature of C# 6](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-static):
 
 ```c#
-namespace Example
+using static Example.CustomerCreator;
+
+public class CustomerTests
 {
-    using NUnit;
-    using static Example.CustomerCreator;
-
-    public class CustomerTests
+    [Test]
+    public void Garbage_email_address_is_invalid()
     {
-        [Test]
-        public void Garbage_email_address_is_invalid()
-        {
-            var customer = CustomerWithEmailAddress("g5#^559RY^bcb!co");
+        var customer = CustomerWithEmailAddress("g5#^559RY^bcb!co");
 
-            Assert.That(customer.IsEmailAddressValid, Is.False);
-        }
+        Assert.That(customer.IsEmailAddressValid, Is.False);
     }
 }
 ```
