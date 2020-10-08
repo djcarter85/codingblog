@@ -164,7 +164,7 @@ Often, only a subset of the dependencies will actually be pertinent to each test
 For example, the controller may depend on `IClock` for fetching the current time, but it is not used in the method that is being tested.
 Or perhaps it *is* used, but the value of the current time is irrelevant to the particular aspect of behaviour that is being checked.
 
-If this is the case, I like to creating a helper method for creating the class under test.
+If this is the case, I like to use a helper method for creating the class under test.
 This is similar to the `...Creator` classes in technique 3, except that it is private to the test class (as it is only used there), and has default values for all the dependencies (so that tests only need to specify the ones that are relevant).
 
 Here's an example:
