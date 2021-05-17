@@ -31,7 +31,7 @@ Then there are 3 fixtures involving the remaining 6 non-British teams; there are
 
 This comes out as $$11!/(2^3 \times 3!)$$ distinct sets of fixtures with no all-British ties.
 
-Dividing one by the other and cancelling (I had a lot of crossing out to do), the probability of no all-British ties comes out as $$16/39 = 41.03\%$$ (or a **59.97%** chance of at least one match between two British teams).
+Dividing one by the other and cancelling (I had a lot of crossing out to do), the probability of no all-British ties comes out as $$16/39 = 41.03\%$$ (or a **58.97%** chance of at least one match between two British teams).
 
 ## [Simulation](https://youtu.be/__G4RrlGmVk?t=71)
 
