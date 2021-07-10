@@ -17,8 +17,9 @@ more prevalent in the way we use computers to solve problems, being able
 to express stochastic algorithms clearly in code is only going to become
 more important as time goes on.
 
-A while back I wrote an article about simulating the Champions League
-quarter-final draw. This obviously involved a source of randomness,
+A while back I wrote [an article about simulating the Champions League
+quarter-final draw](/2019/03/14/champions-league-draw).
+This obviously involved a source of randomness,
 so I thought it would be interesting to revisit my code and see if
 I can improve it by using some of the ideas from Eric Lippert’s posts.
 
