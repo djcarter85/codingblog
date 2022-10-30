@@ -22,8 +22,8 @@ types, especially if you're using [nullable reference
 types](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-reference-types)
 in C# 8 or newer.
 
-This realisation came in handy recently when I was refactoring some code.
-Here's a trimmed down example to explain how this is useful.
+This realisation came in handy recently when I was refactoring some code. Here's
+a trimmed down example to explain how this is useful.
 
 ## Example
 

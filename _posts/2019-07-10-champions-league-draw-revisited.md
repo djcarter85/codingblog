@@ -3,34 +3,33 @@ title: Champions League Draw, Revisited
 summary: How do you deal with randomness in .NET code?
 ---
 
-Over the last couple of months, Eric Lippert has written a series of
-blog posts explaining how best to deal with randomness in .NET code ([starting here](https://ericlippert.com/2019/01/31/fixing-random-part-1/)).
+Over the last couple of months, Eric Lippert has written a series of blog posts
+explaining how best to deal with randomness in .NET code ([starting
+here](https://ericlippert.com/2019/01/31/fixing-random-part-1/)).
 
-His main argument is that the standard .NET API for randomness is not very
-good, and he goes on to describe how to write code involving randomness in
-a much cleaner and more understandable way.
+His main argument is that the standard .NET API for randomness is not very good,
+and he goes on to describe how to write code involving randomness in a much
+cleaner and more understandable way.
 
-The motivation behind this is great. First off, he's totally right;
-the standard .NET API for random number generation is a bit naff.
-But also, as machine learning and genetic algorithms become more and
-more prevalent in the way we use computers to solve problems, being able
-to express stochastic algorithms clearly in code is only going to become
-more important as time goes on.
+The motivation behind this is great. First off, he's totally right; the standard
+.NET API for random number generation is a bit naff. But also, as machine
+learning and genetic algorithms become more and more prevalent in the way we use
+computers to solve problems, being able to express stochastic algorithms clearly
+in code is only going to become more important as time goes on.
 
 A while back I wrote [an article about simulating the Champions League
-quarter-final draw](/2019/03/14/champions-league-draw).
-This obviously involved a source of randomness,
-so I thought it would be interesting to revisit my code and see if
-I can improve it by using some of the ideas from Eric Lippert’s posts.
+quarter-final draw](/2019/03/14/champions-league-draw). This obviously involved
+a source of randomness, so I thought it would be interesting to revisit my code
+and see if I can improve it by using some of the ideas from Eric Lippert’s
+posts.
 
-I’ve put the code for this article on
-[a separate branch in the original repository](https://github.com/djcarter85/ChampionsLeagueDraw/tree/distributions).
+I’ve put the code for this article on [a separate branch in the original
+repository](https://github.com/djcarter85/ChampionsLeagueDraw/tree/distributions).
 
 ## The `IDistribution<T>` interface
 
-Lippert's fundamental abstraction is that of a **distribution**:
-a source of random values of a given type.
-This is modelled using a simple interface:
+Lippert's fundamental abstraction is that of a **distribution**: a source of
+random values of a given type. This is modelled using a simple interface:
 
 ```c#
 public interface IDistribution<T>
@@ -39,18 +38,19 @@ public interface IDistribution<T>
 }
 ```
 
-From this, we can start with simple implementations of the interface and
-combine them to make more complicated ones. For example, the
-[standard continuous uniform distribution](https://github.com/ericlippert/probability/blob/episode03/Probability/StandardContinuousUniform.cs),
-which returns real values satisfying $$0 \leq x < 1$$, or the
-[singleton distribution](https://github.com/ericlippert/probability/blob/episode04/Probability/Singleton.cs),
+From this, we can start with simple implementations of the interface and combine
+them to make more complicated ones. For example, the [standard continuous
+uniform
+distribution](https://github.com/ericlippert/probability/blob/episode03/Probability/StandardContinuousUniform.cs),
+which returns real values satisfying $$0 \leq x < 1$$, or the [singleton
+distribution](https://github.com/ericlippert/probability/blob/episode04/Probability/Singleton.cs),
 which always returns the same value.
 
-Such abstractions and implementations could be put into a small class library;
-I wouldn't be surprised to see one appear on NuGet in the near future.
+Such abstractions and implementations could be put into a small class library; I
+wouldn't be surprised to see one appear on NuGet in the near future.
 
-Lippert also defines an extension method for producing a stream of samples,
-of which I have made a modified version to remove the infinite loop:
+Lippert also defines an extension method for producing a stream of samples, of
+which I have made a modified version to remove the infinite loop:
 
 ```c#
 public static class DistributionExtensions
@@ -136,9 +136,9 @@ public static class Program
 
 ## Let's make some changes ...
 
-The first thing to notice is that the `CreateRandom()` method has exactly
-the right signature for an implementation of `IDistribution<FixtureList>`.
-So that was pretty easy to extract:
+The first thing to notice is that the `CreateRandom()` method has exactly the
+right signature for an implementation of `IDistribution<FixtureList>`. So that
+was pretty easy to extract:
 
 ```c#
 public class FixtureListDistribution : IDistribution<FixtureList>
@@ -181,10 +181,10 @@ public static class Program
 }
 ```
 
-But we can go further: rather than using `Shuffle()` from MoreLINQ,
-where we have no control over the implementation nor the source of randomness,
-we can implement our own `ShuffleDistribution` using the
-[Fisher-Yates method](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle).
+But we can go further: rather than using `Shuffle()` from MoreLINQ, where we
+have no control over the implementation nor the source of randomness, we can
+implement our own `ShuffleDistribution` using the [Fisher-Yates
+method](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle).
 
 ```c#
 public class ShuffleDistribution<T> : IDistribution<IReadOnlyList<T>>
@@ -222,8 +222,9 @@ public class ShuffleDistribution<T> : IDistribution<IReadOnlyList<T>>
 }
 ```
 
-[Shout out to [this blog post by DataGenetics](http://datagenetics.com/blog/november42014/index.html),
-which was really helpful in improving my understanding of shuffling algorithms.]
+[Shout out to [this blog post by
+DataGenetics](http://datagenetics.com/blog/november42014/index.html), which was
+really helpful in improving my understanding of shuffling algorithms.]
 
 The simple distributions that this is based on (e.g. `StandardDiscreteUniform`)
 were taken from Eric Lippert's blog posts, as is his implementation of a source
@@ -231,17 +232,17 @@ of randomness with higher precision.
 
 ## Reflections
 
-Having played around with this a little, my overwhelming response is a
-positive one! Writing understandable code is all about creating the right
-abstractions, and the `IDistribution<T>` interface is a simple abstraction
-that makes it easy to write code that uses randomness in some way.
+Having played around with this a little, my overwhelming response is a positive
+one! Writing understandable code is all about creating the right abstractions,
+and the `IDistribution<T>` interface is a simple abstraction that makes it easy
+to write code that uses randomness in some way.
 
 If you wanted to test code that uses a random value, the `IDistribution<T>`
-interface might be the right interface to inject as a dependency which you
-could mock out for unit testing. However, in some cases I could see that you might
+interface might be the right interface to inject as a dependency which you could
+mock out for unit testing. However, in some cases I could see that you might
 need to introduce another interface; for example, if testing code that requires
-a random integer up to a maximum value, the following interface might be
-helpful for mocking purposes:
+a random integer up to a maximum value, the following interface might be helpful
+for mocking purposes:
 
 ```c#
 public interface IIntegerDistribution
@@ -250,37 +251,37 @@ public interface IIntegerDistribution
 }
 ```
 
-If you wanted to unit test an implementation of a distribution,
-I think there are some tricky obstacles to overcome. The whole point of
-a distribution is that the value that comes backfrom it is random.
-How can you test against a hard-coded expected outcome?
+If you wanted to unit test an implementation of a distribution, I think there
+are some tricky obstacles to overcome. The whole point of a distribution is that
+the value that comes backfrom it is random. How can you test against a
+hard-coded expected outcome?
 
-Perhaps you could take 1000 samples (or some other large number) and check 
-that the values returned correspond to the expected distribution. In this case,
-you'd have to give some sort of tolerance that the distribution must fall
-within for the test to pass.
-How do you choose that tolerance? Too small and the test will frequently fail;
-too large and there's a high chance of the test passing even if the code is wrong.
-Is it acceptable for the test to simply fail sometimes because of random chance?
+Perhaps you could take 1000 samples (or some other large number) and check that
+the values returned correspond to the expected distribution. In this case, you'd
+have to give some sort of tolerance that the distribution must fall within for
+the test to pass. How do you choose that tolerance? Too small and the test will
+frequently fail; too large and there's a high chance of the test passing even if
+the code is wrong. Is it acceptable for the test to simply fail sometimes
+because of random chance?
 
 Another way to tackle this problem would be to inject any dependent
-distributions into the class under test. The problem with this is that the
-tests would be heavily dependent on the implementation. For example, suppose
-you wanted to test a distribution which returns heads or tails with equal
-probability, and depends on the standard continuous uniform distribution as
-its underlying source of randomness. There's nothing canonical about which
-values betwen 0 and 1 correspond to which outcome, and so as soon as you
-write a test, you're tying yourself into a particular implementation! Your
-test might fail even though the distribution is working perfectly fine.
+distributions into the class under test. The problem with this is that the tests
+would be heavily dependent on the implementation. For example, suppose you
+wanted to test a distribution which returns heads or tails with equal
+probability, and depends on the standard continuous uniform distribution as its
+underlying source of randomness. There's nothing canonical about which values
+betwen 0 and 1 correspond to which outcome, and so as soon as you write a test,
+you're tying yourself into a particular implementation! Your test might fail
+even though the distribution is working perfectly fine.
 
 I suspect the best way to implement any distributions is to rely on a base
-source of randomness (e.g. 
-[Lippert's `BetterRandom` implementation](https://ericlippert.com/2019/02/04/fixing-random-part-2/))
-and use well-known algorithms (for example, 
-[see here](https://en.wikipedia.org/wiki/Pseudo-random_number_sampling))
-to produce the random values.
-You would then forego unit testing entirely, and focus on unit testing
-the code which samples from your distributions, which is where your complicated
-(and therefore potentially error-prone) business logic is likely to be.
+source of randomness (e.g. [Lippert's `BetterRandom`
+implementation](https://ericlippert.com/2019/02/04/fixing-random-part-2/)) and
+use well-known algorithms (for example, [see
+here](https://en.wikipedia.org/wiki/Pseudo-random_number_sampling)) to produce
+the random values. You would then forego unit testing entirely, and focus on
+unit testing the code which samples from your distributions, which is where your
+complicated (and therefore potentially error-prone) business logic is likely to
+be.
 
 If you have any insights on this, [get in touch](/About)!
