@@ -1,6 +1,6 @@
 ---
 title: A <code>Nullable&lt;T&gt;</code> is like a simple <code>IEnumerable&lt;T&gt;</code>
-summary: An equivalence between two .NET types which comes in handy when refactoring
+summary: An equivalence between two .NET types which comes in handy when refactoring.
 ---
 
 Here's a fact about two .NET types:

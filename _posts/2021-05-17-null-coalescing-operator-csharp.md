@@ -1,6 +1,6 @@
 ---
 title: "The C# null-coalescing operator"
-summary: A mathematical analysis of C#'s <code>??</code> operator
+summary: A mathematical analysis of C#'s <code>??</code> operator.
 ---
 
 Recently I have had cause to analyse the mathematical properties of C#'s
