@@ -26,7 +26,7 @@ of the quarter-final draw:
 
 - zero all-English ties (each match is between an English team and a non-English
   team)
-- one all-English ties (and the other two English teams play non-English
+- one all-English tie (and the other two English teams play non-English
   opposition)
 - two all-English ties
 
