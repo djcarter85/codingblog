@@ -52,7 +52,7 @@ article is this:
 Let's look at an example. Suppose you have the following test that follows a
 naming pattern common in the industry.
 
-```c#
+```cs
 public class CustomerTests
 {
     [Test]
@@ -81,7 +81,7 @@ This test name has a couple of problems:
 How about we write the test name as a statement of fact about the behaviour of
 the system?
 
-```c#
+```cs
 public class CustomerTests
 {
     [Test]
@@ -140,7 +140,7 @@ those values so only the relevant ones remain?
 
 Let's create a helper class ...
 
-```c#
+```cs
 public static class CustomerCreator
 {
     public static Customer WithEmailAddress(string emailAddress)
@@ -156,7 +156,7 @@ public static class CustomerCreator
 
 ... and use it ...
 
-```c#
+```cs
 public class CustomerTests
 {
     [Test]
@@ -189,7 +189,7 @@ We could streamline the above example even further by using the [static imports
 feature of C#
 6](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-static):
 
-```c#
+```cs
 using static Example.CustomerCreator;
 
 public class CustomerTests
@@ -226,7 +226,7 @@ relevant).
 
 Here's an example:
 
-```c#
+```cs
 public class CustomerControllerTests
 {
     [Test]
@@ -269,7 +269,7 @@ do the same with the assertions?
 For example, consider the following two tests which check the output of an
 ASP.NET Core controller method. Which is more readable?
 
-```c#
+```cs
 public class CustomerControllerTests
 {
     [Test]

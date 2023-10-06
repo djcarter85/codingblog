@@ -3,14 +3,14 @@
 
     <h1>Recent Posts</h1>
 
-    {% for post in paginator.posts %}
+    {% for post in collections.posts reversed %}
     <div>
-      <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h2>
+      <h2><a href="{{ post.url | prepend: site.baseurl }}">{{ post.data.title }}</a></h2>
       <p class="date">{{ post.date | date: "%A %e %B %Y" }}</p>
-      {% if post.summary %}
-      <p>{{ post.summary }}</p>
+      {% if post.data.summary %}
+      <p>{{ post.data.summary }}</p>
       {% else %}
-      {{ post.excerpt }}
+      {{ post.data.excerpt }}
       {% endif %}
     </div>
     {% endfor %}

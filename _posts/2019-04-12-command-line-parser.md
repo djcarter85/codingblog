@@ -32,7 +32,7 @@ command-line options, decorated with attributes detailing the expected usage:
 
 ##### C#
 
-```c#
+```cs
 class Options
 {
     [Value(0)]
@@ -53,7 +53,7 @@ Then in the `Main` method, it's as simple as doing the following:
 
 ##### C#
 
-```c#
+```cs
 class Program
 {
     static void Main(string[] args)
@@ -82,7 +82,7 @@ With Command Line Parser, you create a separate options class for each verb:
 
 ##### C#
 
-```c#
+```cs
 [Verb("clone")]
 class CloneOptions {
     // ...
@@ -104,7 +104,7 @@ how to handle parsing errors:
 
 ##### C#
 
-```c#
+```cs
 class Program
 {
     static int Main(string[] args) 
@@ -143,7 +143,7 @@ For example, our Options class from before could be changed to:
 
 ##### C#
 
-```c#
+```cs
 class Options
 {
     [Value(0, HelpText = "The file to display information for.")]

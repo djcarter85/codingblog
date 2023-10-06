@@ -31,7 +31,7 @@ repository](https://github.com/djcarter85/ChampionsLeagueDraw/tree/distributions
 Lippert's fundamental abstraction is that of a **distribution**: a source of
 random values of a given type. This is modelled using a simple interface:
 
-```c#
+```cs
 public interface IDistribution<T>
 {
     T Sample();
@@ -52,7 +52,7 @@ wouldn't be surprised to see one appear on NuGet in the near future.
 Lippert also defines an extension method for producing a stream of samples, of
 which I have made a modified version to remove the infinite loop:
 
-```c#
+```cs
 public static class DistributionExtensions
 {
     // Lippert's extension method
@@ -80,7 +80,7 @@ public static class DistributionExtensions
 The main class in my previous implementation of the problem was the
 `FixtureList` class, an abbreviated version of which is shown below.
 
-```c#
+```cs
 public class FixtureList
 {
     private static readonly IReadOnlyList<Team> Teams = ...
@@ -111,7 +111,7 @@ deterministic.
 
 This is then used in my program's main method as follows:
 
-```c#
+```cs
 public static class Program
 {
     private static readonly IDistribution<FixtureList> Distribution = new FixtureListDistribution();
@@ -140,7 +140,7 @@ The first thing to notice is that the `CreateRandom()` method has exactly the
 right signature for an implementation of `IDistribution<FixtureList>`. So that
 was pretty easy to extract:
 
-```c#
+```cs
 public class FixtureListDistribution : IDistribution<FixtureList>
 {
     private static readonly IReadOnlyList<Team> Teams = ...
@@ -160,7 +160,7 @@ public class FixtureListDistribution : IDistribution<FixtureList>
 
 The call site then changes to:
 
-```c#
+```cs
 public static class Program
 {
     private static readonly IDistribution<FixtureList> Distribution = new FixtureListDistribution();
@@ -186,7 +186,7 @@ have no control over the implementation nor the source of randomness, we can
 implement our own `ShuffleDistribution` using the [Fisher-Yates
 method](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle).
 
-```c#
+```cs
 public class ShuffleDistribution<T> : IDistribution<IReadOnlyList<T>>
 {
     private readonly IReadOnlyList<T> source;
@@ -244,7 +244,7 @@ need to introduce another interface; for example, if testing code that requires
 a random integer up to a maximum value, the following interface might be helpful
 for mocking purposes:
 
-```c#
+```cs
 public interface IIntegerDistribution
 {
     int Sample(int upperBound);

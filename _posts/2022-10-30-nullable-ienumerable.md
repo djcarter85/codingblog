@@ -29,7 +29,7 @@ a trimmed down example to explain how this is useful.
 
 Suppose your code has a function which returns a nullable:
 
-```c#
+```cs
 int? GetNullableNumber(string text)
 {
     // The implementation of this method is less important than the return type
@@ -47,7 +47,7 @@ int? GetNullableNumber(string text)
 Then when you call it, it only makes sense to perform an action (e.g. saving to
 a database) if the nullable has a value:
 
-```c#
+```cs
 // Assume GetText() is defined elsewhere
 var text = GetText();
 
@@ -65,7 +65,7 @@ Suppose you now want to support a `text` value that could contain multiple
 numbers (perhaps comma-separated). To make this new functionality easier, we can
 do an initial refactor like so:
 
-```c#
+```cs
 IEnumerable<int> GetNumbers(string text)
 {
     if (int.TryParse(text, out int value))
@@ -81,7 +81,7 @@ IEnumerable<int> GetNumbers(string text)
 
 And then the call site becomes:
 
-```c#
+```cs
 var text = GetText();
 
 var numbers = GetNumbers(text);

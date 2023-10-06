@@ -114,7 +114,7 @@ turn.
 
 For the following examples, let's take the following values:
 
-```c#
+```cs
 var amount = 5;
 var price = 1.2m;
 var date = new System.DateTime(2019, 1, 2);
@@ -124,7 +124,7 @@ var date = new System.DateTime(2019, 1, 2);
 
 The simplest way to compose strings is by using the `+` operator:
 
-```c#
+```cs
 var output = "We sold " + amount.ToString() + " mars bars on " + date.ToString("D", new CultureInfo("en-US")) + ", each costing £" + price.ToString("N2") + ".";
 ```
 
@@ -134,7 +134,7 @@ This gives `"We sold 5 mars bars on Wednesday, January 2, 2019, each costing
 You can omit the `ToString` call if you like, and .NET will do an implicit cast
 to `string`, which is equivalent to calling `ToString` with no arguments:
 
-```c#
+```cs
 var output = "We sold " + amount + " mars bars on " + date + ", each costing £" + price + ".";
 ```
 
@@ -150,7 +150,7 @@ method will format them and insert them into the placeholders.
 
 It's best explained with an example:
 
-```c#
+```cs
 var output = string.Format("We sold {0} mars bars on {1}, each costing £{2}.", amount, date, price);
 ```
 
@@ -160,7 +160,7 @@ inserted them into the placeholders using zero-based indexing.
 
 You can also specify format strings, like so:
 
-```c#
+```cs
 var output = string.Format("We sold {0} mars bars on {1:D}, each costing £{2:N2}.", amount, date, price);
 ```
 
@@ -190,7 +190,7 @@ the `string.Format` method one step further. If you prepend a string with `$`,
 then anything inside curly braces gets formatted just like `string.Format`. The
 following gives identical output to the previous example.
 
-```c#
+```cs
 var output = $"We sold {amount} mars bars on {date:D}, each costing £{price:N2}.";
 ```
 

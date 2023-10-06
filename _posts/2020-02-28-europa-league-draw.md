@@ -50,8 +50,7 @@ the probability of no all-British ties comes out as $$16/39 = 41.03\%$$ (or a
 
 ## [Simulation](https://youtu.be/__G4RrlGmVk?t=71)
 
-I did [something similar during last year's Champions League]({% post_url
-2019-03-14-champions-league-draw %}), and so I've modified the code from last
+I did [something similar during last year's Champions League](/posts/2019-03-14-champions-league-draw), and so I've modified the code from last
 time [on a separate
 branch](https://github.com/djcarter85/ChampionsLeagueDraw/tree/europa-league-draw).
 
