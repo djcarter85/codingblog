@@ -1,0 +1,156 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Europa League Draw | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Europa League Draw</h1>
+    <p class="date">28 February 2020</p>
+    <article>
+      <p>Yesterday evening I was watching <a href="https://www.bbc.co.uk/sport/football/51623263">Arsenal play Olympiakos in the UEFA Europa
+League</a>. Part way through the
+first half, the commentator mentioned that five British teams might win their
+matches and make it through to the last 16. He then went on to say that, if this
+were to occur, there would be a more than 50-50 chance of two British teams
+facing each other in the next round.</p>
+<p>Now, <a href="https://www.youtube.com/watch?v=rZG0DX0U0Bs">Peter Drury is an excellent
+commentator</a>, but I have no way of
+rating his abilities as a mathematician, so I thought I'd verify this for
+myself. At the very least it gave me something to do during half-time!</p>
+<p>There are two ways of calculating the probability: we can calculate it
+mathematically or we can use a computer to simulate the draw. Let's try both ...</p>
+<h2>Maths</h2>
+<p>First off, a quick equation that will prove useful later on. Suppose we have
+$$2n$$ teams which need to be drawn into $$n$$ fixtures. How many distinct
+possible sets of fixtures are there?</p>
+<p>Well, there are $$(2n)!$$ orders in which the teams can be pulled out of the
+hat, each of which gives us a fixture list by pairing off teams as they are
+drawn. But for a given draw order we can we can swap the teams within each pair
+($$2^n$$ ways) and permute the pairs ($$n!$$ ways), and it will give us the same
+fixture list.</p>
+<p>So there are $$(2n)!/(2^n \times n!)$$ distinct fixture lists.</p>
+<p>Let's apply this to the Europa League draw. There are 8 fixtures, so $$16!/(2^8
+\times 8!)$$ distinct sets of fixtures. Of these, how many <strong>don't</strong> result in
+an all-British tie?</p>
+<p>Each of the British teams would need a non-British team to play against; there
+are $$11 \times 10 \times 9 \times 8 \times 7$$ ways of choosing these. Then
+there are 3 fixtures involving the remaining 6 non-British teams; there are
+$$6!/(2^3 \times 3!)$$ ways of choosing these (using our equation from earlier).</p>
+<p>This comes out as $$11!/(2^3 \times 3!)$$ distinct sets of fixtures with no
+all-British ties.</p>
+<p>Dividing one by the other and cancelling (I had a lot of crossing out to do),
+the probability of no all-British ties comes out as $$16/39 = 41.03%$$ (or a
+<strong>58.97%</strong> chance of at least one match between two British teams).</p>
+<h2><a href="https://youtu.be/__G4RrlGmVk?t=71">Simulation</a></h2>
+<p>I did <a href="/posts/2019-03-14-champions-league-draw">something similar during last year's Champions League</a>, and so I've modified the code from last
+time <a href="https://github.com/djcarter85/ChampionsLeagueDraw/tree/europa-league-draw">on a separate
+branch</a>.</p>
+<p>The results are as follows:</p>
+<pre><code>Simulating 100,000,000 fixture lists ...
+Fixture lists with 0 all-British matches: 41,024,061 (41.02%)
+Fixture lists with 1 all-British match: 51,282,524 (51.28%)
+Fixture lists with 2 all-British matches: 7,693,415 (7.69%)
+</code></pre>
+<p>This gives us a <strong>58.98%</strong> chance of at least one all-British tie.</p>
+<h2>Conclusion</h2>
+<p>So what is the probability of two British teams meeting in the Europa League?
+The maths says <strong>58.97%</strong>; my computer says <strong>58.98%</strong>.</p>
+<p>Firstly, it's nice to see the two line up (within a small error). But secondly,
+it turns out the hypothesis was true! It would have been more likely than not
+(with odds of about 3 to 2) for two British teams to meet in the last 16.</p>
+<p>Alas, despite Peter Drury's optimism, only three British teams made it through
+(unfortunately not including my beloved Arsenal 😢). The probability of <a href="https://www.bbc.co.uk/sport/football/51674681">today's
+draw</a> actually having contained
+an all-British tie is left as an exercise for the reader!</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

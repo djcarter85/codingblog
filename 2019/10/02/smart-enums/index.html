@@ -1,0 +1,285 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Smart Enums In C# | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Smart Enums In C#</h1>
+    <p class="date"> 2 October 2019</p>
+    <article>
+      <p>A quick post about a design pattern that I quite like.</p>
+<p>Context: we're dealing with distances in some way. Let's write some classes to
+express this.</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">Distance</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Distance</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">double</span></span> <span class="token keyword">value</span><span class="token punctuation">,</span> <span class="token class-name">DistanceUnit</span> unit<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Value <span class="token operator">=</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Unit <span class="token operator">=</span> unit<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">double</span></span> Value <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name">DistanceUnit</span> Unit <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">enum</span> <span class="token class-name">DistanceUnit</span>
+<span class="token punctuation">{</span>
+    Miles<span class="token punctuation">,</span>
+    Kilometres<span class="token punctuation">,</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We need to be able to convert between distances measured in different units.
+Let's add a method to the <code>Distance</code> class.</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">Distance</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">Distance</span> <span class="token function">Convert</span><span class="token punctuation">(</span><span class="token class-name">DistanceUnit</span> targetUnit<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Distance</span><span class="token punctuation">(</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>Value <span class="token operator">*</span> <span class="token function">ConversionFactorToKilometres</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>Unit<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token function">ConversionFactorToKilometres</span><span class="token punctuation">(</span>targetUnit<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            targetUnit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">double</span></span> <span class="token function">ConversionFactorToKilometres</span><span class="token punctuation">(</span><span class="token class-name">DistanceUnit</span> unit<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> <span class="token punctuation">(</span>unit<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> DistanceUnit<span class="token punctuation">.</span>Miles<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token number">1.60934</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> DistanceUnit<span class="token punctuation">.</span>Kilometres<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token punctuation">:</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>ArgumentException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This works, but it's a little clunky. Two things I don't like:</p>
+<ol>
+<li>The conversion factor is a property of the unit itself, so it doesn't seem
+right that it's defined in the <code>Distance</code> class.</li>
+<li>We have to deal with the fact that enums aren't quite type-safe; it's
+perfectly possible for someone to pass in <code>(DistanceUnit)100</code>, and so we need
+the exception.</li>
+</ol>
+<p>Let's fix (1) by adding attributes to the enum:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">ConversionFactorToKilometresAttribute</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">Attribute</span></span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">ConversionFactorToKilometresAttribute</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">double</span></span> factor<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Factor <span class="token operator">=</span> factor<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">double</span></span> Factor <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">enum</span> <span class="token class-name">DistanceUnit</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">ConversionFactorToKilometres</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token number">1.60934</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    Miles<span class="token punctuation">,</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">ConversionFactorToKilometres</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    Kilometres<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Distance</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">double</span></span> <span class="token function">ConversionFactorToKilometres</span><span class="token punctuation">(</span><span class="token class-name">DistanceUnit</span> unit<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> attribute <span class="token operator">=</span> <span class="token punctuation">(</span>ConversionFactorToKilometresAttribute<span class="token punctuation">)</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token type-expression class-name">DistanceUnit</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">GetMember</span><span class="token punctuation">(</span>unit<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            <span class="token punctuation">.</span><span class="token function">GetCustomAttributes</span><span class="token punctuation">(</span><span class="token keyword">typeof</span><span class="token punctuation">(</span><span class="token type-expression class-name">ConversionFactorToKilometresAttribute</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">Single</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> attribute<span class="token punctuation">.</span>Factor<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Great! The conversion factor is now defined in the <code>DistanceUnit</code> enum, which
+makes much more sense. Unfortunately we have added some reflection, which always
+gives me the heebie-jeebies, and we still don't cope with the possibility that
+the enum value isn't defined.</p>
+<p>This is where the smart enum pattern comes in.</p>
+<p>Let's replace the <code>enum</code> with a <code>class</code> with a small set of possible instances:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">DistanceUnit</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token function">DistanceUnit</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">double</span></span> conversionFactorToKilometres<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>ConversionFactorToKilometres <span class="token operator">=</span> conversionFactorToKilometres<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">DistanceUnit</span> Miles <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">DistanceUnit</span><span class="token punctuation">(</span><span class="token number">1.60934</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">DistanceUnit</span> Kilometres <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">DistanceUnit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">double</span></span> ConversionFactorToKilometres <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Distance</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+
+    <span class="token comment">// TODO: inline this method</span>
+    <span class="token keyword">private</span> <span class="token return-type class-name"><span class="token keyword">double</span></span> <span class="token function">ConversionFactorToKilometres</span><span class="token punctuation">(</span><span class="token class-name">DistanceUnit</span> unit<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> unit<span class="token punctuation">.</span>ConversionFactorToKilometres<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The private constructor ensures that instances of <code>DistanceUnit</code> can only be
+created from inside this class, and this only happens twice. In this way, it's
+very similar to an enum in that there's only a small set of options for the
+value.</p>
+<p>In fact, calling it is <em>very</em> like an enum:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> distance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Distance</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> DistanceUnit<span class="token punctuation">.</span>Miles<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The one downside to this is that a variable of type DistanceUnit could be
+<code>null</code>, because it's a reference type. Ultimately this is a problem of C# rather
+than this pattern, and it's partially fixed by the nullable reference types
+feature of C# 8, released last week (note to self: start using C# 8).</p>
+<h2>Another example</h2>
+<p>(Disclaimer: this example is entirely lifted from <a href="https://codeblog.jonskeet.uk/2014/10/23/violating-the-smart-enum-pattern-in-c/">a blog post by Jon
+Skeet</a>.)</p>
+<p>In our distance example, the &quot;enum&quot; values had properties but no behaviour. A
+slight variant is to have an abstract class, with nested derived classes
+defining the behaviour.</p>
+<p>Here's an example.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Operation</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token function">Operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">Operation</span> Add <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">AddOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">Operation</span> Subtract <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">SubtractOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> <span class="token function">Apply</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> lhs<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> rhs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+    <span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">AddOperation</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">Operation</span></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> <span class="token function">Apply</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> lhs<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> rhs<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> lhs <span class="token operator">+</span> rhs<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+ 
+    <span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">SubtractOperation</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token class-name">Operation</span></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">override</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> <span class="token function">Apply</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> lhs<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> rhs<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> lhs <span class="token operator">-</span> rhs<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Note how the private constructor ensures no-one from outside the class can
+create an instance, in the same way as before.</p>
+<p>This is the best way to use this pattern if your &quot;enum&quot; values need behaviour.
+It's up to you which fits your use case best.</p>
+<h2>Summary</h2>
+<p>Smart enums are a great way of adding state or behaviour to enums in C#. I
+wouldn't advocate using them for everything, but as soon as you add a <code>switch</code>
+statement on the value of an enum, you should consider whether defining that
+behaviour inside the type using this pattern would be better.</p>
+<h2>Further reading</h2>
+<ul>
+<li><a href="https://github.com/ardalis/SmartEnum">SmartEnum</a>, a base class for this
+pattern. Personally I wouldn't bother with this, because the base class adds
+lots of generic code which you wouldn't normally need, but it's a useful
+reference to see other examples of the pattern.</li>
+<li><a href="https://codeblog.jonskeet.uk/2014/10/23/violating-the-smart-enum-pattern-in-c/">Violating the smart enum
+pattern</a>
+by Jon Skeet: how this pattern isn't as type-safe as you think (but you have
+to really <em>want</em> to break it).</li>
+</ul>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

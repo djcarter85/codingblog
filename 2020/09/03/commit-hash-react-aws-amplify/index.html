@@ -1,0 +1,144 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Commit hash using React and AWS Amplify | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Commit hash using React and AWS Amplify</h1>
+    <p class="date"> 3 September 2020</p>
+    <article>
+      <p>Something I found out how to do today.</p>
+<p>Context:</p>
+<ul>
+<li>A <a href="https://reactjs.org/">React</a> app in a Git repository.</li>
+<li><a href="https://aws.amazon.com/amplify/console/">AWS Amplify</a> set up to automatically
+build and deploy your app when changes are made.</li>
+</ul>
+<p>Suppose you want to display the hash of the commit where the app was built,
+perhaps on an about page or in the footer.</p>
+<h2>How?</h2>
+<p>Follow these steps:</p>
+<h3>1. Modify the build script</h3>
+<ul>
+<li>Go to the AWS Amplify console.</li>
+<li>Click on &quot;App settings&quot; &gt; &quot;Build settings&quot;.</li>
+<li>Under &quot;App build specification&quot;, click &quot;Edit&quot;.</li>
+<li>Change the build command from <code>npm run build</code> to
+<code>REACT_APP_COMMIT_ID=$AWS_COMMIT_ID npm run build</code>.</li>
+</ul>
+<h3>2. Read the value in your app</h3>
+<ul>
+<li>Read the value using <code>process.env.REACT_APP_COMMIT_ID</code>, for example:
+<code>&lt;p&gt;Commit ID: {process.env.REACT_APP_COMMIT_ID}&lt;/p&gt;</code></li>
+</ul>
+<h3>3. Set up the value in development</h3>
+<ul>
+<li>Add a file in the root of the project called <code>.env.development</code>.</li>
+<li>Add a development version of the variable, e.g. <code>REACT_APP_COMMIT_ID=abcdef</code>.</li>
+</ul>
+<h2>Why?</h2>
+<p>In the above, <code>REACT_APP_COMMIT_ID</code> is the name of an environment variable to be
+used at build time (<a href="https://create-react-app.dev/docs/adding-custom-environment-variables/">more
+details</a>).
+It's important that its name starts with <code>REACT_APP</code>, as otherwise React won't
+be able to see its value (this is a security feature to avoid accidentally
+exposing secrets).</p>
+<p>In part 1, we set its value to <code>$AWS_COMMIT_ID</code>. This is a reference to an
+Amplify build-time environment variable containing the hash of the commit being
+built. There are a number of environment variables automatically set by Amplify
+(<a href="https://docs.aws.amazon.com/amplify/latest/userguide/environment-variables.html#amplify-console-environment-variables">see
+here</a>),
+and you can even set your own (<a href="https://docs.aws.amazon.com/amplify/latest/userguide/environment-variables.html#setting-env-vars">see
+here</a>).</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

@@ -1,0 +1,302 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>When Git merges go rogue | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">When Git merges go rogue</h1>
+    <p class="date">15 May 2019</p>
+    <article>
+      <p>Most of the time, merging in Git is pretty simple. The files changed on either
+side of the merge are different, or the lines that have been changed are far
+enough away from each other that it's obvious to what the result should be.</p>
+<p>However, eventually all Git users come up against <strong>merge conflicts</strong>. This is
+when Git cannot automatically create the merge commit because the same line in
+the same file was changed in different ways since the last common commit between
+the two branches.</p>
+<p>Here's the simplest Git history where this situation can arise.</p>
+<p><img src="/assets/images/2019-05-05-when-git-merges-go-rogue/git-history.png" alt="Git
+history"></p>
+<p>Commits B1 and B2 change the same line in the same file. If you try to merge
+branch 2 into branch 1, you'll get a merge conflict.</p>
+<p>Let's have a look at a couple of situations where this could happen, and then
+I'll explain the general principle before resolving the conflicts in the two
+examples.</p>
+<h2>To-do list</h2>
+<p>I keep my to-do list in source control (don't ask me why).</p>
+<p>It's a simple text file with a list of things I need to do, and the order
+doesn't matter (I live a very relaxed life with no deadlines).</p>
+<h5>Commit A</h5>
+<pre><code>Shopping
+Clean toilets
+Write blog post
+Email Dad
+</code></pre>
+<h5>Commit B1</h5>
+<pre><code>Shopping
+Take bins out
+Clean toilets
+Write blog post
+Email Dad
+</code></pre>
+<h5>Commit B2</h5>
+<pre><code>Shopping
+Water plants
+Clean toilets
+Write blog post
+Email Dad
+</code></pre>
+<p>Commit B1 adds &quot;Take bins out&quot; and commit B2 adds &quot;Water plants&quot;, but crucially
+they're both added at the same line.</p>
+<p>Conflict!</p>
+<h2>Windows Forms app</h2>
+<p>I have a class in a Windows Forms application which helps me pop up messages to
+the user.</p>
+<h5>Commit A</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ErrorHelper</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowErrorMessage</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> errorMessage<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">ShowMessage</span><span class="token punctuation">(</span><span class="token string">"Error: "</span> <span class="token operator">+</span> errorMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowMessage</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> message<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>Windows<span class="token punctuation">.</span>Forms<span class="token punctuation">.</span>MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h5>Commit B1</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ErrorHelper</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowErrorMessage</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> errorMessage<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">ShowMessage</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"Error: </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">errorMessage</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowMessage</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> message<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>Windows<span class="token punctuation">.</span>Forms<span class="token punctuation">.</span>MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h5>Commit B2</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ErrorHelper</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowErrorMessage</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> errorMessage<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">ShowMessageBox</span><span class="token punctuation">(</span><span class="token string">"Error: "</span> <span class="token operator">+</span> errorMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowMessageBox</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> message<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>Windows<span class="token punctuation">.</span>Forms<span class="token punctuation">.</span>MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Commit B1 refactors to use an interpolated string; commit B2 renames a method.
+Both changes are on line 5.</p>
+<p>Conflict!</p>
+<h2>How to resolve merge conflicts</h2>
+<p>When you make a change to a file, you know the <strong>semantics</strong> of the change; that
+is, <strong>what the change meant</strong>.</p>
+<p>When you commit, Git records the <strong>syntax</strong> of the change; that is, <strong>which
+lines were changed and how</strong>.</p>
+<p>This helps us to sketch out a plan for fixing merge conflicts. We need to work
+out, in the following order:</p>
+<ol>
+<li>The syntax of the two changes</li>
+<li>The semantics of the two changes</li>
+<li>The desired semantics of the resultant change</li>
+<li>The desired syntax of the resultant change</li>
+</ol>
+<p>Git works with files that could <strong>mean</strong> anything: source code in any
+programming language, software documentation, legal documents, personal notes,
+and so on. Because of this, steps 2 and 3 require human intervention. What
+happens in step 2 will depend on what sort of document you are looking at; that
+is, what the document <strong>means</strong>.</p>
+<p>Let's apply this to our two examples.</p>
+<h2>To-do list</h2>
+<p>Applying the general principle:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Commit B1</th>
+      <th>Commit B2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1. Syntax</td>
+      <td>Add “Take bins out” at line 2</td>
+      <td>Add “Water plants” at line 2</td>
+    </tr>
+    <tr>
+      <td>2. Semantics</td>
+      <td>Add “Take bins out” to the list</td>
+      <td>Add “Water plants” to the list</td>
+    </tr>
+    <tr>
+      <td>3. Resultant semantics</td>
+      <td colspan="2">Add “Take bins out” and “Water plants” to the list</td>
+    </tr>
+    <tr>
+      <td>4. Resultant syntax</td>
+      <td colspan="2">Add “Take bins out” at line 2 and “Water plants” at line 3</td>
+    </tr>
+  </tbody>
+</table>
+<p>The key here is that the order doesn't matter; the document means an unordered
+list of tasks.</p>
+<p>Note that the resultant syntax change could have been to add the new tasks at
+any point in the file, because the order doesn't matter. It's usually normal to
+add the changes at the same line to keep the history looking neat.</p>
+<h5>Merge commit</h5>
+<pre><code>Shopping
+Take bins out
+Water plants
+Clean toilets
+Write blog post
+Email Dad
+</code></pre>
+<h2>Windows Forms app</h2>
+<p>Applying the general principle again:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Step</th>
+      <th>Commit B1</th>
+      <th>Commit B2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1. Syntax</td>
+      <td>Change line 5 to <code class="highlighter-rouge">ShowMessage($"Error: {errorMessage}");</code></td>
+      <td>Change line 5 to <code class="highlighter-rouge">ShowMessageBox("Error: " + errorMessage);</code></td>
+    </tr>
+    <tr>
+      <td>2. Semantics</td>
+      <td>Refactor the string addition to a string interpolation</td>
+      <td>Change the name of the called method</td>
+    </tr>
+    <tr>
+      <td>3. Resultant semantics</td>
+      <td colspan="2">Refactor the string addition to a string interpolation and change the name of the called method</td>
+    </tr>
+    <tr>
+      <td>4. Resultant syntax</td>
+      <td colspan="2">Change line 5 to <code class="highlighter-rouge">ShowMessageBox($"Error: {errorMessage}");</code></td>
+    </tr>
+  </tbody>
+</table>
+<p>Because I know this is a C# source document, I am able to work out the meaning
+of each of the changes.</p>
+<h5>Merge commit</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ErrorHelper</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowErrorMessage</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> errorMessage<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">ShowMessageBox</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">$"Error: </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">errorMessage</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">ShowMessageBox</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> message<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>Windows<span class="token punctuation">.</span>Forms<span class="token punctuation">.</span>MessageBox<span class="token punctuation">.</span><span class="token function">Show</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Summary</h2>
+<p>Often you'll be able to see what the desired resultant change is pretty quickly,
+especially with a bit of experience. It's when you're dealing with a
+particularly complicated merge conflict that the steps I've outlined here can be
+especially useful.</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

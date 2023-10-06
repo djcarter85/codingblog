@@ -1,0 +1,304 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>String formatting in .NET | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">String formatting in .NET</h1>
+    <p class="date">26 January 2019</p>
+    <article>
+      <p>In any programming language, it is very common to want to take something that is
+not a string (say a number) and turn it into a string. Perhaps you need to
+display it on the command-line, or in some sort of GUI, or when writing to a
+file (etc ...).</p>
+<p>There are lots of different ways of turning .NET objects into a string, each
+with their own uses. I will try to show you as many as possible in this article.</p>
+<p>All the examples will be in C#, because this is my blog and I can do what I
+like!</p>
+<h2>The <code>ToString</code> method</h2>
+<p>Every object in .NET has a parameterless <code>ToString</code> method (it is one of the few
+methods on the <code>System.Object</code> base class). By default it returns the fully
+qualified name of the type
+(<a href="https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring">source</a>).</p>
+<p>This is usually not very useful, so the <code>ToString</code> method is virtual to allow
+you to override it. When you implement any class in .NET, you can override
+<code>ToString</code> to do whatever you want.</p>
+<p>Many of the built-in .NET types override this method to do something useful. For
+example, all of the number types override <code>ToString</code> to return a basically
+formatted number. Here are a couple of examples:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>System.Int32</code></td>
+<td><code>-123456</code></td>
+<td>-123456</td>
+</tr>
+<tr>
+<td><code>System.Decimal</code></td>
+<td><code>-1.23m</code></td>
+<td>-1.23</td>
+</tr>
+</tbody>
+</table>
+<h3>Standard format strings</h3>
+<p>Many types in .NET have another overload of the <code>ToString</code> method, which allows
+you to pass in what is known as a &quot;format string&quot;. This format string specifies
+how the object is to be formatted.</p>
+<p>For example, if you call <code>ToString</code> on a <code>System.Decimal</code> with the format string
+<code>&quot;e&quot;</code>, it will format it using exponential notation (e.g. <code>0.000123m</code> would be
+formatted as <code>&quot;1.23E-004&quot;</code>).</p>
+<p>The .NET documentation is pretty comprehensive when it comes to the standard
+format strings for <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings">numeric
+types</a>
+and <a href="https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings">dates and
+times</a>.</p>
+<h3>Custom format strings</h3>
+<p>The examples above are known as &quot;standard&quot; format strings, because they are
+pre-defined to control the behaviour of the <code>ToString</code> method. However,
+sometimes it is useful to build up your own format strings from some pre-defined
+building blocks. These are known as &quot;custom&quot; format strings.</p>
+<p>A good example of this is the <code>System.DateTime</code> struct, where there are many
+building blocks, such as <code>&quot;d&quot;</code> for the day of the month, <code>&quot;MMMM&quot;</code> for the full
+name of the month and <code>&quot;yyyy&quot;</code> for the full year.</p>
+<p>Taking <code>var date = new System.DateTime(2019, 1, 2)</code> as an example, here are some
+of the things you can do:</p>
+<table>
+<thead>
+<tr>
+<th>C# code</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date.ToString(&quot;dd MMM yyyy&quot;)</code></td>
+<td>02 Jan 2019</td>
+</tr>
+<tr>
+<td><code>date.ToString(&quot;ddd d MMMM yyyy&quot;)</code></td>
+<td>Wed 2 January 2019</td>
+</tr>
+<tr>
+<td><code>date.ToString(&quot;yyyy-MM-dd&quot;)</code></td>
+<td>2019-01-02</td>
+</tr>
+</tbody>
+</table>
+<p>You'll notice that anything that is not recognised as a building block (such as
+a space or hyphen) is simply output verbatim.</p>
+<h3>Cultures and <code>IFormatProvider</code></h3>
+<p>All of the examples that we've seen so far have used English for any words (e.g.
+day and month names). This is because my computer is set up to work with British
+English, and .NET respects that by default. There are other formatting options
+that are particular to different cultures around the world; for example, in
+Europe it is customary to use a comma as a decimal separator rather than a full
+stop.</p>
+<p>Many .NET types allow you to pass an instance of <code>IFormatProvider</code> to the
+<code>ToString</code> method which specifies how to deal with culture-specific formatting
+requirements. The <code>CultureInfo</code> class implements this interface, and uses the
+<a href="https://azuliadesigns.com/list-net-culture-country-codes/">standard .NET culture
+specifiers</a>.</p>
+<p>Here are some <code>DateTime</code> examples, using the same example of <code>var date = new System.DateTime(2019, 1, 2)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>C# code</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>date.ToString(&quot;d&quot;, new CultureInfo(&quot;en-GB&quot;))</code></td>
+<td>Wednesday, 2 January 2019</td>
+</tr>
+<tr>
+<td><code>date.ToString(&quot;d&quot;, new CultureInfo(&quot;en-US&quot;))</code></td>
+<td>Wednesday, January 2, 2019</td>
+</tr>
+<tr>
+<td><code>date.ToString(&quot;d&quot;, new CultureInfo(&quot;fr-FR&quot;))</code></td>
+<td>mercredi 2 janvier 2019</td>
+</tr>
+<tr>
+<td><code>date.ToString(&quot;d&quot;, new CultureInfo(&quot;de-DE&quot;))</code></td>
+<td>Mittwoch, 2. Januar 2019</td>
+</tr>
+</tbody>
+</table>
+<p>You can use <code>CultureInfo.CurrentCulture</code> to access the <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.currentculture">machine's
+culture</a>,
+and <code>Culture.InvariantCulture</code> to use a <a href="https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.invariantculture">non-specific
+culture</a>.</p>
+<p>It is usually best to specify the culture, especially if you are interacting
+with another system that expects a value in a particular format.</p>
+<h2>Composing strings</h2>
+<p>Suppose you want to compose a string from many different building blocks. There
+are a number of different ways of doing this, so let's take a look at these in
+turn.</p>
+<p>For the following examples, let's take the following values:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> amount <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> price <span class="token operator">=</span> <span class="token number">1.2m</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> date <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>DateTime</span><span class="token punctuation">(</span><span class="token number">2019</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3>String concatenation</h3>
+<p>The simplest way to compose strings is by using the <code>+</code> operator:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> output <span class="token operator">=</span> <span class="token string">"We sold "</span> <span class="token operator">+</span> amount<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" mars bars on "</span> <span class="token operator">+</span> date<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"D"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">CultureInfo</span><span class="token punctuation">(</span><span class="token string">"en-US"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">", each costing £"</span> <span class="token operator">+</span> price<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token string">"N2"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"."</span><span class="token punctuation">;</span></code></pre>
+<p>This gives <code>&quot;We sold 5 mars bars on Wednesday, January 2, 2019, each costing £1.20.&quot;</code>.</p>
+<p>You can omit the <code>ToString</code> call if you like, and .NET will do an implicit cast
+to <code>string</code>, which is equivalent to calling <code>ToString</code> with no arguments:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> output <span class="token operator">=</span> <span class="token string">"We sold "</span> <span class="token operator">+</span> amount <span class="token operator">+</span> <span class="token string">" mars bars on "</span> <span class="token operator">+</span> date <span class="token operator">+</span> <span class="token string">", each costing £"</span> <span class="token operator">+</span> price <span class="token operator">+</span> <span class="token string">"."</span><span class="token punctuation">;</span></code></pre>
+<p>This gives <code>&quot;We sold 5 mars bars on 1/2/19 12:00:00 AM, each costing £1.2.&quot;</code>. As
+you can see, this is not always desirable as you have no control over how the
+strings are formatted.</p>
+<h3>The <code>string.Format</code> method</h3>
+<p>The static method <code>Format</code> on the <code>System.String</code> class can be used to simplify
+this. You give it a string containing placeholders and some objects, and the
+method will format them and insert them into the placeholders.</p>
+<p>It's best explained with an example:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> output <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"We sold {0} mars bars on {1}, each costing £{2}."</span><span class="token punctuation">,</span> amount<span class="token punctuation">,</span> date<span class="token punctuation">,</span> price<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>This gives <code>&quot;We sold 5 mars bars on 1/2/19 12:00:00 AM, each costing £1.2.&quot;</code>, as
+before. It has formatted the three objects by calling <code>ToString</code> on them, and
+inserted them into the placeholders using zero-based indexing.</p>
+<p>You can also specify format strings, like so:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> output <span class="token operator">=</span> <span class="token keyword">string</span><span class="token punctuation">.</span><span class="token function">Format</span><span class="token punctuation">(</span><span class="token string">"We sold {0} mars bars on {1:D}, each costing £{2:N2}."</span><span class="token punctuation">,</span> amount<span class="token punctuation">,</span> date<span class="token punctuation">,</span> price<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>This gives <code>&quot;We sold 5 mars bars on Wednesday, January 2, 2019, each costing £1.20.&quot;</code>.</p>
+<p>If you want to specify the culture, you can do so by passing it as the first
+parameter. This will use the specified culture for every conversion in the
+string. See
+<a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.format">here</a> for
+more info.</p>
+<h3>Methods using <code>string.Format</code> implicitly</h3>
+<p>One of the overloads to <code>Console.WriteLine</code> has the following definition:
+<code>public static void WriteLine(string format, params object[] arg)</code>. This works
+the same way as the <code>string.Format</code> method: you give it a format string
+containing placeholders and some objects to be formatted and inserted.</p>
+<p>There are a number of methods in the .NET framework and in third-party libraries
+that work this way, so watch out for them!</p>
+<h3>String interpolation</h3>
+<p><strong>String interpolation</strong> is a feature that was introduced in C# 6, and it takes
+the <code>string.Format</code> method one step further. If you prepend a string with <code>$</code>,
+then anything inside curly braces gets formatted just like <code>string.Format</code>. The
+following gives identical output to the previous example.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> output <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">$"We sold </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">amount</span><span class="token punctuation">}</span></span><span class="token string"> mars bars on </span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">date</span><span class="token format-string"><span class="token punctuation">:</span>D</span><span class="token punctuation">}</span></span><span class="token string">, each costing £</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">price</span><span class="token format-string"><span class="token punctuation">:</span>N2</span><span class="token punctuation">}</span></span><span class="token string">."</span></span><span class="token punctuation">;</span></code></pre>
+<p>This can make your code much more readable, so I'd advise using it where you
+need to compose strings!</p>
+<p>See
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated">here</a>
+for more information, including how to specify the culture.</p>
+<h2>Debugging</h2>
+<p>When debugging, you often want to see the property values of a particular
+object. By default, the Visual Studio debug window will use the <code>ToString</code>
+method to format the object so you can see its value.</p>
+<p>You may be tempted to override <code>ToString</code> to make debugging easier (remember,
+the default implementation of <code>ToString</code> simply returns the type name). Don't do
+this! If you do, it is very easy for these string representations to find their
+way into your production code. Instead, read <a href="https://docs.microsoft.com/en-us/visualstudio/debugger/using-the-debuggerdisplay-attribute">this
+article</a>
+to find out a better way of doing it using
+<code>System.Diagnostics.DebuggerDisplayAttribute</code>.</p>
+<h2>Summary</h2>
+<p>In this article we saw a number of ways of formatting strings in .NET:</p>
+<ul>
+<li>The <code>ToString</code> method (with or without format strings and culture specifiers)</li>
+<li>The <code>string.Format</code> method</li>
+<li>String interpolation</li>
+</ul>
+<p>Let me know if you can think of any other ways of doing this!</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

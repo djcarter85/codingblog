@@ -1,0 +1,276 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Champions League Quarter-Final Draw | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Champions League Quarter-Final Draw</h1>
+    <p class="date">14 March 2019</p>
+    <article>
+      <p>Last night, <a href="https://www.bbc.co.uk/sport/football/47543631">Liverpool beat Bayern Munich
+3-1</a> in the UEFA Champions League
+round of 16. This means that, of the eight teams left in the competition,
+exactly half are English (<a href="https://twitter.com/OptaJoe/status/1105950279642636294">for the first time since
+2008-09</a>). As a result,
+the British media has got very excited about the possibility of an English team
+winning it this year (for the first time since 2012 when Chelsea beat Bayern
+Munich on penalties in the final).</p>
+<p>The draw for the quarter-finals is on Friday. If all the English teams draw each
+other, then we're guaranteed two English teams in the semi finals, but it also
+means there's no chance of all four progressing. If they all avoid each other,
+then they might all make it to the semi-finals or none of them might.</p>
+<p>Now, I'm no bookie, so I'm not going to give you odds on the outcomes of the
+matches. However, the draw is entirely random, so as a mathematician/programmer
+I feel qualified to throw in my two cents ...</p>
+<p>From an anglo-centric point of view, there are three mutually exclusive outcomes
+of the quarter-final draw:</p>
+<ul>
+<li>zero all-English ties (each match is between an English team and a non-English
+team)</li>
+<li>one all-English tie (and the other two English teams play non-English
+opposition)</li>
+<li>two all-English ties</li>
+</ul>
+<p>What is the probability of each?</p>
+<h2>Maths</h2>
+<p>First off, how many different sets of fixtures are there?</p>
+<p>The draw works by pulling the teams out of a bag at random, and then pairing
+them off in twos to decide the fixtures. There are $$8!$$ ways to order the
+remaining 8 teams, but some of the resultant fixture lists will be the same.
+Each pair of two teams can be ordered either way ($$2^4$$ ways), and then the
+pairings can be reordered in the list ($$4!$$ ways). This means that each
+fixture list could have come from $$2^4 \times 4!$$ different orderings, so the
+number of fixture lists is $$8!/(2^4 \times 4!) = 105$$.</p>
+<p>How many of these fixture lists give zero all-English ties?</p>
+<p>Well, this means the English teams play in different fixtures, so all we need to
+do is consider the number of ways of rearranging the four non-English teams.
+This is $$4! = 24$$.</p>
+<p>How many of these fixture lists give two all-English ties?</p>
+<p>In this case, we can split the 8 teams into two pots (English and non-English
+teams) and then work out how many possible fixture lists there are. For each
+pot, there are 3 ways to choose the ties, so there are $$3 \times 3 = 9$$
+fixture lists that satisify this.</p>
+<p>The remainder, 72, have exactly one all-English tie.</p>
+<p>As probabilities, this gives:</p>
+<ul>
+<li>a 22.86% chance of zero all-English ties</li>
+<li>a 68.57% chance of exactly one all-English tie</li>
+<li>an 8.57% chance of two all-English ties</li>
+</ul>
+<h2>Simulation</h2>
+<p>The alternative to working out the probabilities is to let a computer simulate
+the draw a large number of times and look at the results. This is known as the
+<a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a>. We'll
+never get the exact probabilities this way, but it can be really useful if we're
+dealing with a problem so big that evaluating the probabilities mathematically
+is infeasible.</p>
+<p>The source code for how I did this can be found at
+<a href="https://github.com/djcarter85/ChampionsLeagueDraw">https://github.com/djcarter85/ChampionsLeagueDraw</a>,
+but there's a summmary below.</p>
+<p>I started off with a <code>Team</code> class, adding the attributes that were necessary for
+this problem.</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Team</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Team</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> name<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">bool</span></span> isEnglish<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+        IsEnglish <span class="token operator">=</span> isEnglish<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> Name <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> IsEnglish <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Then I added a simple <code>Match</code> class, containing a property for calculating the
+information we are interested in, namely whether the match contains two English
+teams.</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Match</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Match</span><span class="token punctuation">(</span><span class="token class-name">Team</span> home<span class="token punctuation">,</span> <span class="token class-name">Team</span> away<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Home <span class="token operator">=</span> home<span class="token punctuation">;</span>
+        Away <span class="token operator">=</span> away<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">Team</span> Home <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">Team</span> Away <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> IsAllEnglish <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>Home<span class="token punctuation">.</span>IsEnglish <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>Away<span class="token punctuation">.</span>IsEnglish<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Then the simulation is mainly done in the <code>FixtureList</code> class.</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FixtureList</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">IReadOnlyList<span class="token punctuation">&lt;</span>Team<span class="token punctuation">></span></span> Teams <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"Tottenham Hotspur"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"Ajax"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"Manchester United"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"FC Porto"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"Manchester City"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"Juventus"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"Barcelona"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Team</span><span class="token punctuation">(</span><span class="token string">"Liverpool"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token function">FixtureList</span><span class="token punctuation">(</span><span class="token class-name">IReadOnlyList<span class="token punctuation">&lt;</span>Match<span class="token punctuation">></span></span> matches<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Matches <span class="token operator">=</span> matches<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">IReadOnlyList<span class="token punctuation">&lt;</span>Match<span class="token punctuation">></span></span> Matches <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> NumberOfAllEnglishMatches <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>Matches<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>m <span class="token operator">=></span> m<span class="token punctuation">.</span>IsAllEnglish<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">FixtureList</span> <span class="token function">CreateRandom</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> matches <span class="token operator">=</span> Teams
+            <span class="token punctuation">.</span><span class="token function">Shuffle</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">Batch</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>batch <span class="token operator">=></span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Match</span><span class="token punctuation">(</span>batch<span class="token punctuation">.</span><span class="token function">ElementAt</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> batch<span class="token punctuation">.</span><span class="token function">ElementAt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">ToArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">FixtureList</span><span class="token punctuation">(</span>matches<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>I'm using the <a href="https://github.com/morelinq/MoreLINQ">MoreLINQ</a> extension methods
+<code>Shuffle</code> and <code>Batch</code> here.</p>
+<p>Then it's a case of running this a large number of times and collating the
+results. Here's what I found with 100,000,000 simulations:</p>
+<h5>Output</h5>
+<pre><code>Simulating 100,000,000 fixture lists ...
+Fixture lists with 0 all-English matches: 22,851,251 (22.85%)
+Fixture lists with 1 all-English match: 68,576,647 (68.58%)
+Fixture lists with 2 all-English matches: 8,572,102 (8.57%)
+Time taken: 402.14s
+</code></pre>
+<h2>Summary</h2>
+<p>Here's a summary of the calculated and simulated results:</p>
+<table>
+<thead>
+<tr>
+<th>Number of all-English matches</th>
+<th>Calculated</th>
+<th>Simulated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>22.86%</td>
+<td>22.85%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>68.57%</td>
+<td>68.58%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8.57%</td>
+<td>8.57%</td>
+</tr>
+</tbody>
+</table>
+<p>Not bad! Our simulated values were almost identical to those we'd calculated.</p>
+<p>In this case, we could calculate the exact probabilities, so the simulation
+wasn't entirely necessary. But it's useful to know how to perform these sorts of
+simulations, because often the problem at hand is so complicated that
+calculating it by hand won't work.</p>
+<p>Whether or not an English team brings home the Champions League trophy, we now
+all know a little more about tomorrow's quarter final draw. It's coming home ...</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

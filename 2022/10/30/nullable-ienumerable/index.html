@@ -1,0 +1,187 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>A <code>Nullable&lt;T&gt;</code> is like a simple <code>IEnumerable&lt;T&gt;</code> | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">A <code>Nullable&lt;T&gt;</code> is like a simple <code>IEnumerable&lt;T&gt;</code></h1>
+    <p class="date">30 October 2022</p>
+    <article>
+      <p>Here's a fact about two .NET types:</p>
+<blockquote>
+<p>A <code>Nullable&lt;T&gt;</code> is equivalent to an <code>IEnumerable&lt;T&gt;</code> with either zero or one
+elements.</p>
+</blockquote>
+<p>That is, suppose you have a variable <code>x</code> of type <code>Nullable&lt;T&gt;</code> for some value
+type <code>T</code> (sometimes written <code>T?</code>). Then:</p>
+<ul>
+<li>If <code>x.HasValue</code> is <code>false</code>, then it's equivalent to an <code>IEnumerable&lt;T&gt;</code> with
+zero elements.</li>
+<li>If <code>x.HasValue</code> is <code>true</code>, then it's equivalent to an <code>IEnumerable&lt;T&gt;</code> with
+one element.</li>
+</ul>
+<p>Note that this only works for value types, as <code>Nullable&lt;T&gt;</code> is only defined if
+<code>T</code> is a value type. However, you could apply the same principle to reference
+types, especially if you're using <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-reference-types">nullable reference
+types</a>
+in C# 8 or newer.</p>
+<p>This realisation came in handy recently when I was refactoring some code. Here's
+a trimmed down example to explain how this is useful.</p>
+<h2>Example</h2>
+<p>Suppose your code has a function which returns a nullable:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token return-type class-name"><span class="token keyword">int</span><span class="token punctuation">?</span></span> <span class="token function">GetNullableNumber</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> text<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// The implementation of this method is less important than the return type</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name"><span class="token keyword">int</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">value</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Then when you call it, it only makes sense to perform an action (e.g. saving to
+a database) if the nullable has a value:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token comment">// Assume GetText() is defined elsewhere</span>
+<span class="token class-name"><span class="token keyword">var</span></span> text <span class="token operator">=</span> <span class="token function">GetText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name"><span class="token keyword">var</span></span> nullableNumber <span class="token operator">=</span> <span class="token function">GetNullableNumber</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// This condition could equivalently be written nullableNumber != null</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>nullableNumber<span class="token punctuation">.</span>HasValue<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> number <span class="token operator">=</span> nullableNumber<span class="token punctuation">.</span>Value<span class="token punctuation">;</span>
+    <span class="token function">SaveNumberToDatabase</span><span class="token punctuation">(</span>number<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Suppose you now want to support a <code>text</code> value that could contain multiple
+numbers (perhaps comma-separated). To make this new functionality easier, we can
+do an initial refactor like so:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span> <span class="token function">GetNumbers</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> text<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">.</span><span class="token function">TryParse</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name"><span class="token keyword">int</span></span> <span class="token keyword">value</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">List<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">value</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> Enumerable<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Empty</span><span class="token generic class-name"><span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And then the call site becomes:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> text <span class="token operator">=</span> <span class="token function">GetText</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name"><span class="token keyword">var</span></span> numbers <span class="token operator">=</span> <span class="token function">GetNumbers</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> number <span class="token keyword">in</span> numbers<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">SaveNumberToDatabase</span><span class="token punctuation">(</span>number<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>From here, we can go on to add the new parsing functionality to <code>GetNumbers()</code>.</p>
+<h2>Conclusion</h2>
+<p>This works because of the fact we started with:</p>
+<blockquote>
+<p>A <code>Nullable&lt;T&gt;</code> is equivalent to an <code>IEnumerable&lt;T&gt;</code> with either zero or one
+elements.</p>
+</blockquote>
+<p>To refactor from nullable to enumerable, replace any <code>HasValue</code> (or <code>!= null</code>)
+checks with a <code>foreach</code>.</p>
+<p>It's worth pointing out that I don't necessarily think that the <code>foreach</code> is
+more readable; in fact, in the above example I think it's less readable! The
+point I'm trying to make is that you <em>can</em> perform this refactor, often with a
+view to then supporting a collection of any number of elements.</p>
+<p>If you really want to get nerdy about this, the reason that this works is that
+<code>Nullable&lt;T&gt;</code> and <code>IEnumerable&lt;T&gt;</code> are both <strong>functors</strong>. But perhaps that's a
+topic for another time ...</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

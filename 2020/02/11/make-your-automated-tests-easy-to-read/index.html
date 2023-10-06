@@ -1,0 +1,369 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Make your automated tests easy to read | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Make your automated tests easy to read</h1>
+    <p class="date">11 February 2020</p>
+    <article>
+      <p>Ever since I started working as a software developer, writing automated tests
+has been part of my approach to building software. This has come in many forms,
+including as part of
+<a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a> and writing tests
+for previously-uncovered code.</p>
+<p>But recently I've been taking a step back to consider the quality of the tests
+that I write. There is lots of material out there about how to write
+good-quality code, but not so much on what constitutes good-quality tests.</p>
+<p>The big point I want to get across in this article is as follows: <em><strong>make your
+automated tests easy to read</strong></em>. This is the pithy headline that I will spend
+the rest of this article explaining!</p>
+<h2>Why?</h2>
+<p>Here are a few reasons I can think of to make your test code as easy to read as
+possible:</p>
+<ul>
+<li>A human being will have to read and modify the tests. If they can't work out
+what the tests are currently checking, how will they know how to adapt them to
+changing requirements? This is particularly pertinent when it comes to
+deleting tests: it should be clear when a test is no longer needed.</li>
+<li>Because automated tests verify the behaviour of the code, they serve as
+documentation for the behaviour of the system. Documentation should be easy to
+read.</li>
+<li>Tests are only useful because they <em>might</em> fail. When that happens, whoever is
+working on the code at the time will thank you for making it as easy as
+possible to determine what is wrong with the code.</li>
+</ul>
+<h2>Techniques</h2>
+<p>&quot;But how do I do that, Dan?&quot; I hear you ask. Well, imaginary reader who just
+happened to ask a very pertinent question, here are some of the techniques I've
+been using to improve the readability of my tests.</p>
+<h3>1. Name your tests as statements of fact about the behaviour of the code</h3>
+<p><a href="https://enterprisecraftsmanship.com/posts/you-naming-tests-wrong/">An article by Vladimir Khorikov on the subject of test
+naming</a> has
+proved very useful to our team recently. One of the big things I took from the
+article is this:</p>
+<blockquote>
+<p>Name the tests as if you were describing the scenario in it to a
+non-programmer familiar with the problem domain.</p>
+</blockquote>
+<p>Let's look at an example. Suppose you have the following test that follows a
+naming pattern common in the industry.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomerTests</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Test</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Test_IsEmailAddressValid_Garbage_Invalid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> customer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Customer</span><span class="token punctuation">(</span>
+            <span class="token named-parameter punctuation">id</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">name</span><span class="token punctuation">:</span> <span class="token string">"Joe Bloggs"</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">emailAddress</span><span class="token punctuation">:</span> <span class="token string">"g5#^559RY^bcb!co"</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">dateOfBirth</span><span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">LocalDate</span><span class="token punctuation">(</span><span class="token number">1970</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Assert<span class="token punctuation">.</span><span class="token function">That</span><span class="token punctuation">(</span>customer<span class="token punctuation">.</span>IsEmailAddressValid<span class="token punctuation">,</span> Is<span class="token punctuation">.</span>False<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>This test name has a couple of problems:</p>
+<ul>
+<li>It's not very readable. Even a developer will who knows the code will have a
+hard time deciphering it; a product owner who doesn't know the code will have
+no chance.</li>
+<li>If the property name changes, the test name needs to change. This suggests
+that the test is too closely tied to implementation. Tests are about
+behaviour, not implementation.</li>
+</ul>
+<p>How about we write the test name as a statement of fact about the behaviour of
+the system?</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomerTests</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Test</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Garbage_email_address_is_invalid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> customer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Customer</span><span class="token punctuation">(</span>
+            <span class="token named-parameter punctuation">id</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">name</span><span class="token punctuation">:</span> <span class="token string">"Joe Bloggs"</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">emailAddress</span><span class="token punctuation">:</span> <span class="token string">"g5#^559RY^bcb!co"</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">dateOfBirth</span><span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">LocalDate</span><span class="token punctuation">(</span><span class="token number">1970</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Assert<span class="token punctuation">.</span><span class="token function">That</span><span class="token punctuation">(</span>customer<span class="token punctuation">.</span>IsEmailAddressValid<span class="token punctuation">,</span> Is<span class="token punctuation">.</span>False<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>One of the best things about this way of naming tests is that anyone familiar
+with the problem domain could read and understand it.</p>
+<p>This has made a huge difference to our team's ability to test our code. Now our
+testers and product owners can review which aspects of the system that are
+covered by tests. Sometimes I will work with a tester to come up with all the
+test names before I've even written any production code!</p>
+<h3>2. Keep each test small</h3>
+<p>Before applying technique 1, I would often end up writing tests that checked
+many properties of the output of the system under test in one go. However, it's
+usually impossible to come up with a simple statement about the behaviour of the
+code for a test like that. I found I was often resorting to tests called
+<code>..._works_correctly</code> which, let's face it, is a massive cop-out.</p>
+<p>The fix for this is to rework the tests so that each test checks one thing. Once
+that is done, giving the test a name is easy! This results in better tests,
+because if the test fails it's clear straight away what the problem is: the name
+of the failing test is a fact about the behaviour of the code which is currently
+not true!</p>
+<p>Some people claim that each unit test should only have one assertion in it; and
+take that to mean (in the case of NUnit) that your test should only contain one
+reference to the <code>Assert</code> class. I would argue that the sentiment is correct but
+the rule is flawed. Often it takes more than one assertion to check a single
+fact about the behaviour of the code under test, and this is highly dependent on
+the API of the unit testing framework you are using. <a href="https://softwareengineering.stackexchange.com/a/171502">This answer to a
+StackOverflow question</a>
+is a good example of this.</p>
+<h3>3. Remove irrelevant values by using creator classes</h3>
+<p>If you aim to keep your tests small, you'll often end up with setup code
+containing irrelevant values.</p>
+<p>For example, consider again the test from above. Most of the values supplied to
+the <code>Customer</code> class are irrelevant. Wouldn't it be nice if we could strip out
+those values so only the relevant ones remain?</p>
+<p>Let's create a helper class ...</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">CustomerCreator</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">Customer</span> <span class="token function">WithEmailAddress</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> emailAddress<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Customer</span><span class="token punctuation">(</span>
+            <span class="token named-parameter punctuation">id</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">name</span><span class="token punctuation">:</span> <span class="token string">"Joe Bloggs"</span><span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">emailAddress</span><span class="token punctuation">:</span> emailAddress<span class="token punctuation">,</span>
+            <span class="token named-parameter punctuation">dateOfBirth</span><span class="token punctuation">:</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">LocalDate</span><span class="token punctuation">(</span><span class="token number">1970</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>... and use it ...</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomerTests</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Test</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Garbage_email_address_is_invalid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> customer <span class="token operator">=</span> CustomerCreator<span class="token punctuation">.</span><span class="token function">WithEmailAddress</span><span class="token punctuation">(</span><span class="token string">"g5#^559RY^bcb!co"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Assert<span class="token punctuation">.</span><span class="token function">That</span><span class="token punctuation">(</span>customer<span class="token punctuation">.</span>IsEmailAddressValid<span class="token punctuation">,</span> Is<span class="token punctuation">.</span>False<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Much simpler! It's now very clear that the test is checking what the title
+claims to be checking.</p>
+<p>If the test is more complicated (for example if the customer is only one of a
+number of arguments being passed to the method under test), this streamlining of
+the test method can make a huge difference. This also helps with the application
+of technique 2: often, the complication of setting up all the different
+arguments would encourage me to only do it once and have multiple assertions in
+a single test.</p>
+<p>These methods could be private to the test class, but I prefer to put them in
+their own class as they will most likely be useful for many tests, especially if
+the types in question are central to your problem domain.</p>
+<h3>4. Static imports for creator methods</h3>
+<p>We could streamline the above example even further by using the <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/using-static">static imports
+feature of C#
+6</a>:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">using</span> <span class="token keyword">static</span> <span class="token class-name">Example<span class="token punctuation">.</span>CustomerCreator</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomerTests</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Test</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Garbage_email_address_is_invalid</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> customer <span class="token operator">=</span> <span class="token function">CustomerWithEmailAddress</span><span class="token punctuation">(</span><span class="token string">"g5#^559RY^bcb!co"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Assert<span class="token punctuation">.</span><span class="token function">That</span><span class="token punctuation">(</span>customer<span class="token punctuation">.</span>IsEmailAddressValid<span class="token punctuation">,</span> Is<span class="token punctuation">.</span>False<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Notice that we've also renamed the method so that it's clear it's returning a
+customer.</p>
+<h3>5. Dependency defaults</h3>
+<p>Sometimes you'll be testing a class that has many dependencies injected in the
+constructor (a good example could be an ASP.NET Core controller).</p>
+<p>Often, only a subset of the dependencies will actually be pertinent to each
+test. For example, the controller may depend on <code>IClock</code> for fetching the
+current time, but it is not used in the method that is being tested. Or perhaps
+it <em>is</em> used, but the value of the current time is irrelevant to the particular
+aspect of behaviour that is being checked.</p>
+<p>If this is the case, I like to use a helper method for creating the class under
+test. This is similar to the <code>...Creator</code> classes in technique 3, except that it
+is private to the test class (as it is only used there), and has default values
+for all the dependencies (so that tests only need to specify the ones that are
+relevant).</p>
+<p>Here's an example:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomerControllerTests</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Test</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Test</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> controller <span class="token operator">=</span> <span class="token function">CreateCustomerController</span><span class="token punctuation">(</span>
+            <span class="token named-parameter punctuation">configuration</span><span class="token punctuation">:</span> ConfigurationCreator<span class="token punctuation">.</span><span class="token function">ThrowsException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// etc ...</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">CustomerController</span> <span class="token function">CreateController</span><span class="token punctuation">(</span>
+        <span class="token class-name">IClock</span> clock <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+        <span class="token class-name">IConfiguration</span> configuration <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>clock <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            clock <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">FakeClock</span><span class="token punctuation">(</span>Instant<span class="token punctuation">.</span><span class="token function">FromUtc</span><span class="token punctuation">(</span><span class="token number">2020</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">,</span> <span class="token number">01</span><span class="token punctuation">,</span> <span class="token number">00</span><span class="token punctuation">,</span> <span class="token number">00</span><span class="token punctuation">,</span> <span class="token number">00</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>configuration <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            configuration <span class="token operator">=</span> ConfigurationCreator<span class="token punctuation">.</span><span class="token function">WithKeyValue</span><span class="token punctuation">(</span><span class="token string">"key"</span><span class="token punctuation">,</span> <span class="token string">"value"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">CustomerController</span><span class="token punctuation">(</span>clock<span class="token punctuation">,</span> configuration<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>It's now clear to see that we're testing what happens when the configuration
+dependency throws an exception. The value of the current time is irrelevant so
+the clock has been removed from the test body.</p>
+<h3>6. Helper methods for assertions</h3>
+<p>If we use helper methods at the top of the test to help with test setup, why not
+do the same with the assertions?</p>
+<p>For example, consider the following two tests which check the output of an
+ASP.NET Core controller method. Which is more readable?</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CustomerControllerTests</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Test</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Get_customers_endpoint_returns_HTTP_status_code_200_OK</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> controller <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">CustomerController</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">var</span></span> actionResult <span class="token operator">=</span> controller<span class="token punctuation">.</span><span class="token function">GetAllCustomers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        Assert<span class="token punctuation">.</span><span class="token function">That</span><span class="token punctuation">(</span>actionResult<span class="token punctuation">,</span> Is<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">InstanceOf</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>OkResult<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Or<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">InstanceOf</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>OkObjectResult<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Test</span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Get_customers_endpoint_returns_HTTP_status_code_200_OK</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> controller <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">CustomerController</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">var</span></span> actionResult <span class="token operator">=</span> controller<span class="token punctuation">.</span><span class="token function">GetAllCustomers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        AssertResponse<span class="token punctuation">.</span><span class="token function">Is200Ok</span><span class="token punctuation">(</span>actionResult<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>I don't know about you, but I reckon the second is much clearer.</p>
+<p>Again, the main principle at play here is that I want to make the test as
+readable as possible. Once you're looking at the body of the test, your audience
+is most likely developers rather than product owners, so you can include
+developer-specific language at this level.</p>
+<p>The danger with this is that extracting helper methods for assertions might mask
+poor decisions about the API of your production code. In this case we're working
+with the ASP.NET Core framework so there's nothing we can do about the API, but
+it's always worth considering whether you should improve the API rather than
+creating an assertion helper.</p>
+<h2>Conclusion</h2>
+<p>I'll state my big principle again: <em><strong>make your automated tests easy to read</strong></em>.</p>
+<p>One thing to bear in mind is that the heuristics for what makes good test code
+are slightly different from production code. For example, I would favour
+readability over reducing duplication in test code. If the setup, action and
+assertions are almost the same in two tests, I would <em>not</em> extract a shared
+function with parameters, because I'd rather make it clear to the reader of the
+test method itself what is being checked.</p>
+<p>Not all of these techniques will be useful in every situation, but they're all
+worth having in your locker to be brought out when needed.</p>
+<p>Are there any other techniques you use to make your tests easier to read? Let me
+know!</p>
+<h2>Appendix: longer example</h2>
+<p><a href="https://gist.github.com/djcarter85/9246954d4ccc52f461100cdd323107dc">This GitHub
+Gist</a> is
+extracted from a football predictions game I and a few friends have been
+playing.</p>
+<p>The core code for calculating the standings for a particular round had some
+tests but I didn't like them, so I spent a good 30 minutes a while back
+improving them using some of the techniques outlined in this article.</p>
+<p>I think you'll agree that what I've ended up with is a lot better than what I
+started with! It's now so much easier to understand what the production code
+does and to be certain which aspects of its behaviour are being checked.</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

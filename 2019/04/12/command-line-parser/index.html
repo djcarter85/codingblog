@@ -1,0 +1,239 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Command Line Parser for C# | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Command Line Parser for C#</h1>
+    <p class="date">12 April 2019</p>
+    <article>
+      <p>I recently came across <a href="https://github.com/commandlineparser/commandline">Command Line
+Parser</a>. It's a C# library
+(available on NuGet) that takes care of the boilerplate code often associated
+with parsing, validating and using options specified as command line arguments.</p>
+<p>It uses common conventions for how it assumes the options will appear (similar
+to C's <code>getopt</code> function).</p>
+<p>The GitHub page has <a href="https://github.com/commandlineparser/commandline/wiki">pretty comprehensive
+documentation</a> on how to
+use it, but I thought I'd share here briefly how it works.</p>
+<h2>Simple options</h2>
+<p>Suppose we're creating an application which describes a file in terms of its
+properties (size, file type etc), and suppose the desired command-line options
+are:</p>
+<ul>
+<li><code>&lt;file path&gt;</code> (required)</li>
+<li><code>-d</code> or <code>--detailed</code> (if present gives as much information as it can find,
+otherwise gives the most commonly-wanted info)</li>
+<li><code>-o &lt;file path&gt;</code> or <code>--output &lt;file path&gt;</code> (specifies a file to output the
+file properties to)</li>
+</ul>
+<p>Then we create an <code>Options</code> class with properties for all the possible
+command-line options, decorated with attributes detailing the expected usage:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">Options</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Value</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> FilePath <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Option</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token char">'d'</span><span class="token punctuation">,</span> <span class="token string">"detailed"</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> Detailed <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Option</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token char">'o'</span><span class="token punctuation">,</span> <span class="token string">"output"</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> Output <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The <code>Value</code> attribute defines a positional argument, and the <code>Option</code> attribute
+defines an argument that is passed in by name.</p>
+<p>Then in the <code>Main</code> method, it's as simple as doing the following:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        CommandLine<span class="token punctuation">.</span>Parser<span class="token punctuation">.</span>Default<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">ParseArguments</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>Options<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>args<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token generic-method"><span class="token function">WithParsed</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>Options<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>o <span class="token operator">=></span> <span class="token punctuation">{</span>
+                <span class="token comment">// parsing successful; go ahead and run the app</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token generic-method"><span class="token function">WithNotParsed</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>Options<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>e <span class="token operator">=></span> <span class="token punctuation">{</span>
+                <span class="token comment">// parsing unsuccessful; deal with parsing errors</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The <code>Options</code> object <code>o</code> will be populated with the parsed options, which you
+can then use to control the behaviour of your app.</p>
+<h2>Verbs</h2>
+<p>It also supports the idea of verbs. For example, Git has a number of different
+actions you can take (<code>git clone</code>, <code>git commit</code>, <code>git pull</code> etc) which each have
+their own sets of options.</p>
+<p>With Command Line Parser, you create a separate options class for each verb:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Verb</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token string">"clone"</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+<span class="token keyword">class</span> <span class="token class-name">CloneOptions</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Verb</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token string">"commit"</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+<span class="token keyword">class</span> <span class="token class-name">CommitOptions</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Verb</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token string">"pull"</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+<span class="token keyword">class</span> <span class="token class-name">PullOptions</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And then in your <code>Main</code> method you define what to do for each verb, as well as
+how to handle parsing errors:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">Program</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> <span class="token function">Main</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span></span> args<span class="token punctuation">)</span> 
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> CommandLine<span class="token punctuation">.</span>Parser<span class="token punctuation">.</span>Default<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">ParseArguments</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>AddOptions<span class="token punctuation">,</span> CommitOptions<span class="token punctuation">,</span> CloneOptions<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>args<span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">MapResult</span><span class="token punctuation">(</span>
+                <span class="token punctuation">(</span><span class="token class-name">CloneOptions</span> o<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> 
+                    <span class="token comment">// clone</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">(</span><span class="token class-name">CommitOptions</span> o<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+                    <span class="token comment">// commit</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">(</span><span class="token class-name">PullOptions</span> o<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+                    <span class="token comment">// pull</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                e <span class="token operator">=></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Customisation</h2>
+<p>The examples I've given here use <code>CommandLine.Parser.Default</code>, but it's possible
+to customise the parser in a number of different ways. For example, you can set
+the culture for arguments to be parsed in, or whether to parse values
+case-sensitively or not.</p>
+<h2>Help text</h2>
+<p>One of the really nice things about Command Line Parser is that it can generate
+help text for your application. All you need to do is add the <code>HelpText</code>
+property to the attributes, and then if someone passes in the <code>--help</code> switch
+they'll get the full help text.</p>
+<p>For example, our Options class from before could be changed to:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">class</span> <span class="token class-name">Options</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Value</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> HelpText <span class="token operator">=</span> <span class="token string">"The file to display information for."</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> FilePath <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Option</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token char">'d'</span><span class="token punctuation">,</span> <span class="token string">"detailed"</span><span class="token punctuation">,</span> HelpText <span class="token operator">=</span> <span class="token string">"Whether to output detailed information about the file."</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> Detailed <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Option</span><span class="token attribute-arguments"><span class="token punctuation">(</span><span class="token char">'o'</span><span class="token punctuation">,</span> <span class="token string">"output"</span><span class="token punctuation">,</span> HelpText <span class="token operator">=</span> <span class="token string">"If specified, a file to output the results to."</span><span class="token punctuation">)</span></span></span><span class="token punctuation">]</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">string</span></span> Output <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Then running the app with the <code>--help</code> switch gives us the following output:</p>
+<h5>Output</h5>
+<pre><code>  -d, --detailed    Whether to output detailed information about the file.
+
+  -o, --output      If specified, a file to output the results to.
+
+  --help            Display this help screen.
+
+  --version         Display version information.
+
+  value pos. 0      The file to display information for.
+</code></pre>
+<p>This text is automatically output if parsing fails.</p>
+<p>You can also add an overall summary for your application, along with some
+examples of how to use it. These are added to the help screen.</p>
+<h2>Conclusion</h2>
+<p>Command Line Parser takes away the boilerplate code associated with parsing
+command-line options. I can see that this would be useful on a small app with a
+couple of options right up to a hugely complex app with dozens of options.</p>
+<p>I've recently used it on a football match simulation app, which may be the
+subject of a future blog post ...</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

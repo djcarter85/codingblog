@@ -1,0 +1,270 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>ASP.NET Core JSON API Cheat Sheet | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">ASP.NET Core JSON API Cheat Sheet</h1>
+    <p class="date"> 8 October 2019</p>
+    <article>
+      <p>Recently I've been working on a web API written using <a href="https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.0">ASP.NET
+Core</a>, with
+data transferred in <a href="https://www.json.org/">JSON</a> format.</p>
+<p>ASP.NET Core has built-in functionality for converting between JSON and .NET
+objects, based on the popular <a href="https://www.newtonsoft.com/json">Json.NET
+library</a> (although in ASP.NET Core 3.0,
+released a couple of weeks ago, this has moved to the newer <a href="https://www.hanselman.com/blog/SystemTextJsonAndNewBuiltinJSONSupportInNETCore.aspx">System.Text.Json
+library</a>).</p>
+<p>While building this web API I have discovered a number of things concerning JSON
+APIs and ASP.NET Core. This article is a mixed bag of tips and tricks which may
+be useful for you (or for me in a few months' time).</p>
+<h2>Parameter binding</h2>
+<p>An ASP.NET Core controller method might have a number of arguments. The values
+of these arguments can be fetched from a number of places, and you can control
+which using the following attributes:</p>
+<ul>
+<li><code>[FromBody]</code>: the value will be fetched from the body of the HTTP request.
+Only one argument can have this attribute, as the entire body is deserialized.</li>
+<li><code>[FromRoute]</code>: the value will be fetched from a route parameter. You can use
+the <code>Name</code> property of the attribute to specify the name of the route
+parameter to use; if you don't, it'll use the argument name. I'd view using
+the <code>Name</code> property as a best practice, as it allows you to name the C#
+argument something different to the route parameter (which can be useful if
+some parsing needs to be done to the value before it can be used).</li>
+<li><code>[FromQuery]</code>: the value will be fetched from the query string. You can use
+the <code>Name</code> property in a similar way to above, and I'd recommend it.</li>
+<li><code>[FromHeader]</code>: the value will be fetched from a HTTP header. The <code>Name</code>
+property here is particularly useful, as header names containing multiple
+words often contain a hyphen, unlike C# variable names.</li>
+<li><code>[FromForm]</code>: the value will be fetched from posted form fields. Only included
+here for completeness, as this is most useful for a website rather than an
+API.</li>
+</ul>
+<p><a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/models/model-binding?view=aspnetcore-3.0#sources">The ASP.NET Core docs on
+this</a>
+are pretty comprehensive as to how this works.</p>
+<p>You can omit these attributes and it will try to guess where the values can be
+found, but I think it's better to be explicit.</p>
+<h2><code>[ApiController]</code></h2>
+<p>My first attempt at using <code>[FromBody]</code> to deserialize JSON didn't go very well.
+I found that if the request body didn't have the correct structure, or wasn't
+even valid JSON, then the controller method argument was simply set to <code>null</code>.</p>
+<p>This was a surprise to me! I was expecting either an unhandled exception
+(resulting in a 500 Internal Server Error), or a 400 Bad Request containing
+details of what was wrong.</p>
+<p>I discovered what I was missing: <code>ApiControllerAttribute</code>.</p>
+<p>If you decorate your controller with <code>[ApiController]</code>, then (among other
+things) you get JSON validation up-front. That is, if the request body isn't
+valid JSON, or cannot be deserialized into an object of the correct type, then
+the server responds with a 400 Bad Request and the response body contains
+details of the problem.</p>
+<p>For more information about this attribute, <a href="https://www.strathweb.com/2018/02/exploring-the-apicontrollerattribute-and-its-features-for-asp-net-core-mvc-2-1/">check out this article on
+StrathWeb</a>.</p>
+<p>The basic Visual Studio template contains this, but it's easy to forget when
+adding a new controller yourself.</p>
+<h2>Custom error format</h2>
+<p>This is great, but the JSON response body isn't particularly friendly, and most
+likely won't match the format your API uses for errors.</p>
+<p>Fortunately you can customise this, and it's pretty easy to do. What you're
+looking for is <code>ApiBehaviorOptions.InvalidModelStateResponseFactory</code>, which can
+be set at application startup. Add the following to your <code>ConfigureServices</code>
+method in the <code>Startup</code> class:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs">services<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">Configure</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>ApiBehaviorOptions<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>options <span class="token operator">=></span>
+<span class="token punctuation">{</span>
+    options<span class="token punctuation">.</span>InvalidModelStateResponseFactory <span class="token operator">=</span> actionContext <span class="token operator">=></span> 
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> error <span class="token operator">=</span> <span class="token comment">// TODO: create your error object here</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">BadRequestObjectResult</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Required properties</h2>
+<p>In many cases, the JSON schema requires a certain property to be present. You
+can alert the deserializer to this by using the <code>[JsonRequired]</code> attribute on
+the property. If you do this and the incoming JSON does not contain the
+property, the deserialization fails.</p>
+<p>Another way of doing this is to use <code>[JsonProperty(Required = Required.Always)]</code>. This allows you to specify one of four behaviours relating
+to required properties (<a href="https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_Required.htm">see here for more
+details</a>)
+which gives you even greater control over the deserialization. The
+<code>[JsonProperty]</code> attribute allows you to customize loads of other behaviours
+too; <a href="https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_Serialization_JsonProperty.htm">check out the
+docs</a>
+for more info.</p>
+<p>The <code>Required</code> property also controls how <code>null</code> values are serialized. If you
+want to set that globally, you can add the following in your <code>ConfigureServices</code>
+method:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs">services<span class="token punctuation">.</span><span class="token function">AddMvc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">AddJsonOptions</span><span class="token punctuation">(</span>o <span class="token operator">=></span>
+    <span class="token punctuation">{</span>
+        o<span class="token punctuation">.</span>SerializerSettings<span class="token punctuation">.</span>NullValueHandling <span class="token operator">=</span> <span class="token comment">// TODO: pick a value</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Disallow integers for enumeration values</h2>
+<p>Often your JSON schema will contain <strong>enumerations</strong>: properties which have a
+small collection of valid string values. These have a natural mapping to C#
+<code>enum</code>s, and Json.NET handles that for you out of the box.</p>
+<p>However, I found that if I passed in an integer to an enumeration property,
+deserialization would succeed and the integer would be cast to the <code>enum</code> type.
+This is generally not a good idea, because then an API consumer could pass in
+any integer and you'd end up with an invalid value.</p>
+<p>You can disable this behaviour during startup by adding the following to your
+<code>ConfigureServices</code> method:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs">services<span class="token punctuation">.</span><span class="token function">AddMvc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">AddJsonOptions</span><span class="token punctuation">(</span>o <span class="token operator">=></span>
+    <span class="token punctuation">{</span>
+        o<span class="token punctuation">.</span>SerializerSettings<span class="token punctuation">.</span>Converters<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token constructor-invocation class-name">StringEnumConverter</span> <span class="token punctuation">{</span> AllowIntegerValues <span class="token operator">=</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>This will convert the JSON value to the appropriate <code>enum</code> value using a
+case-insensitive comparison on the name of the enum values, but will reject any
+integer value.</p>
+<p>This is a global setting, but you can apply it to a single property using the
+<code>[JsonProperty]</code> attribute (again, <a href="https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_Serialization_JsonProperty.htm">see the docs for more
+information</a>).</p>
+<h2>Custom converters</h2>
+<p>This leads us nicely into a discussion of converters. Out of the box, Json.NET
+handles conversion between JSON and C# for many different data types, including
+strings, numbers and booleans.</p>
+<p>But what if you want to use an unsupported C# data type? A good example is
+<a href="https://nodatime.org/">NodaTime</a>'s <code>LocalDate</code>, which would be represented in
+JSON in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format.</p>
+<p>It's easy to create custom converters; <a href="https://www.newtonsoft.com/json/help/html/CustomJsonConverter.htm">there's a good article in the Json.NET
+docs which shows you
+how</a>. Then
+you just need to register it at startup as follows:</p>
+<h5>C#</h5>
+<pre class="language-cs"><code class="language-cs">services<span class="token punctuation">.</span><span class="token function">AddMvc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">AddJsonOptions</span><span class="token punctuation">(</span>o <span class="token operator">=></span>
+    <span class="token punctuation">{</span>
+        o<span class="token punctuation">.</span>SerializerSettings<span class="token punctuation">.</span>Converters<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token constructor-invocation class-name">MyCustomConverter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Swashbuckle</h2>
+<p><a href="https://github.com/domaindrivendev/Swashbuckle.AspNetCore">Swashbuckle</a> is a
+tool which creates API documentation directly from your ASP.NET Core project. It
+can generate <a href="https://swagger.io/docs/specification/about/">OpenAPI</a>
+documentation which you can release to the consumers of your API, which lets
+them know exactly how to use the API. It also comes with a UI for the
+documentation, giving even more ways for consumers to discover your API.</p>
+<p>The <a href="https://github.com/domaindrivendev/Swashbuckle.AspNetCore#getting-started">Getting
+Started</a>
+instructions are pretty good so I suggest you start there.</p>
+<h2>NSwag</h2>
+<p><a href="https://github.com/RicoSuter/NSwag">NSwag</a> combines the features of Swashbuckle
+with the ability to generate C# code for consuming an API. All you need is the
+OpenAPI spec for the API you would like to consume, and you can easily generate
+client code in a number of ways. I found the &quot;connected service&quot; approach to be
+good; I'd recommend <a href="https://medium.com/@unchase/how-to-generate-c-or-typescript-client-code-for-openapi-swagger-specification-d882d59e3b77">How to generate C# or TypeScript client code for OpenAPI
+(Swagger)
+specification</a>
+if you'd like to try it. There are a number of other tutorials linked on <a href="https://github.com/RicoSuter/NSwag">the
+project's GitHub page</a>.</p>
+<p>This is not required if you're just exposing a JSON API, but if you're doing
+that you may well be calling other APIs (for example, as part of a microservices
+architecture), so I felt it was worth a mention. You could also use this to
+generate a C# client library to release to the consumers of your API.</p>
+<h2>Further reading</h2>
+<ul>
+<li><a href="https://andrewlock.net/model-binding-json-posts-in-asp-net-core/">This
+article</a> by
+Andrew Lock explains more about model binding.</li>
+<li><a href="https://www.dotnetcurry.com/aspnet/1390/aspnet-core-web-api-attributes">This
+article</a>
+on DotNetCurry describes the use of different attributes on ASP.NET Core
+controllers and their arguments.</li>
+<li>For more general information about how Json.NET works, <a href="https://www.newtonsoft.com/json/help/html/Introduction.htm">check out the official
+docs</a>.</li>
+</ul>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Git Resets | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Git Resets</h1>
+    <p class="date">21 March 2019</p>
+    <article>
+      <p>I had a conversation with a colleague today about the <code>git reset</code> command.</p>
+<p>I realised that while I use <code>git reset --hard</code> reasonably regularly (e.g. in
+order to move a branch when I've committed on the wrong one), I didn't know much
+about the <code>--mixed</code> or <code>--soft</code> modes.</p>
+<p><a href="https://git-scm.com/docs/git-reset">The documentation on each of them</a> is a
+little vague, so I thought I'd just try them out and see what happens. I hope
+this will serve as a useful reference.</p>
+<p>Suppose I create a repository which looks as follows.</p>
+<table>
+<thead>
+<tr>
+<th>Initial Commit</th>
+<th>Commit A</th>
+<th>Commit B</th>
+<th>Staged</th>
+<th>Unstaged</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><i class="fas fa-plus-square"></i>  <code>A1.txt</code><br/><i class="fas fa-plus-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i>  <code>B1.txt</code><br/><i class="fas fa-plus-square"></i>  <code>B2.txt</code><br/><i class="fas fa-plus-square"></i>  <code>C1.txt</code><br/><i class="fas fa-plus-square"></i>  <code>C2.txt</code><br/><i class="fas fa-plus-square"></i>  <code>D1.txt</code><br/><i class="fas fa-plus-square"></i>  <code>D2.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>A1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i> <code>A3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>B1.txt</code><br/><i class="fas fa-pen-square"></i> <code>B2.txt</code><br/><i class="fas fa-plus-square"></i> <code>B3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>C1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>C2.txt</code><br/><i class="fas fa-plus-square"></i> <code>C3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>D1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>D2.txt</code><br/><i class="fas fa-plus-square"></i> <code>D3.txt</code></td>
+</tr>
+</tbody>
+</table>
+<p>(Hopefully it's clear what I mean by each of these icons.)</p>
+<p>Here's the result of performing different types of resets.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Commit A</th>
+<th>Commit B</th>
+<th>Staged</th>
+<th>Unstaged</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Soft, commit B</td>
+<td><i class="fas fa-minus-square"></i> <code>A1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i> <code>A3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>B1.txt</code><br/><i class="fas fa-pen-square"></i> <code>B2.txt</code><br/><i class="fas fa-plus-square"></i> <code>B3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>C1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>C2.txt</code><br/><i class="fas fa-plus-square"></i> <code>C3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>D1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>D2.txt</code><br/><i class="fas fa-plus-square"></i> <code>D3.txt</code></td>
+</tr>
+<tr>
+<td>Mixed, commit B</td>
+<td><i class="fas fa-minus-square"></i> <code>A1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i> <code>A3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>B1.txt</code><br/><i class="fas fa-pen-square"></i> <code>B2.txt</code><br/><i class="fas fa-plus-square"></i> <code>B3.txt</code></td>
+<td></td>
+<td><i class="fas fa-minus-square"></i> <code>C1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>C2.txt</code><br/><i class="fas fa-plus-square"></i> <code>C3.txt</code><br/><i class="fas fa-minus-square"></i> <code>D1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>D2.txt</code><br/><i class="fas fa-plus-square"></i> <code>D3.txt</code></td>
+</tr>
+<tr>
+<td>Hard, commit B</td>
+<td><i class="fas fa-minus-square"></i> <code>A1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i> <code>A3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>B1.txt</code><br/><i class="fas fa-pen-square"></i> <code>B2.txt</code><br/><i class="fas fa-plus-square"></i> <code>B3.txt</code></td>
+<td></td>
+<td><i class="fas fa-plus-square"></i> <code>D3.txt</code></td>
+</tr>
+<tr>
+<td>Soft, commit A</td>
+<td><i class="fas fa-minus-square"></i> <code>A1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i> <code>A3.txt</code></td>
+<td>N/A</td>
+<td><i class="fas fa-minus-square"></i> <code>B1.txt</code><br/><i class="fas fa-pen-square"></i> <code>B2.txt</code><br/><i class="fas fa-plus-square"></i> <code>B3.txt</code><br/><i class="fas fa-minus-square"></i> <code>C1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>C2.txt</code><br/><i class="fas fa-plus-square"></i> <code>C3.txt</code></td>
+<td><i class="fas fa-minus-square"></i> <code>D1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>D2.txt</code><br/><i class="fas fa-plus-square"></i> <code>D3.txt</code></td>
+</tr>
+<tr>
+<td>Mixed, commit A</td>
+<td><i class="fas fa-minus-square"></i> <code>A1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i> <code>A3.txt</code></td>
+<td>N/A</td>
+<td></td>
+<td><i class="fas fa-minus-square"></i> <code>B1.txt</code><br/><i class="fas fa-pen-square"></i> <code>B2.txt</code><br/><i class="fas fa-plus-square"></i> <code>B3.txt</code><br/><i class="fas fa-minus-square"></i> <code>C1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>C2.txt</code><br/><i class="fas fa-plus-square"></i> <code>C3.txt</code><br/><i class="fas fa-minus-square"></i> <code>D1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>D2.txt</code><br/><i class="fas fa-plus-square"></i> <code>D3.txt</code></td>
+</tr>
+<tr>
+<td>Hard, commit A</td>
+<td><i class="fas fa-minus-square"></i> <code>A1.txt</code><br/><i class="fas fa-pen-square"></i>  <code>A2.txt</code><br/><i class="fas fa-plus-square"></i> <code>A3.txt</code></td>
+<td>N/A</td>
+<td></td>
+<td><i class="fas fa-plus-square"></i> <code>D3.txt</code></td>
+</tr>
+</tbody>
+</table>
+<p>The thing that surprised me most about this is what happens when you do a hard
+reset. Because the index only contains tracked files, the unstaged addition of
+<code>D3.txt</code> remains after the hard reset. Personally I think it would make more
+sense for Git to remove this file, but that's not what happens!</p>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

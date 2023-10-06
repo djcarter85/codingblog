@@ -1,0 +1,201 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Test doubles | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">Test doubles</h1>
+    <p class="date"> 2 December 2022</p>
+    <article>
+      <p>It's often important to be able to test software components in isolation.</p>
+<p>The components we want to test vary widely in terms of size and complexity, from
+methods and classes up to microservices and entire systems.</p>
+<p>If we want to test a component (A) which depends on another component (B), then
+we might consider replacing component B with a <strong>test double</strong>. A test double is
+any kind of replacement for a dependency which exists solely for the purposes of
+testing. This enables us to focus on testing component A without needing to
+worry about how component B works.</p>
+<p><img src="/assets/images/2022-12-02-test-doubles/image-1.png" alt="Component A depends on Component B"></p>
+<p>In this example, component A is often called the <strong>system under test (SUT)</strong>,
+and component B is sometimes called the <strong>depended-on component (DOC)</strong>. I'll
+use these terms in the rest of this article.</p>
+<p><img src="/assets/images/2022-12-02-test-doubles/image-2.png" alt="The SUT depends on the DOC"></p>
+<p>The term &quot;test double&quot; is typically attributed to Gerard Meszaros in his book
+<a href="https://www.amazon.co.uk/dp/0131495054"><em>XUnit Test Patterns</em></a>. The analogy
+comes from film-making. When filming action scenes, it's typically not desirable
+for the real actor to perform stunts (perhaps it's dangerous, or the actor
+doesn't have the required skills), so a &quot;stunt double&quot; who looks like the real
+actor is used instead. In the same way, when testing the SUT it may not be
+desirable to use the real DOC (perhaps it's difficult to configure correctly, or
+it would introduce unwanted side effects), so a &quot;test double&quot; which looks like
+(i.e. has the same interface as) the real DOC can be used instead.</p>
+<p>In this article I'd like to list my understanding of some different types of
+test double, and describe when each might be useful.</p>
+<h2>Stub</h2>
+<p>A <strong>stub</strong> is a component with the same interface as the DOC which returns
+hard-coded values.</p>
+<p>For example, if the DOC is an authorizer class with a method called
+<code>IsLoggedIn</code>, we might create a <code>StubAuthorizer</code> class which implements the
+method by always returning <code>true</code>. This would enable us to verify the behaviour
+of the SUT when the user is logged in, without having to actually log the user
+in.</p>
+<p>Typically only the operations required by the test are set up with return
+values; other operations might simply fail fast if they are called.</p>
+<h2>Spy</h2>
+<p>A <strong>spy</strong> is a stub which also records how it was used.</p>
+<p>For example, we might create a <code>SpyAuthorizer</code> which, when <code>IsLoggedIn</code> is
+called, sets a property called <code>IsLoggedInWasCalled</code> to <code>true</code>. That way, our
+test can check that <code>IsLoggedIn</code> was called.</p>
+<p>Another example at a higher level would be if the DOC is a third-party
+email-sending service. We might write a spy which keeps a record of the emails
+that were sent, so that we can check the emails sent by the SUT via the DOC.</p>
+<h2>Mock</h2>
+<p>A <strong>mock</strong> is a spy which also has an expectation of how it should be used.</p>
+<p>For example, we might create a <code>MockAuthorizer</code> which has a <code>Verify</code> method.
+This method verifies that the <code>IsLoggedIn</code> method was called, and throws an
+exception if not.</p>
+<p>Using a mock is similar to using a spy and then asserting how it was used. The
+difference is that the knowledge of how the double should have been used has
+been moved from the test into the test double.</p>
+<p>It's worth noting that the word &quot;mock&quot; is often used in a more general sense to
+mean any kind of test double. For example, the popular <a href="https://github.com/moq/moq4">.NET Moq
+library</a> describes itself as a &quot;mocking library&quot;,
+when in actual fact it's often used to create stubs and spies, as well as mocks.
+Purists tend to prefer the use of &quot;double&quot; for the general concept, and &quot;mock&quot;
+for the specific type of double which knows what method calls to expect. This is
+primarily because <a href="https://www2.ccs.neu.edu/research/demeter/related-work/extreme-programming/MockObjectsFinal.PDF">the original paper introducing the notion of mock
+objects</a>
+defined the term &quot;mock&quot; in this way.</p>
+<h2>Fake</h2>
+<p>A <strong>fake</strong> is a simulator for the DOC which has some real business behaviour.</p>
+<p>For example, suppose the DOC is an API built by someone else that we have no
+control over. We might build a fake version of that API so that when manually
+testing the SUT we don't have to rely on the real API.</p>
+<p>A fake is more sophisticated than a stub. For example, suppose the DOC allowed
+you to create users and fetch a list of users. A stub would need both method
+calls to be set up to return the right values, whereas a fake would store any
+created users and return all created users when asked for them. In this way, a
+fake emulates the DOC more closely.</p>
+<p>Fakes can get quite complicated, so they might be more applicable when testing
+at a high level (e.g. APIs rather than classes). They might end up needing unit
+tests of their own.</p>
+<h2>Dummy</h2>
+<p>A <strong>dummy</strong> is a component which is never used but is nevertheless required in
+some way.</p>
+<p>For example, if the SUT is a class whose constructor requires a
+<code>DatabaseConnection</code> object, but we know that the method we're testing doesn't
+connect to the database, we can pass in a dummy version of <code>DatabaseConnection</code>.</p>
+<p>Sometimes <code>null</code> can be used as a dummy object; however in most cases you'll
+need to create a real instance using inheritance (by sub-classing the DOC), or
+by defining a method which creates the DOC with dummy values.</p>
+<h2>Further reading</h2>
+<p>My understanding of these concepts comes from a number of sources, some of which
+are listed below.</p>
+<ul>
+<li>Gerard Meszaros <a href="http://xunitpatterns.com/Test%20Double.html">defines a &quot;test
+double&quot;</a> and gives some examples
+of the different types. His article goes into much more detail than mine!</li>
+<li>Robert C. Martin explains the different types of test doubles <a href="https://blog.cleancoder.com/uncle-bob/2014/05/14/TheLittleMocker.html">in the form of
+a
+conversation</a>.</li>
+<li>Martin Fowler gives <a href="https://martinfowler.com/bliki/TestDouble.html">a summary of the different types of test
+double</a>.</li>
+<li>Martin Fowler has another <a href="https://martinfowler.com/articles/mocksArentStubs.html">article discussing the differences between mocks
+and stubs</a>, and the
+differences between &quot;classical&quot; and &quot;mockist&quot; TDD philosophies.</li>
+<li>Mark Seemann <a href="https://blog.ploeh.dk/2022/10/17/stubs-and-mocks-break-encapsulation/">argues that stubs and mocks break
+encapsulation</a>,
+and suggests that fakes are to be preferred.</li>
+</ul>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>

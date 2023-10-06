@@ -1,0 +1,287 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>The C# null-coalescing operator | DC Coding</title>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarItems">
+      <ul class="navbar-nav ml-auto">
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Archive">Archive</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/About">About</a>
+        </li>
+        
+        <li class="nav-item ml-auto">
+          <a class="nav-link" href="/Subscribe">Subscribe</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<section class="post">
+  <div class="container">
+    <h1 class="post-title">The C# null-coalescing operator</h1>
+    <p class="date">17 May 2021</p>
+    <article>
+      <p>Recently I have had cause to analyse the mathematical properties of C#'s
+<a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator">null-coalescing
+operator</a>
+(<code>??</code>). If you're wondering what kind of wacky and fun-filled life I lead, then
+read on ...</p>
+<p>The null-coalescing operator takes in two arguments, and returns the first one
+unless it's <code>null</code>, in which case it returns the second one. That is, if you
+have two variables <code>a</code> and <code>b</code> of type <code>T</code>, then the statement <code>T x = a ?? b;</code>
+is equivalent to the following:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name">T</span> x<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    x <span class="token operator">=</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">else</span>
+<span class="token punctuation">{</span>
+    x <span class="token operator">=</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Using this operator can be a really succinct way of expressing concepts
+involving <code>null</code>s in code.</p>
+<p>For example, recently I've been working on some code which parses XML into more
+structured types. The XML can take many different (valid) forms, and so there
+are dozens of different types that could be returned. Currently, the code looks
+something like this:</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name">XElement</span> fileContents <span class="token operator">=</span> <span class="token comment">// Import from file ...</span>
+
+<span class="token keyword">return</span> <span class="token function">GetFormat1OrNull</span><span class="token punctuation">(</span>fileContents<span class="token punctuation">)</span> <span class="token operator">??</span>
+    <span class="token function">GetFormat2OrNull</span><span class="token punctuation">(</span>fileContents<span class="token punctuation">)</span> <span class="token operator">??</span>
+    <span class="token function">GetFormat3OrNull</span><span class="token punctuation">(</span>fileContents<span class="token punctuation">)</span> <span class="token operator">??</span>
+    <span class="token function">GetFormat4OrNull</span><span class="token punctuation">(</span>fileContents<span class="token punctuation">)</span> <span class="token operator">??</span>
+    <span class="token function">GetFormat5OrNull</span><span class="token punctuation">(</span>fileContents<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>In my case, the definition of what constitutes the different formats is a little
+vague, and I'd like to refactor to group them differently. In order to do this,
+I needed to verify two mathematical properties of the <code>??</code> operator.</p>
+<h2>Maths</h2>
+<p>In mathematics, a <strong>binary operator</strong> is a function which takes two inputs
+(hence &quot;binary&quot;) and returns one output. These are all over the place in coding;
+examples in C# include:</p>
+<ul>
+<li><code>+</code>, <code>-</code>, <code>*</code> and <code>/</code>, which input two numbers and output a number</li>
+<li><code>==</code>, which input any two types and outputs a boolean</li>
+<li><code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code> and <code>&gt;=</code>, which input two numbers and output a boolean</li>
+<li>(yes, you guessed it) <code>??</code>, which inputs two of the same type and outputs that
+type.</li>
+</ul>
+<p>A binary operator is called <strong>associative</strong> if it doesn't matter where you put
+the brackets when you apply the operator twice. For example, <code>(a + b) + c</code> and
+<code>a + (b + c)</code> are always the same; this makes <code>+</code> associative. This is helpful
+when writing things down because it means you can just leave out the brackets:
+<code>a + b + c</code>. [Note: this only makes sense when the operator inputs and outputs
+the same type.]</p>
+<p>A binary operator is called <strong>commutative</strong> if it doesn't matter which order you
+write the inputs. For example, <code>a + b</code> and <code>b + a</code> are always the same; this
+makes <code>+</code> commutative.</p>
+<p>You can easily find examples of operators with and without these properties;
+e.g. <code>-</code> is neither associative or commutative (try it out!).</p>
+<h2>Application to my code</h2>
+<p>It turns out that <code>??</code> is associative (proof at the end of this post).</p>
+<p>This is really helpful, because it means that I can change the way that the
+different formats are grouped together by clever use of brackets. Once I've done
+that I can extract methods for groupings of formats that make sense together.</p>
+<p>Unfortunately it turns out that <code>??</code> is not commutative, because the order
+matters in the case when both arguments are not null (again, see the end of this
+post for a proof).</p>
+<p>However, in my case the different formats are mutually exclusive; that is, the
+incoming XML can match at most one of the valid formats. This means that I <em>can</em>
+treat the <code>??</code> as commutative, because there is never a situation where the XML
+matches multiple formats.</p>
+<p>This means that if I wanted to group formats 2 and 4, I could first reorder 3
+and 4 (by commutativity) and then group 2 and 4 (by associativity).</p>
+<h2>Conclusion</h2>
+<p>This is just one of many ways in which the mathematical theory behind
+programming helps you to refactor. Understanding the maths helps you to tell
+whether a change you've made is a genuine refactor or whether it might break the
+code.</p>
+<p>Breaking up a refactor into lots of small steps, each of which can be proven not
+to break anything, is a very useful way of improving the quality of your code.
+It's also very satisfying!</p>
+<h2>Appendix: proofs</h2>
+<p>See below a proof that <code>??</code> is associative.</p>
+<table>
+<thead>
+<tr>
+<th><code>A</code></th>
+<th><code>B</code></th>
+<th><code>C</code></th>
+<th><code>(A ?? B) ?? C</code></th>
+<th><code>A ?? (B ?? C)</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null</code></td>
+<td><code>null</code></td>
+<td><code>null</code></td>
+<td><code>(null ?? null) ?? null</code><br/>= <code>null ?? null</code><br/>= <code>null</code></td>
+<td><code>null ?? (null ?? null)</code><br/>= <code>null ?? null</code><br/>= <code>null</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td><code>null</code></td>
+<td><code>C</code></td>
+<td><code>(null ?? null) ?? C</code><br/>= <code>null ?? C</code><br/>= <code>C</code></td>
+<td><code>null ?? (null ?? C)</code><br/>= <code>null ?? C</code><br/>= <code>C</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td><code>B</code></td>
+<td><code>null</code></td>
+<td><code>(null ?? B) ?? null</code><br/>= <code>B ?? null</code><br/>= <code>B</code></td>
+<td><code>null ?? (B ?? null)</code><br/>= <code>null ?? B</code><br/>= <code>B</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td><code>B</code></td>
+<td><code>C</code></td>
+<td><code>(null ?? B) ?? C</code><br/>= <code>B ?? C</code><br/>= <code>B</code></td>
+<td><code>null ?? (B ?? C)</code><br/>= <code>null ?? B</code><br/>= <code>B</code></td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td><code>null</code></td>
+<td><code>null</code></td>
+<td><code>(A ?? null) ?? null</code><br/>= <code>A ?? null</code><br/>= <code>A</code></td>
+<td><code>A ?? (null ?? null)</code><br/>= <code>A ?? null</code><br/>= <code>A</code></td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td><code>null</code></td>
+<td><code>C</code></td>
+<td><code>(A ?? null) ?? C</code><br/>= <code>A ?? C</code><br/>= <code>A</code></td>
+<td><code>A ?? (null ?? C)</code><br/>= <code>A ?? C</code><br/>= <code>A</code></td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td><code>B</code></td>
+<td><code>null</code></td>
+<td><code>(A ?? B) ?? null</code><br/>= <code>A ?? null</code><br/>= <code>A</code></td>
+<td><code>A ?? (B ?? null)</code><br/>= <code>A ?? B</code><br/>= <code>A</code></td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td><code>B</code></td>
+<td><code>C</code></td>
+<td><code>(A ?? B) ?? C</code><br/>= <code>A ?? C</code><br/>= <code>A</code></td>
+<td><code>A ?? (B ?? C)</code><br/>= <code>A ?? B</code><br/>= <code>A</code></td>
+</tr>
+</tbody>
+</table>
+<p>See below a proof that <code>??</code> is commutative except when both values are not null.</p>
+<table>
+<thead>
+<tr>
+<th><code>A</code></th>
+<th><code>B</code></th>
+<th><code>A ?? B</code></th>
+<th><code>B ?? A</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null</code></td>
+<td><code>null</code></td>
+<td><code>null</code></td>
+<td><code>null</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td><code>B</code></td>
+<td><code>B</code></td>
+<td><code>B</code></td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td><code>null</code></td>
+<td><code>A</code></td>
+<td><code>A</code></td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td><code>B</code></td>
+<td><code>A</code></td>
+<td><code>B</code></td>
+</tr>
+</tbody>
+</table>
+
+    </article>
+  </div>
+</section>
+<section class="post-comments mt-5">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async>
+    </script>
+</section>
+  <footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <div class="row">
+      <div class="col">
+        
+        <a href="https://github.com/djcarter85" title="GitHub">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+        
+        <a href="/Feed/" title="RSS">
+          <i class="fa fa-rss fa-2x"></i>
+        </a>
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="copyright">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS -->
+<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+</body>
+
+</html>
