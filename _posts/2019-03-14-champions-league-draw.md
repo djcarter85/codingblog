@@ -83,7 +83,7 @@ this problem.
 
 ##### C#
 
-```c#
+```cs
 public class Team
 {
     public Team(string name, bool isEnglish)
@@ -104,7 +104,7 @@ teams.
 
 ##### C#
 
-```c#
+```cs
 public class Match
 {
     public Match(Team home, Team away)
@@ -125,7 +125,7 @@ Then the simulation is mainly done in the `FixtureList` class.
 
 ##### C#
 
-```c#
+```cs
 public class FixtureList
 {
     private static readonly IReadOnlyList<Team> Teams = new[]

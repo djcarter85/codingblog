@@ -92,7 +92,7 @@ The following example shows you how to accept files dragged from File Explorer.
 It captures a file dragged onto `dragDropLabel` and displays the file contents
 in `outputTextBox`.
 
-```c#
+```cs
 using System.Linq;
 using System.Windows.Forms;
 
@@ -120,7 +120,7 @@ private void dragDropLabel_DragDrop(object sender, DragEventArgs e)
 While developing, the following snippet was useful for discovering what formats
 were supported by `DragEventArgs.Data` and exactly how the data looked.
 
-```c#
+```cs
 foreach (var format in e.Data.GetFormats())
 {
     var data = e.Data.GetData(format);

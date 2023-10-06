@@ -83,7 +83,7 @@ method in the `Startup` class:
 
 ##### C#
 
-```c#
+```cs
 services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = actionContext => 
@@ -118,7 +118,7 @@ method:
 
 ##### C#
 
-```c#
+```cs
 services.AddMvc()
     .AddJsonOptions(o =>
     {
@@ -142,7 +142,7 @@ You can disable this behaviour during startup by adding the following to your
 
 ##### C#
 
-```c#
+```cs
 services.AddMvc()
     .AddJsonOptions(o =>
     {
@@ -175,7 +175,7 @@ you just need to register it at startup as follows:
 
 ##### C#
 
-```c#
+```cs
 services.AddMvc()
     .AddJsonOptions(o =>
     {

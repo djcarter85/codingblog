@@ -10,7 +10,7 @@ express this.
 
 ##### C#
 
-```c#
+```cs
 class Distance
 {
     public Distance(double value, DistanceUnit unit)
@@ -35,7 +35,7 @@ Let's add a method to the `Distance` class.
 
 ##### C#
 
-```c#
+```cs
 class Distance
 {
     // ...
@@ -74,7 +74,7 @@ Let's fix (1) by adding attributes to the enum:
 
 ##### C#
 
-```c#
+```cs
 class ConversionFactorToKilometresAttribute : Attribute
 {
     public ConversionFactorToKilometresAttribute(double factor)
@@ -119,7 +119,7 @@ Let's replace the `enum` with a `class` with a small set of possible instances:
 
 ##### C#
 
-```c#
+```cs
 class DistanceUnit
 {
     private DistanceUnit(double conversionFactorToKilometres)
@@ -154,7 +154,7 @@ In fact, calling it is *very* like an enum:
 
 ##### C#
 
-```c#
+```cs
 var distance = new Distance(100, DistanceUnit.Miles);
 ```
 
@@ -174,7 +174,7 @@ defining the behaviour.
 
 Here's an example.
 
-```c#
+```cs
 public abstract class Operation
 {
     private Operation()

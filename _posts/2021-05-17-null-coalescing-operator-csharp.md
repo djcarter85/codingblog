@@ -14,7 +14,7 @@ unless it's `null`, in which case it returns the second one. That is, if you
 have two variables `a` and `b` of type `T`, then the statement `T x = a ?? b;`
 is equivalent to the following:
 
-```c#
+```cs
 T x;
 if (a != null)
 {
@@ -34,7 +34,7 @@ structured types. The XML can take many different (valid) forms, and so there
 are dozens of different types that could be returned. Currently, the code looks
 something like this:
 
-```c#
+```cs
 XElement fileContents = // Import from file ...
 
 return GetFormat1OrNull(fileContents) ??

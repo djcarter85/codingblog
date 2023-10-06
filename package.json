@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  },
+  "scripts": {
+    "build": "eleventy",
+    "dev": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0"
+  }
+}

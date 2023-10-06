@@ -72,7 +72,7 @@ the user.
 
 ##### Commit A
 
-```c#
+```cs
 public static class ErrorHelper
 {
     public static void ShowErrorMessage(string errorMessage)
@@ -89,7 +89,7 @@ public static class ErrorHelper
 
 ##### Commit B1
 
-```c#
+```cs
 public static class ErrorHelper
 {
     public static void ShowErrorMessage(string errorMessage)
@@ -106,7 +106,7 @@ public static class ErrorHelper
 
 ##### Commit B2
 
-```c#
+```cs
 public static class ErrorHelper
 {
     public static void ShowErrorMessage(string errorMessage)
@@ -241,7 +241,7 @@ of each of the changes.
 
 ##### Merge commit
 
-```c#
+```cs
 public static class ErrorHelper
 {
     public static void ShowErrorMessage(string errorMessage)
