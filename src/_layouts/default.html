@@ -25,12 +25,12 @@
     />
   </head>
 
-  <body class="bg-gray-100 min-h-screen flex flex-col">
+  <body class="flex min-h-screen flex-col bg-gray-100">
     <nav class="bg-gray-800">
       <div class="container flex flex-row justify-center px-6">
         {% for item in nav %}
         <a
-          class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline"
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
           href="{{ item.url | prepend: site.baseurl }}"
           >{{ item.title }}</a
         >
@@ -40,12 +40,12 @@
 
     {{ content }}
 
-    <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
       <div class="container flex flex-col gap-2">
-        <div class="flex flex-row gap-4 justify-center">
+        <div class="flex flex-row justify-center gap-4">
           {% for item in footer-links %}
           <a
-            class="p-2 rounded-lg hover:bg-blue-500"
+            class="rounded-lg p-2 hover:bg-blue-500"
             href="{{ item.url }}"
             title="{{ item.title }}"
           >

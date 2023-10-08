@@ -4,7 +4,7 @@
 
 @layer components {
   .container {
-    @apply px-6 max-w-3xl mx-auto;
+    @apply mx-auto max-w-3xl px-6;
   }
 
   .prose {
@@ -27,7 +27,7 @@
   .prose h2,
   .prose h3,
   .prose h4 {
-    @apply font-bold uppercase mb-6 mt-10;
+    @apply mb-6 mt-10 font-bold uppercase;
   }
 
   .prose h2 {
@@ -43,19 +43,19 @@
   }
 
   .prose *:not(pre) code {
-    @apply font-mono font-bold text-base bg-gray-300 px-1 rounded-sm align-baseline;
+    @apply rounded-sm bg-gray-300 px-1 align-baseline font-mono text-base font-bold;
   }
 
   .prose pre {
-    @apply bg-blue-800 text-gray-100 rounded-lg p-4 overflow-x-scroll text-base my-5;
+    @apply my-5 overflow-x-scroll rounded-lg bg-blue-800 p-4 text-base text-gray-100;
   }
 
   .prose ul {
-    @apply list-disc ml-10;
+    @apply ml-10 list-disc;
   }
 
   .prose ol {
-    @apply list-decimal ml-10;
+    @apply ml-10 list-decimal;
   }
 
   .prose li {
@@ -67,7 +67,7 @@
   }
 
   .prose table {
-    @apply table-auto w-full;
+    @apply w-full table-auto;
   }
 
   .prose td,
