@@ -1,58 +1,78 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#05324d">
+    <title>Champions League Draw, Revisited | DC Coding</title>
 
-  <title>Champions League Draw, Revisited | DC Coding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
-    rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
 
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/code.css">
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
 
-  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Subscribe"
+          >Subscribe</a
+        >
+        
+      </div>
+    </nav>
 
-</head>
-
-<body class="bg-gray-100 min-h-screen flex flex-col">
-  
-  <nav class="bg-gray-800">
-    <div class="container flex flex-row justify-center px-6">
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/">Home</a>
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Archive">Archive</a>
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/About">About</a>
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Subscribe">Subscribe</a>
-      
-    </div>
-  </nav>
-
-  
-
-<div class="bg-blue-800">
-  <div class="container py-8">
-    <h1 class="text-gray-50 text-6xl font-title font-bold italic">Champions League Draw, Revisited</h1>
     
-    <p class="text-gray-200 text-lg mt-2">10 July 2019</p>
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-6xl font-bold italic text-gray-50">
+      Champions League Draw, Revisited
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">10 July 2019</p>
     
   </div>
 </div>
 
-<div class="container py-6">
-  <p class="text-3xl italic text-gray-500 mb-6">How do you deal with randomness in .NET code?</p>
 
-  <article class="prose">
-    <p>Over the last couple of months, Eric Lippert has written a series of blog posts
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">How do you deal with randomness in .NET code?</p>
+
+  <article class="prose"><p>Over the last couple of months, Eric Lippert has written a series of blog posts
 explaining how best to deal with randomness in .NET code (<a href="https://ericlippert.com/2019/01/31/fixing-random-part-1/">starting
 here</a>).</p>
 <p>His main argument is that the standard .NET API for randomness is not very good,
@@ -283,41 +303,61 @@ unit testing the code which samples from your distributions, which is where your
 complicated (and therefore potentially error-prone) business logic is likely to
 be.</p>
 <p>If you have any insights on this, <a href="/About">get in touch</a>!</p>
-
-  </article>
+</article>
 </div>
 
 <div class="container py-6">
-  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
-    theme="github-light" crossorigin="anonymous" async></script>
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
 </div>
-  
-  <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
-    <div class="container flex flex-col gap-2">
-      <div class="flex flex-row gap-4 justify-center">
-        
-        <a class="p-2 rounded-lg hover:bg-blue-500" href="https://github.com/djcarter85" title="GitHub">
-          <i class="fab fa-github fa-2x"></i>
-        </a>
-        
-        <a class="p-2 rounded-lg hover:bg-blue-500" href="/Feed/" title="RSS">
-          <i class="fa fa-rss fa-2x"></i>
-        </a>
-        
-      </div>
-      <div class="text-center">
-        &copy; Dan Carter 2023
-      </div>
-    </div>
-  </footer>
-  
-  <!-- JS -->
-  <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
-    integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
-  
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
-</body>
 
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
 </html>

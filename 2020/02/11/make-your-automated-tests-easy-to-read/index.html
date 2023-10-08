@@ -1,58 +1,78 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#05324d">
+    <title>Make your automated tests easy to read | DC Coding</title>
 
-  <title>Make your automated tests easy to read | DC Coding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
-    rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
 
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/code.css">
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
 
-  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Subscribe"
+          >Subscribe</a
+        >
+        
+      </div>
+    </nav>
 
-</head>
-
-<body class="bg-gray-100 min-h-screen flex flex-col">
-  
-  <nav class="bg-gray-800">
-    <div class="container flex flex-row justify-center px-6">
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/">Home</a>
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Archive">Archive</a>
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/About">About</a>
-      
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Subscribe">Subscribe</a>
-      
-    </div>
-  </nav>
-
-  
-
-<div class="bg-blue-800">
-  <div class="container py-8">
-    <h1 class="text-gray-50 text-6xl font-title font-bold italic">Make your automated tests easy to read</h1>
     
-    <p class="text-gray-200 text-lg mt-2">11 February 2020</p>
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-6xl font-bold italic text-gray-50">
+      Make your automated tests easy to read
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">11 February 2020</p>
     
   </div>
 </div>
 
-<div class="container py-6">
-  <p class="text-3xl italic text-gray-500 mb-6">Recently I've been trying to improve the readability of the automated tests that I write for my code. How have I done this, and why am I even bothering?</p>
 
-  <article class="prose">
-    <p>Ever since I started working as a software developer, writing automated tests
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">Recently I've been trying to improve the readability of the automated tests that I write for my code. How have I done this, and why am I even bothering?</p>
+
+  <article class="prose"><p>Ever since I started working as a software developer, writing automated tests
 has been part of my approach to building software. This has come in many forms,
 including as part of
 <a href="https://en.wikipedia.org/wiki/Test-driven_development">TDD</a> and writing tests
@@ -60,8 +80,8 @@ for previously-uncovered code.</p>
 <p>But recently I've been taking a step back to consider the quality of the tests
 that I write. There is lots of material out there about how to write
 good-quality code, but not so much on what constitutes good-quality tests.</p>
-<p>The big point I want to get across in this article is as follows: <em><strong>make your
-automated tests easy to read</strong></em>. This is the pithy headline that I will spend
+<p>The big point I want to get across in this article is as follows: <strong><em>make your
+automated tests easy to read</em></strong>. This is the pithy headline that I will spend
 the rest of this article explaining!</p>
 <h2>Why?</h2>
 <p>Here are a few reasons I can think of to make your test code as easy to read as
@@ -298,7 +318,7 @@ with the ASP.NET Core framework so there's nothing we can do about the API, but
 it's always worth considering whether you should improve the API rather than
 creating an assertion helper.</p>
 <h2>Conclusion</h2>
-<p>I'll state my big principle again: <em><strong>make your automated tests easy to read</strong></em>.</p>
+<p>I'll state my big principle again: <strong><em>make your automated tests easy to read</em></strong>.</p>
 <p>One thing to bear in mind is that the heuristics for what makes good test code
 are slightly different from production code. For example, I would favour
 readability over reducing duplication in test code. If the setup, action and
@@ -320,41 +340,61 @@ improving them using some of the techniques outlined in this article.</p>
 <p>I think you'll agree that what I've ended up with is a lot better than what I
 started with! It's now so much easier to understand what the production code
 does and to be certain which aspects of its behaviour are being checked.</p>
-
-  </article>
+</article>
 </div>
 
 <div class="container py-6">
-  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
-    theme="github-light" crossorigin="anonymous" async></script>
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
 </div>
-  
-  <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
-    <div class="container flex flex-col gap-2">
-      <div class="flex flex-row gap-4 justify-center">
-        
-        <a class="p-2 rounded-lg hover:bg-blue-500" href="https://github.com/djcarter85" title="GitHub">
-          <i class="fab fa-github fa-2x"></i>
-        </a>
-        
-        <a class="p-2 rounded-lg hover:bg-blue-500" href="/Feed/" title="RSS">
-          <i class="fa fa-rss fa-2x"></i>
-        </a>
-        
-      </div>
-      <div class="text-center">
-        &copy; Dan Carter 2023
-      </div>
-    </div>
-  </footer>
-  
-  <!-- JS -->
-  <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
-    integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
-  
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
-</body>
 
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2023
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
 </html>
