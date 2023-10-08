@@ -1,5 +1,6 @@
 ---
 title: Blogs I Read
+summary: A number of blogs which inspired this one.
 ---
 
 I was inspired to start this blog by the many other programmers who also blog.

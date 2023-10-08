@@ -4,11 +4,14 @@ title: About
 permalink: /About/
 ---
 
-<section class="about">
-  <div class="container">
-    <h1>About</h1>
+{% include 'title.html' %}
 
-    <p>Hi, I’m Dan. I am</p>
+<div class="container py-6">
+  <article class="prose">
+
+    <img class="rounded-full w-48 ring-2 ring-offset-4 ring-blue-800 mb-4" src="/assets/images/profile.jpg" />
+
+    <p>Hi, I'm Dan. I am</p>
 
     <ul>
       <li>a <a href="https://www.matthiasmedia.com.au/2wtl/">Christian</a>,</li>
@@ -19,16 +22,20 @@ permalink: /About/
 
     <p>On the subject of the second of those, this is my coding blog. Someone wise (no idea who) once said
       “expression deepens impression”; i.e. if you tell someone something you remember it better. Let’s hope
-      that’s the case with this blog …</p>
+      that's the case with this blog …</p>
 
-    <p>Oh yeah, and I also hope you find it useful/&#8203;interesting/&#8203;informative/&#8203;entertaining (delete as appropriate).</p>
+    <p>Oh yeah, and I also hope you find it useful/&#8203;interesting/&#8203;informative/&#8203;entertaining (delete as
+      appropriate).</p>
 
     <p>Find me in other places:</p>
 
-    <ul class="links">
+    <ul>
       {% for link in about-links %}
-      <li><i class="{{ link.icon }} mr-3"></i><a href="{{ link.url }}">{{ link.title }}</a></li>
+      <li>
+        <i class="{{ link.icon }} mr-3"></i>
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      </li>
       {% endfor %}
     </ul>
-  </div>
-</section>
+  </article>
+</div>

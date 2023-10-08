@@ -2,5 +2,18 @@
 layout: default
 ---
 
-{% include 'post.html' %}
-{% include 'post-comments.html' %}
+{% assign subtitle = page.date | date: "%e %B %Y" %}
+{% include 'title.html' subtitle: subtitle %}
+
+<div class="container py-6">
+  <p class="text-3xl italic text-gray-500 mb-6">{{ summary }}</p>
+
+  <article class="prose">
+    {{ content }}
+  </article>
+</div>
+
+<div class="container py-6">
+  <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
+    theme="github-light" crossorigin="anonymous" async></script>
+</div>

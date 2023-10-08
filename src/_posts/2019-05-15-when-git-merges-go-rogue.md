@@ -31,18 +31,16 @@ I keep my to-do list in source control (don't ask me why).
 It's a simple text file with a list of things I need to do, and the order
 doesn't matter (I live a very relaxed life with no deadlines).
 
-##### Commit A
-
 ```
+// Commit A
 Shopping
 Clean toilets
 Write blog post
 Email Dad
 ```
 
-##### Commit B1
-
 ```
+// Commit B1
 Shopping
 Take bins out
 Clean toilets
@@ -50,9 +48,8 @@ Write blog post
 Email Dad
 ```
 
-##### Commit B2
-
 ```
+// Commit B2
 Shopping
 Water plants
 Clean toilets
@@ -70,9 +67,8 @@ Conflict!
 I have a class in a Windows Forms application which helps me pop up messages to
 the user.
 
-##### Commit A
-
 ```cs
+// Commit A
 public static class ErrorHelper
 {
     public static void ShowErrorMessage(string errorMessage)
@@ -87,9 +83,8 @@ public static class ErrorHelper
 }
 ```
 
-##### Commit B1
-
 ```cs
+// Commit B1
 public static class ErrorHelper
 {
     public static void ShowErrorMessage(string errorMessage)
@@ -104,9 +99,8 @@ public static class ErrorHelper
 }
 ```
 
-##### Commit B2
-
 ```cs
+// Commit B2
 public static class ErrorHelper
 {
     public static void ShowErrorMessage(string errorMessage)
@@ -191,7 +185,7 @@ Note that the resultant syntax change could have been to add the new tasks at
 any point in the file, because the order doesn't matter. It's usually normal to
 add the changes at the same line to keep the history looking neat.
 
-##### Merge commit
+Here's the result of the merge:
 
 ```
 Shopping
@@ -239,7 +233,7 @@ Applying the general principle again:
 Because I know this is a C# source document, I am able to work out the meaning
 of each of the changes.
 
-##### Merge commit
+Here's the result of the merge:
 
 ```cs
 public static class ErrorHelper

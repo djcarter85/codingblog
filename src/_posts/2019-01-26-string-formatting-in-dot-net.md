@@ -1,6 +1,6 @@
 ---
 title: String formatting in .NET
-summary: In any programming language, it is very common to want to take something that is not a string (say a number) and turn it into a string. Let's have a look at the many ways you can do this in .NET.
+summary: How to turn something that is not a string into a string in .NET.
 ---
 
 In any programming language, it is very common to want to take something that is
@@ -73,7 +73,7 @@ of the things you can do:
 You'll notice that anything that is not recognised as a building block (such as
 a space or hyphen) is simply output verbatim.
 
-### Cultures and `IFormatProvider`
+### Cultures
 
 All of the examples that we've seen so far have used English for any words (e.g.
 day and month names). This is because my computer is set up to work with British

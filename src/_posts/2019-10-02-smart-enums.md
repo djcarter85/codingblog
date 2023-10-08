@@ -3,12 +3,8 @@ title: Smart Enums In C#
 summary: A C# design pattern I'm quite fond of.
 ---
 
-A quick post about a design pattern that I quite like.
-
 Context: we're dealing with distances in some way. Let's write some classes to
 express this.
-
-##### C#
 
 ```cs
 class Distance
@@ -32,8 +28,6 @@ enum DistanceUnit
 
 We need to be able to convert between distances measured in different units.
 Let's add a method to the `Distance` class.
-
-##### C#
 
 ```cs
 class Distance
@@ -71,8 +65,6 @@ This works, but it's a little clunky. Two things I don't like:
    the exception.
 
 Let's fix (1) by adding attributes to the enum:
-
-##### C#
 
 ```cs
 class ConversionFactorToKilometresAttribute : Attribute
@@ -117,8 +109,6 @@ This is where the smart enum pattern comes in.
 
 Let's replace the `enum` with a `class` with a small set of possible instances:
 
-##### C#
-
 ```cs
 class DistanceUnit
 {
@@ -151,8 +141,6 @@ very similar to an enum in that there's only a small set of options for the
 value.
 
 In fact, calling it is *very* like an enum:
-
-##### C#
 
 ```cs
 var distance = new Distance(100, DistanceUnit.Miles);

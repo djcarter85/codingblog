@@ -11,14 +11,14 @@ as straightforward as I initially thought!
 
 Here's how to do it, broken down into a few manageable steps.
 
-## 1. Set `AllowDrop` to `true`
+## 1. Allow drag-and-drop on the control
 
 Set the `AllowDrop` property to `true` on the control which data can be dragged
 onto. If you don't do this, then the events detailed below won't fire.
 
 This may be the whole form, or perhaps a label saying "drop here".
 
-## 2. Handle `DragEnter`
+## 2. Handle the "enter" event
 
 The `DragEnter` event fires when data is dragged over the control in question.
 That is, the mouse enters the control's bounds while the left button is pressed
@@ -43,7 +43,7 @@ If you want to make a bigger visual change than just the cursor (e.g. change the
 appearance of the control), then you should also do that in the `DragEnter`
 event handler.
 
-## 3. Handle `DragDrop`
+## 3. Handle the "drop" event
 
 The `DragDrop` event fires when the user releases the mouse to drop data onto
 the control.
@@ -77,7 +77,7 @@ This event also uses `DragEventArgs`, and it uses the same instance as the one
 provided in `DragEnter`, meaning you can inspect the value you chose for
 `Effect` if you need to.
 
-## 4. Handle `DragLeave` (maybe)
+## 4. Handle the "leave" event (maybe)
 
 The `DragLeave` event fires when the mouse leave the bounds of the control and
 the user is still dragging the item.
@@ -115,7 +115,7 @@ private void dragDropLabel_DragDrop(object sender, DragEventArgs e)
 }
 ```
 
-## Appendix: exploring `DragEventArgs.Data`
+## Appendix: exploring the data
 
 While developing, the following snippet was useful for discovering what formats
 were supported by `DragEventArgs.Data` and exactly how the data looked.

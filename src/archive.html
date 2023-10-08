@@ -4,4 +4,32 @@ title: Archive
 permalink: /Archive/
 ---
 
-{% include 'archive.html' %}
+{% include 'title.html' %}
+
+<div class="container">
+  <article class="prose">
+    {% for post in collections.posts reversed %}
+    {% assign currentYear = post.date | date: "%Y" %}
+    {% unless currentYear == previousYear %}
+    {% if previousYear %}
+    </ul>
+    {% endif %}
+    <h2>{{ currentYear }}</h2>
+    <ul>
+      {% endunless %}
+      <li>
+        <span class="text-gray-600 mr-4">{{ post.date | date: "%e %B" }}</span>
+        <a href="{{ post.url | prepend: site.baseurl }}">{{
+          post.data.title
+          }}</a>
+      </li>
+      {% assign previousYear = currentYear %}
+      {% endfor %}
+    </ul>
+
+    <p>
+      <i class="fa fa-rss mr-3"></i>
+      <a href="/Feed/">RSS Feed</a>
+    </p>
+  </article>
+</div>

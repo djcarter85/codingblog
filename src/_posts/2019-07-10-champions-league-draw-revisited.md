@@ -26,7 +26,7 @@ posts.
 I’ve put the code for this article on [a separate branch in the original
 repository](https://github.com/djcarter85/ChampionsLeagueDraw/tree/distributions).
 
-## The `IDistribution<T>` interface
+## A new interface
 
 Lippert's fundamental abstraction is that of a **distribution**: a source of
 random values of a given type. This is modelled using a simple interface:
@@ -42,7 +42,7 @@ From this, we can start with simple implementations of the interface and combine
 them to make more complicated ones. For example, the [standard continuous
 uniform
 distribution](https://github.com/ericlippert/probability/blob/episode03/Probability/StandardContinuousUniform.cs),
-which returns real values satisfying $$0 \leq x < 1$$, or the [singleton
+which returns real values satisfying \\(0 \leq x < 1\\), or the [singleton
 distribution](https://github.com/ericlippert/probability/blob/episode04/Probability/Singleton.cs),
 which always returns the same value.
 

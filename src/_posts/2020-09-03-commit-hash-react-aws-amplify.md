@@ -1,9 +1,7 @@
 ---
 title: "Commit hash using React and AWS Amplify"
-summary: "" 
+summary: "Something I found out how to do today." 
 ---
-
-Something I found out how to do today.
 
 Context:
 

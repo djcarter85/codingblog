@@ -1,5 +1,5 @@
 ---
-title: A <code>Nullable&lt;T&gt;</code> is like a simple <code>IEnumerable&lt;T&gt;</code>
+title: A nullable is like a simple enumerable
 summary: An equivalence between two .NET types which comes in handy when refactoring.
 ---
 

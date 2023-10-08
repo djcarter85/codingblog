@@ -1,6 +1,6 @@
 ---
 title: Command Line Parser for C#
-summary: I recently came across a C# library that takes care of the boilerplate code often associated with parsing, validating and using options specified as command line arguments.
+summary: A useful C# library that helps you add command-line arguments to your application.
 ---
 
 I recently came across [Command Line
@@ -30,8 +30,6 @@ are:
 Then we create an `Options` class with properties for all the possible
 command-line options, decorated with attributes detailing the expected usage:
 
-##### C#
-
 ```cs
 class Options
 {
@@ -50,8 +48,6 @@ The `Value` attribute defines a positional argument, and the `Option` attribute
 defines an argument that is passed in by name.
 
 Then in the `Main` method, it's as simple as doing the following:
-
-##### C#
 
 ```cs
 class Program
@@ -80,8 +76,6 @@ their own sets of options.
 
 With Command Line Parser, you create a separate options class for each verb:
 
-##### C#
-
 ```cs
 [Verb("clone")]
 class CloneOptions {
@@ -101,8 +95,6 @@ class PullOptions {
 
 And then in your `Main` method you define what to do for each verb, as well as
 how to handle parsing errors:
-
-##### C#
 
 ```cs
 class Program
@@ -141,8 +133,6 @@ they'll get the full help text.
 
 For example, our Options class from before could be changed to:
 
-##### C#
-
 ```cs
 class Options
 {
@@ -158,8 +148,6 @@ class Options
 ```
 
 Then running the app with the `--help` switch gives us the following output:
-
-##### Output
 
 ```
   -d, --detailed    Whether to output detailed information about the file.

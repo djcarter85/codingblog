@@ -47,7 +47,7 @@ are pretty comprehensive as to how this works.
 You can omit these attributes and it will try to guess where the values can be
 found, but I think it's better to be explicit.
 
-## `[ApiController]`
+## The ApiController attribute
 
 My first attempt at using `[FromBody]` to deserialize JSON didn't go very well.
 I found that if the request body didn't have the correct structure, or wasn't
@@ -80,8 +80,6 @@ Fortunately you can customise this, and it's pretty easy to do. What you're
 looking for is `ApiBehaviorOptions.InvalidModelStateResponseFactory`, which can
 be set at application startup. Add the following to your `ConfigureServices`
 method in the `Startup` class:
-
-##### C#
 
 ```cs
 services.Configure<ApiBehaviorOptions>(options =>
@@ -116,8 +114,6 @@ The `Required` property also controls how `null` values are serialized. If you
 want to set that globally, you can add the following in your `ConfigureServices`
 method:
 
-##### C#
-
 ```cs
 services.AddMvc()
     .AddJsonOptions(o =>
@@ -139,8 +135,6 @@ any integer and you'd end up with an invalid value.
 
 You can disable this behaviour during startup by adding the following to your
 `ConfigureServices` method:
-
-##### C#
 
 ```cs
 services.AddMvc()
@@ -172,8 +166,6 @@ It's easy to create custom converters; [there's a good article in the Json.NET
 docs which shows you
 how](https://www.newtonsoft.com/json/help/html/CustomJsonConverter.htm). Then
 you just need to register it at startup as follows:
-
-##### C#
 
 ```cs
 services.AddMvc()

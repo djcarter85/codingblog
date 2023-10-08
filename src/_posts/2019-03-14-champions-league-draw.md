@@ -37,24 +37,24 @@ What is the probability of each?
 First off, how many different sets of fixtures are there?
 
 The draw works by pulling the teams out of a bag at random, and then pairing
-them off in twos to decide the fixtures. There are $$8!$$ ways to order the
+them off in twos to decide the fixtures. There are \\(8!\\) ways to order the
 remaining 8 teams, but some of the resultant fixture lists will be the same.
-Each pair of two teams can be ordered either way ($$2^4$$ ways), and then the
-pairings can be reordered in the list ($$4!$$ ways). This means that each
-fixture list could have come from $$2^4 \times 4!$$ different orderings, so the
-number of fixture lists is $$8!/(2^4 \times 4!) = 105$$.
+Each pair of two teams can be ordered either way (\\(2^4\\) ways), and then the
+pairings can be reordered in the list (\\(4!\\) ways). This means that each
+fixture list could have come from \\(2^4 \times 4!\\) different orderings, so the
+number of fixture lists is \\(8!/(2^4 \times 4!) = 105\\).
 
 How many of these fixture lists give zero all-English ties?
 
 Well, this means the English teams play in different fixtures, so all we need to
 do is consider the number of ways of rearranging the four non-English teams.
-This is $$4! = 24$$.
+This is \\(4! = 24\\).
 
 How many of these fixture lists give two all-English ties?
 
 In this case, we can split the 8 teams into two pots (English and non-English
 teams) and then work out how many possible fixture lists there are. For each
-pot, there are 3 ways to choose the ties, so there are $$3 \times 3 = 9$$
+pot, there are 3 ways to choose the ties, so there are \\(3 \times 3 = 9\\)
 fixture lists that satisify this.
 
 The remainder, 72, have exactly one all-English tie.
@@ -74,14 +74,12 @@ never get the exact probabilities this way, but it can be really useful if we're
 dealing with a problem so big that evaluating the probabilities mathematically
 is infeasible.
 
-The source code for how I did this can be found at
-[https://github.com/djcarter85/ChampionsLeagueDraw](https://github.com/djcarter85/ChampionsLeagueDraw),
+The source code for how I did this can be found
+[on Github](https://github.com/djcarter85/ChampionsLeagueDraw),
 but there's a summmary below.
 
 I started off with a `Team` class, adding the attributes that were necessary for
 this problem.
-
-##### C#
 
 ```cs
 public class Team
@@ -102,8 +100,6 @@ Then I added a simple `Match` class, containing a property for calculating the
 information we are interested in, namely whether the match contains two English
 teams.
 
-##### C#
-
 ```cs
 public class Match
 {
@@ -122,8 +118,6 @@ public class Match
 ```
 
 Then the simulation is mainly done in the `FixtureList` class.
-
-##### C#
 
 ```cs
 public class FixtureList
@@ -167,8 +161,6 @@ I'm using the [MoreLINQ](https://github.com/morelinq/MoreLINQ) extension methods
 
 Then it's a case of running this a large number of times and collating the
 results. Here's what I found with 100,000,000 simulations:
-
-##### Output
 
 ```
 Simulating 100,000,000 fixture lists ...
