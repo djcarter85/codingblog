@@ -174,11 +174,11 @@ Time taken: 402.14s
 
 Here's a summary of the calculated and simulated results:
 
-|Number of all-English matches|Calculated|Simulated|
-|---|---|---|
-|0|22.86%|22.85%|
-|1|68.57%|68.58%|
-|2|8.57%|8.57%|
+| Number of all-English matches | Calculated | Simulated |
+| ----------------------------- | ---------- | --------- |
+| 0                             | 22.86%     | 22.85%    |
+| 1                             | 68.57%     | 68.58%    |
+| 2                             | 8.57%      | 8.57%     |
 
 Not bad! Our simulated values were almost identical to those we'd calculated.
 

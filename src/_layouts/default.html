@@ -1,60 +1,76 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="theme-color" content="#05324d">
+    <title>{{ title }} | {{ site.title }}</title>
 
-  <title>{{ title }} | {{ site.title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
-    rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
 
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/code.css">
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
 
-  <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
-
-</head>
-
-<body class="bg-gray-100 min-h-screen flex flex-col">
-  
-  <nav class="bg-gray-800">
-    <div class="container flex flex-row justify-center px-6">
-      {% for item in nav %}
-      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="{{ item.url | prepend: site.baseurl }}">{{ item.title }}</a>
-      {% endfor %}
-    </div>
-  </nav>
-
-  {{ content }}
-  
-  <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
-    <div class="container flex flex-col gap-2">
-      <div class="flex flex-row gap-4 justify-center">
-        {% for item in footer-links %}
-        <a class="p-2 rounded-lg hover:bg-blue-500" href="{{ item.url }}" title="{{ item.title }}">
-          <i class="{{ item.icon }} fa-2x"></i>
-        </a>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        {% for item in nav %}
+        <a
+          class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline"
+          href="{{ item.url | prepend: site.baseurl }}"
+          >{{ item.title }}</a
+        >
         {% endfor %}
       </div>
-      <div class="text-center">
-        &copy; Dan Carter {{ site.time | date: '%Y' }}
+    </nav>
+
+    {{ content }}
+
+    <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row gap-4 justify-center">
+          {% for item in footer-links %}
+          <a
+            class="p-2 rounded-lg hover:bg-blue-500"
+            href="{{ item.url }}"
+            title="{{ item.title }}"
+          >
+            <i class="{{ item.icon }} fa-2x"></i>
+          </a>
+          {% endfor %}
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter {{ site.time | date: '%Y' }}
+        </div>
       </div>
-    </div>
-  </footer>
-  
-  <!-- JS -->
-  <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
-    integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
-  
-  <script type="text/javascript" async
-    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    </footer>
 
-</body>
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
 
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
 </html>

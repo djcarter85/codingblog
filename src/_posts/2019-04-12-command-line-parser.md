@@ -99,11 +99,11 @@ how to handle parsing errors:
 ```cs
 class Program
 {
-    static int Main(string[] args) 
+    static int Main(string[] args)
     {
         return CommandLine.Parser.Default.ParseArguments<AddOptions, CommitOptions, CloneOptions>(args)
             .MapResult(
-                (CloneOptions o) => { 
+                (CloneOptions o) => {
                     // clone
                 },
                 (CommitOptions o) => {
@@ -122,7 +122,7 @@ class Program
 The examples I've given here use `CommandLine.Parser.Default`, but it's possible
 to customise the parser in a number of different ways. For example, you can set
 the culture for arguments to be parsed in, or whether to parse values
-case-sensitively or not. 
+case-sensitively or not.
 
 ## Help text
 

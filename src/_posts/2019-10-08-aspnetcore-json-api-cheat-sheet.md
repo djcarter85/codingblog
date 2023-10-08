@@ -84,7 +84,7 @@ method in the `Startup` class:
 ```cs
 services.Configure<ApiBehaviorOptions>(options =>
 {
-    options.InvalidModelStateResponseFactory = actionContext => 
+    options.InvalidModelStateResponseFactory = actionContext =>
     {
         var error = // TODO: create your error object here
 

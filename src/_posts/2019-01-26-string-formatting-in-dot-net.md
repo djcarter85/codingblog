@@ -29,10 +29,10 @@ Many of the built-in .NET types override this method to do something useful. For
 example, all of the number types override `ToString` to return a basically
 formatted number. Here are a couple of examples:
 
-|Type|Example|Output|
-|---|---|---|
-|`System.Int32`|`-123456`|-123456|
-|`System.Decimal`|`-1.23m`|-1.23|
+| Type             | Example   | Output  |
+| ---------------- | --------- | ------- |
+| `System.Int32`   | `-123456` | -123456 |
+| `System.Decimal` | `-1.23m`  | -1.23   |
 
 ### Standard format strings
 
@@ -64,11 +64,11 @@ name of the month and `"yyyy"` for the full year.
 Taking `var date = new System.DateTime(2019, 1, 2)` as an example, here are some
 of the things you can do:
 
-|C# code|Output|
-|---|---|
-|`date.ToString("dd MMM yyyy")`|02 Jan 2019|
-|`date.ToString("ddd d MMMM yyyy")`|Wed 2 January 2019|
-|`date.ToString("yyyy-MM-dd")`|2019-01-02|
+| C# code                            | Output             |
+| ---------------------------------- | ------------------ |
+| `date.ToString("dd MMM yyyy")`     | 02 Jan 2019        |
+| `date.ToString("ddd d MMMM yyyy")` | Wed 2 January 2019 |
+| `date.ToString("yyyy-MM-dd")`      | 2019-01-02         |
 
 You'll notice that anything that is not recognised as a building block (such as
 a space or hyphen) is simply output verbatim.
@@ -91,12 +91,12 @@ specifiers](https://azuliadesigns.com/list-net-culture-country-codes/).
 Here are some `DateTime` examples, using the same example of `var date = new
 System.DateTime(2019, 1, 2)`:
 
-|C# code|Output|
-|---|---|
-|`date.ToString("d", new CultureInfo("en-GB"))`|Wednesday, 2 January 2019|
-|`date.ToString("d", new CultureInfo("en-US"))`|Wednesday, January 2, 2019|
-|`date.ToString("d", new CultureInfo("fr-FR"))`|mercredi 2 janvier 2019|
-|`date.ToString("d", new CultureInfo("de-DE"))`|Mittwoch, 2. Januar 2019|
+| C# code                                        | Output                     |
+| ---------------------------------------------- | -------------------------- |
+| `date.ToString("d", new CultureInfo("en-GB"))` | Wednesday, 2 January 2019  |
+| `date.ToString("d", new CultureInfo("en-US"))` | Wednesday, January 2, 2019 |
+| `date.ToString("d", new CultureInfo("fr-FR"))` | mercredi 2 janvier 2019    |
+| `date.ToString("d", new CultureInfo("de-DE"))` | Mittwoch, 2. Januar 2019   |
 
 You can use `CultureInfo.CurrentCulture` to access the [machine's
 culture](https://docs.microsoft.com/en-us/dotnet/api/system.globalization.cultureinfo.currentculture),
