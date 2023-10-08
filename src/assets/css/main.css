@@ -62,7 +62,7 @@
     @apply my-1 pl-2;
   }
 
-  .prose blockquote{
+  .prose blockquote {
     @apply border-l-4 border-gray-200 pl-6 italic;
   }
 

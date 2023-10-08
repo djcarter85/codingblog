@@ -1,6 +1,6 @@
 ---
 title: "Europa League Draw"
-summary: "What is the chance of two British teams meeting in the Europa League last 16?" 
+summary: "What is the chance of two British teams meeting in the Europa League last 16?"
 ---
 
 Yesterday evening I was watching [Arsenal play Olympiakos in the UEFA Europa

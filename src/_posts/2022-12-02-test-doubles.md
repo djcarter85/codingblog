@@ -23,7 +23,7 @@ use these terms in the rest of this article.
 ![The SUT depends on the DOC](/assets/images/2022-12-02-test-doubles/image-2.png)
 
 The term "test double" is typically attributed to Gerard Meszaros in his book
-[*XUnit Test Patterns*](https://www.amazon.co.uk/dp/0131495054). The analogy
+[_XUnit Test Patterns_](https://www.amazon.co.uk/dp/0131495054). The analogy
 comes from film-making. When filming action scenes, it's typically not desirable
 for the real actor to perform stunts (perhaps it's dangerous, or the actor
 doesn't have the required skills), so a "stunt double" who looks like the real

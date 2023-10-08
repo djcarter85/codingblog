@@ -1,6 +1,6 @@
 ---
 title: "Make your automated tests easy to read"
-summary: "Recently I've been trying to improve the readability of the automated tests that I write for my code. How have I done this, and why am I even bothering?" 
+summary: "Recently I've been trying to improve the readability of the automated tests that I write for my code. How have I done this, and why am I even bothering?"
 ---
 
 Ever since I started working as a software developer, writing automated tests
@@ -13,8 +13,8 @@ But recently I've been taking a step back to consider the quality of the tests
 that I write. There is lots of material out there about how to write
 good-quality code, but not so much on what constitutes good-quality tests.
 
-The big point I want to get across in this article is as follows: ***make your
-automated tests easy to read***. This is the pithy headline that I will spend
+The big point I want to get across in this article is as follows: **_make your
+automated tests easy to read_**. This is the pithy headline that I will spend
 the rest of this article explaining!
 
 ## Why?
@@ -29,7 +29,7 @@ possible:
 - Because automated tests verify the behaviour of the code, they serve as
   documentation for the behaviour of the system. Documentation should be easy to
   read.
-- Tests are only useful because they *might* fail. When that happens, whoever is
+- Tests are only useful because they _might_ fail. When that happens, whoever is
   working on the code at the time will thank you for making it as easy as
   possible to determine what is wrong with the code.
 
@@ -215,7 +215,7 @@ constructor (a good example could be an ASP.NET Core controller).
 Often, only a subset of the dependencies will actually be pertinent to each
 test. For example, the controller may depend on `IClock` for fetching the
 current time, but it is not used in the method that is being tested. Or perhaps
-it *is* used, but the value of the current time is irrelevant to the particular
+it _is_ used, but the value of the current time is irrelevant to the particular
 aspect of behaviour that is being checked.
 
 If this is the case, I like to use a helper method for creating the class under
@@ -309,12 +309,12 @@ creating an assertion helper.
 
 ## Conclusion
 
-I'll state my big principle again: ***make your automated tests easy to read***.
+I'll state my big principle again: **_make your automated tests easy to read_**.
 
 One thing to bear in mind is that the heuristics for what makes good test code
 are slightly different from production code. For example, I would favour
 readability over reducing duplication in test code. If the setup, action and
-assertions are almost the same in two tests, I would *not* extract a shared
+assertions are almost the same in two tests, I would _not_ extract a shared
 function with parameters, because I'd rather make it clear to the reader of the
 test method itself what is being checked.
 

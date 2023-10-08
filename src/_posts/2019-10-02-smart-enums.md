@@ -140,7 +140,7 @@ created from inside this class, and this only happens twice. In this way, it's
 very similar to an enum in that there's only a small set of options for the
 value.
 
-In fact, calling it is *very* like an enum:
+In fact, calling it is _very_ like an enum:
 
 ```cs
 var distance = new Distance(100, DistanceUnit.Miles);
@@ -168,12 +168,12 @@ public abstract class Operation
     private Operation()
     {
     }
- 
+
     public static Operation Add { get; } = new AddOperation();
     public static Operation Subtract { get; } = new SubtractOperation();
- 
+
     public abstract int Apply(int lhs, int rhs);
- 
+
     private class AddOperation : Operation
     {
         public override int Apply(int lhs, int rhs)
@@ -181,7 +181,7 @@ public abstract class Operation
             return lhs + rhs;
         }
     }
- 
+
     private class SubtractOperation : Operation
     {
         public override int Apply(int lhs, int rhs)
@@ -214,4 +214,4 @@ behaviour inside the type using this pattern would be better.
 - [Violating the smart enum
   pattern](https://codeblog.jonskeet.uk/2014/10/23/violating-the-smart-enum-pattern-in-c/)
   by Jon Skeet: how this pattern isn't as type-safe as you think (but you have
-  to really *want* to break it).
+  to really _want_ to break it).

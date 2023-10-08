@@ -87,7 +87,7 @@ matters in the case when both arguments are not null (again, see the end of this
 post for a proof).
 
 However, in my case the different formats are mutually exclusive; that is, the
-incoming XML can match at most one of the valid formats. This means that I *can*
+incoming XML can match at most one of the valid formats. This means that I _can_
 treat the `??` as commutative, because there is never a situation where the XML
 matches multiple formats.
 
@@ -109,22 +109,22 @@ It's also very satisfying!
 
 See below a proof that `??` is associative.
 
-| `A` | `B` | `C` | `(A ?? B) ?? C` | `A ?? (B ?? C)` |
-|---|---|---|---|---|
-|`null`|`null`|`null`|`(null ?? null) ?? null`<br/>= `null ?? null`<br/>= `null`|`null ?? (null ?? null)`<br/>= `null ?? null`<br/>= `null`|
-|`null`|`null`|`C`|`(null ?? null) ?? C`<br/>= `null ?? C`<br/>= `C`|`null ?? (null ?? C)`<br/>= `null ?? C`<br/>= `C`|
-|`null`|`B`|`null`|`(null ?? B) ?? null`<br/>= `B ?? null`<br/>= `B`|`null ?? (B ?? null)`<br/>= `null ?? B`<br/>= `B`|
-|`null`|`B`|`C`|`(null ?? B) ?? C`<br/>= `B ?? C`<br/>= `B`|`null ?? (B ?? C)`<br/>= `null ?? B`<br/>= `B`|
-|`A`|`null`|`null`|`(A ?? null) ?? null`<br/>= `A ?? null`<br/>= `A`|`A ?? (null ?? null)`<br/>= `A ?? null`<br/>= `A`|
-|`A`|`null`|`C`|`(A ?? null) ?? C`<br/>= `A ?? C`<br/>= `A`|`A ?? (null ?? C)`<br/>= `A ?? C`<br/>= `A`|
-|`A`|`B`|`null`|`(A ?? B) ?? null`<br/>= `A ?? null`<br/>= `A`|`A ?? (B ?? null)`<br/>= `A ?? B`<br/>= `A`|
-|`A`|`B`|`C`|`(A ?? B) ?? C`<br/>= `A ?? C`<br/>= `A`|`A ?? (B ?? C)`<br/>= `A ?? B`<br/>= `A`|
+| `A`    | `B`    | `C`    | `(A ?? B) ?? C`                                            | `A ?? (B ?? C)`                                            |
+| ------ | ------ | ------ | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| `null` | `null` | `null` | `(null ?? null) ?? null`<br/>= `null ?? null`<br/>= `null` | `null ?? (null ?? null)`<br/>= `null ?? null`<br/>= `null` |
+| `null` | `null` | `C`    | `(null ?? null) ?? C`<br/>= `null ?? C`<br/>= `C`          | `null ?? (null ?? C)`<br/>= `null ?? C`<br/>= `C`          |
+| `null` | `B`    | `null` | `(null ?? B) ?? null`<br/>= `B ?? null`<br/>= `B`          | `null ?? (B ?? null)`<br/>= `null ?? B`<br/>= `B`          |
+| `null` | `B`    | `C`    | `(null ?? B) ?? C`<br/>= `B ?? C`<br/>= `B`                | `null ?? (B ?? C)`<br/>= `null ?? B`<br/>= `B`             |
+| `A`    | `null` | `null` | `(A ?? null) ?? null`<br/>= `A ?? null`<br/>= `A`          | `A ?? (null ?? null)`<br/>= `A ?? null`<br/>= `A`          |
+| `A`    | `null` | `C`    | `(A ?? null) ?? C`<br/>= `A ?? C`<br/>= `A`                | `A ?? (null ?? C)`<br/>= `A ?? C`<br/>= `A`                |
+| `A`    | `B`    | `null` | `(A ?? B) ?? null`<br/>= `A ?? null`<br/>= `A`             | `A ?? (B ?? null)`<br/>= `A ?? B`<br/>= `A`                |
+| `A`    | `B`    | `C`    | `(A ?? B) ?? C`<br/>= `A ?? C`<br/>= `A`                   | `A ?? (B ?? C)`<br/>= `A ?? B`<br/>= `A`                   |
 
 See below a proof that `??` is commutative except when both values are not null.
 
-| `A` | `B` | `A ?? B` | `B ?? A` |
-|---|---|---|---|
-| `null` | `null`| `null` | `null` |
-| `null` | `B`| `B` | `B` |
-| `A` | `null`| `A` | `A` |
-| `A` | `B`| `A` | `B` |
+| `A`    | `B`    | `A ?? B` | `B ?? A` |
+| ------ | ------ | -------- | -------- |
+| `null` | `null` | `null`   | `null`   |
+| `null` | `B`    | `B`      | `B`      |
+| `A`    | `null` | `A`      | `A`      |
+| `A`    | `B`    | `A`      | `B`      |
