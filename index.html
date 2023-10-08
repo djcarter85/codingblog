@@ -5,221 +5,186 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <title>Home | DC Coding</title>
+  <title>Dan Carter's Coding Blog | DC Coding</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+  <link rel="stylesheet" href="/assets/css/code.css">
 
   <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
 
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
-  <div class="container">
-    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
-    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarItems">
-      <ul class="navbar-nav ml-auto">
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/Archive">Archive</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/About">About</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/Subscribe">Subscribe</a>
-        </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
+<body class="bg-gray-100 min-h-screen flex flex-col">
   
-<section class="posts">
-  <div class="container">
+  <nav class="bg-gray-800">
+    <div class="container flex flex-row justify-center px-6">
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/">Home</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Archive">Archive</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/About">About</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Subscribe">Subscribe</a>
+      
+    </div>
+  </nav>
 
-    <h1>Recent Posts</h1>
-
+  
+<div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="text-gray-50 text-6xl font-title font-bold italic">Dan Carter's Coding Blog</h1>
     
-    <div>
-      <h2><a href="/2022/12/02/test-doubles/">Test doubles</a></h2>
-      <p class="date">Friday  2 December 2022</p>
-      
-      <p>How to test software components in isolation.</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2022/10/30/nullable-ienumerable/">A <code>Nullable&lt;T&gt;</code> is like a simple <code>IEnumerable&lt;T&gt;</code></a></h2>
-      <p class="date">Sunday 30 October 2022</p>
-      
-      <p>An equivalence between two .NET types which comes in handy when refactoring.</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2021/05/17/null-coalescing-operator-csharp/">The C# null-coalescing operator</a></h2>
-      <p class="date">Monday 17 May 2021</p>
-      
-      <p>A mathematical analysis of C#'s <code>??</code> operator.</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2020/09/03/commit-hash-react-aws-amplify/">Commit hash using React and AWS Amplify</a></h2>
-      <p class="date">Thursday  3 September 2020</p>
-      
-      <p></p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2020/02/28/europa-league-draw/">Europa League Draw</a></h2>
-      <p class="date">Friday 28 February 2020</p>
-      
-      <p>What is the chance of two British teams meeting in the Europa League last 16?</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2020/02/11/make-your-automated-tests-easy-to-read/">Make your automated tests easy to read</a></h2>
-      <p class="date">Tuesday 11 February 2020</p>
-      
-      <p>Recently I've been trying to improve the readability of the automated tests that I write for my code. How have I done this, and why am I even bothering?</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/11/25/drag-and-drop-winforms/">Drag-and-drop in Windows Forms is as easy as 1-2-3 (and maybe 4)</a></h2>
-      <p class="date">Monday 25 November 2019</p>
-      
-      <p>How to support drag-and-drop in Windows Forms.</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/10/08/aspnetcore-json-api-cheat-sheet/">ASP.NET Core JSON API Cheat Sheet</a></h2>
-      <p class="date">Tuesday  8 October 2019</p>
-      
-      <p>Some lessons learned building a JSON API using ASP.NET Core.</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/10/02/smart-enums/">Smart Enums In C#</a></h2>
-      <p class="date">Wednesday  2 October 2019</p>
-      
-      <p>A C# design pattern I'm quite fond of.</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/07/10/champions-league-draw-revisited/">Champions League Draw, Revisited</a></h2>
-      <p class="date">Wednesday 10 July 2019</p>
-      
-      <p>How do you deal with randomness in .NET code?</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/05/15/when-git-merges-go-rogue/">When Git merges go rogue</a></h2>
-      <p class="date">Wednesday 15 May 2019</p>
-      
-      <p>How do you resolve a merge conflict in Git?</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/04/12/command-line-parser/">Command Line Parser for C#</a></h2>
-      <p class="date">Friday 12 April 2019</p>
-      
-      <p>I recently came across a C# library that takes care of the boilerplate code often associated with parsing, validating and using options specified as command line arguments.</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/03/21/git-resets/">Git Resets</a></h2>
-      <p class="date">Thursday 21 March 2019</p>
-      
-      <p>What happens when you do a reset in Git?</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/03/14/champions-league-draw/">Champions League Quarter-Final Draw</a></h2>
-      <p class="date">Thursday 14 March 2019</p>
-      
-      <p>What are the chances of English teams avoiding each other in the Champions League quarter-final draw?</p>
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/03/07/blogs-i-read/">Blogs I Read</a></h2>
-      <p class="date">Thursday  7 March 2019</p>
-      
-      
-      
-    </div>
-    
-    <div>
-      <h2><a href="/2019/01/26/string-formatting-in-dot-net/">String formatting in .NET</a></h2>
-      <p class="date">Saturday 26 January 2019</p>
-      
-      <p>In any programming language, it is very common to want to take something that is not a string (say a number) and turn it into a string. Let's have a look at the many ways you can do this in .NET.</p>
-      
-    </div>
-    
-
   </div>
-</section>
+</div>
 
-  <footer class="footer mt-5 py-3 bg-dark">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">
+<div class="container">
+  <div class="prose">
+    <p>Hi, I'm Dan. I'm a professional and hobbyist programmer living in Cambridgeshire, UK. <a href="/About">Find out
+        more about me.</a></p>
+
+    <p>Below are my most recent posts, or you can visit <a href="/Archive">the full archive</a>.</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8 mb-6">
+    
+    
+    
+    
+    <div>
+      <p class="uppercase italic text-sm text-gray-700"> 2 December 2022</p>
+      <h3 class="text-2xl font-bold mt-1">
+        <a class="hover:underline hover:text-blue-600" href="/2022/12/02/test-doubles/">
+          Test doubles
+        </a>
+      </h3>
+      <p class="text-lg mt-3 text-gray-800">How to test software components in isolation.</p>
+      <p class="mt-2">
+        <a class="text-blue-600 hover:underline" href="/2022/12/02/test-doubles/">Read more ...</a>
+      </p>
+    </div>
+    
+    
+    
+    
+    <div>
+      <p class="uppercase italic text-sm text-gray-700">30 October 2022</p>
+      <h3 class="text-2xl font-bold mt-1">
+        <a class="hover:underline hover:text-blue-600" href="/2022/10/30/nullable-ienumerable/">
+          A nullable is like a simple enumerable
+        </a>
+      </h3>
+      <p class="text-lg mt-3 text-gray-800">An equivalence between two .NET types which comes in handy when refactoring.</p>
+      <p class="mt-2">
+        <a class="text-blue-600 hover:underline" href="/2022/10/30/nullable-ienumerable/">Read more ...</a>
+      </p>
+    </div>
+    
+    
+    
+    
+    <div>
+      <p class="uppercase italic text-sm text-gray-700">17 May 2021</p>
+      <h3 class="text-2xl font-bold mt-1">
+        <a class="hover:underline hover:text-blue-600" href="/2021/05/17/null-coalescing-operator-csharp/">
+          The C# null-coalescing operator
+        </a>
+      </h3>
+      <p class="text-lg mt-3 text-gray-800">A mathematical analysis of C#'s <code>??</code> operator.</p>
+      <p class="mt-2">
+        <a class="text-blue-600 hover:underline" href="/2021/05/17/null-coalescing-operator-csharp/">Read more ...</a>
+      </p>
+    </div>
+    
+    
+    
+    
+    <div>
+      <p class="uppercase italic text-sm text-gray-700"> 3 September 2020</p>
+      <h3 class="text-2xl font-bold mt-1">
+        <a class="hover:underline hover:text-blue-600" href="/2020/09/03/commit-hash-react-aws-amplify/">
+          Commit hash using React and AWS Amplify
+        </a>
+      </h3>
+      <p class="text-lg mt-3 text-gray-800">Something I found out how to do today.</p>
+      <p class="mt-2">
+        <a class="text-blue-600 hover:underline" href="/2020/09/03/commit-hash-react-aws-amplify/">Read more ...</a>
+      </p>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </div>
+
+</div>
+  
+  <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
+    <div class="container flex flex-col gap-2">
+      <div class="flex flex-row gap-4 justify-center">
         
-        <a href="https://github.com/djcarter85" title="GitHub">
+        <a class="p-2 rounded-lg hover:bg-blue-500" href="https://github.com/djcarter85" title="GitHub">
           <i class="fab fa-github fa-2x"></i>
         </a>
         
-        <a href="/Feed/" title="RSS">
+        <a class="p-2 rounded-lg hover:bg-blue-500" href="/Feed/" title="RSS">
           <i class="fa fa-rss fa-2x"></i>
         </a>
         
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <div class="copyright">
-          &copy; Dan Carter 2023
-        </div>
+      <div class="text-center">
+        &copy; Dan Carter 2023
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
+  
+  <!-- JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+    integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
-<!-- JS -->
-<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
-  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 </body>
 
 </html>

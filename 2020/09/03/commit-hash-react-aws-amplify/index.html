@@ -7,51 +7,51 @@
 
   <title>Commit hash using React and AWS Amplify | DC Coding</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+  <link rel="stylesheet" href="/assets/css/code.css">
 
   <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
 
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
-  <div class="container">
-    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
-    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarItems">
-      <ul class="navbar-nav ml-auto">
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/Archive">Archive</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/About">About</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/Subscribe">Subscribe</a>
-        </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
+<body class="bg-gray-100 min-h-screen flex flex-col">
   
-<section class="post">
-  <div class="container">
-    <h1 class="post-title">Commit hash using React and AWS Amplify</h1>
-    <p class="date"> 3 September 2020</p>
-    <article>
-      <p>Something I found out how to do today.</p>
-<p>Context:</p>
+  <nav class="bg-gray-800">
+    <div class="container flex flex-row justify-center px-6">
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/">Home</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Archive">Archive</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/About">About</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Subscribe">Subscribe</a>
+      
+    </div>
+  </nav>
+
+  
+
+<div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="text-gray-50 text-6xl font-title font-bold italic">Commit hash using React and AWS Amplify</h1>
+    
+    <p class="text-gray-200 text-lg mt-2"> 3 September 2020</p>
+    
+  </div>
+</div>
+
+<div class="container py-6">
+  <p class="text-3xl italic text-gray-500 mb-6">Something I found out how to do today.</p>
+
+  <article class="prose">
+    <p>Context:</p>
 <ul>
 <li>A <a href="https://reactjs.org/">React</a> app in a Git repository.</li>
 <li><a href="https://aws.amazon.com/amplify/console/">AWS Amplify</a> set up to automatically
@@ -94,51 +94,40 @@ here</a>),
 and you can even set your own (<a href="https://docs.aws.amazon.com/amplify/latest/userguide/environment-variables.html#setting-env-vars">see
 here</a>).</p>
 
-    </article>
-  </div>
-</section>
-<section class="post-comments mt-5">
+  </article>
+</div>
+
+<div class="container py-6">
   <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
-    theme="github-light" crossorigin="anonymous" async>
-    </script>
-</section>
-  <footer class="footer mt-5 py-3 bg-dark">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">
+    theme="github-light" crossorigin="anonymous" async></script>
+</div>
+  
+  <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
+    <div class="container flex flex-col gap-2">
+      <div class="flex flex-row gap-4 justify-center">
         
-        <a href="https://github.com/djcarter85" title="GitHub">
+        <a class="p-2 rounded-lg hover:bg-blue-500" href="https://github.com/djcarter85" title="GitHub">
           <i class="fab fa-github fa-2x"></i>
         </a>
         
-        <a href="/Feed/" title="RSS">
+        <a class="p-2 rounded-lg hover:bg-blue-500" href="/Feed/" title="RSS">
           <i class="fa fa-rss fa-2x"></i>
         </a>
         
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <div class="copyright">
-          &copy; Dan Carter 2023
-        </div>
+      <div class="text-center">
+        &copy; Dan Carter 2023
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
+  
+  <!-- JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+    integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
-<!-- JS -->
-<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
-  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 </body>
 
 </html>

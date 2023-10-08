@@ -7,50 +7,51 @@
 
   <title>Champions League Quarter-Final Draw | DC Coding</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/prism-vsc-dark-plus.css">
+  <link rel="stylesheet" href="/assets/css/code.css">
 
   <link rel="alternate" type="application/rss+xml" title="RSS Feed for DC Coding" href="/Feed/" />
 
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
-  <div class="container">
-    <a class="navbar-brand h1 mb-0" href="/">DC Coding</a>
-    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarItems">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarItems">
-      <ul class="navbar-nav ml-auto">
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/">Home</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/Archive">Archive</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/About">About</a>
-        </li>
-        
-        <li class="nav-item ml-auto">
-          <a class="nav-link" href="/Subscribe">Subscribe</a>
-        </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
+<body class="bg-gray-100 min-h-screen flex flex-col">
   
-<section class="post">
-  <div class="container">
-    <h1 class="post-title">Champions League Quarter-Final Draw</h1>
-    <p class="date">14 March 2019</p>
-    <article>
-      <p>Last night, <a href="https://www.bbc.co.uk/sport/football/47543631">Liverpool beat Bayern Munich
+  <nav class="bg-gray-800">
+    <div class="container flex flex-row justify-center px-6">
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/">Home</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Archive">Archive</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/About">About</a>
+      
+      <a class="text-gray-100 text-lg px-4 py-2 hover:bg-gray-700 hover:underline" href="/Subscribe">Subscribe</a>
+      
+    </div>
+  </nav>
+
+  
+
+<div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="text-gray-50 text-6xl font-title font-bold italic">Champions League Quarter-Final Draw</h1>
+    
+    <p class="text-gray-200 text-lg mt-2">14 March 2019</p>
+    
+  </div>
+</div>
+
+<div class="container py-6">
+  <p class="text-3xl italic text-gray-500 mb-6">What are the chances of English teams avoiding each other in the Champions League quarter-final draw?</p>
+
+  <article class="prose">
+    <p>Last night, <a href="https://www.bbc.co.uk/sport/football/47543631">Liverpool beat Bayern Munich
 3-1</a> in the UEFA Champions League
 round of 16. This means that, of the eight teams left in the competition,
 exactly half are English (<a href="https://twitter.com/OptaJoe/status/1105950279642636294">for the first time since
@@ -78,20 +79,20 @@ opposition)</li>
 <h2>Maths</h2>
 <p>First off, how many different sets of fixtures are there?</p>
 <p>The draw works by pulling the teams out of a bag at random, and then pairing
-them off in twos to decide the fixtures. There are $$8!$$ ways to order the
+them off in twos to decide the fixtures. There are \(8!\) ways to order the
 remaining 8 teams, but some of the resultant fixture lists will be the same.
-Each pair of two teams can be ordered either way ($$2^4$$ ways), and then the
-pairings can be reordered in the list ($$4!$$ ways). This means that each
-fixture list could have come from $$2^4 \times 4!$$ different orderings, so the
-number of fixture lists is $$8!/(2^4 \times 4!) = 105$$.</p>
+Each pair of two teams can be ordered either way (\(2^4\) ways), and then the
+pairings can be reordered in the list (\(4!\) ways). This means that each
+fixture list could have come from \(2^4 \times 4!\) different orderings, so the
+number of fixture lists is \(8!/(2^4 \times 4!) = 105\).</p>
 <p>How many of these fixture lists give zero all-English ties?</p>
 <p>Well, this means the English teams play in different fixtures, so all we need to
 do is consider the number of ways of rearranging the four non-English teams.
-This is $$4! = 24$$.</p>
+This is \(4! = 24\).</p>
 <p>How many of these fixture lists give two all-English ties?</p>
 <p>In this case, we can split the 8 teams into two pots (English and non-English
 teams) and then work out how many possible fixture lists there are. For each
-pot, there are 3 ways to choose the ties, so there are $$3 \times 3 = 9$$
+pot, there are 3 ways to choose the ties, so there are \(3 \times 3 = 9\)
 fixture lists that satisify this.</p>
 <p>The remainder, 72, have exactly one all-English tie.</p>
 <p>As probabilities, this gives:</p>
@@ -107,12 +108,11 @@ the draw a large number of times and look at the results. This is known as the
 never get the exact probabilities this way, but it can be really useful if we're
 dealing with a problem so big that evaluating the probabilities mathematically
 is infeasible.</p>
-<p>The source code for how I did this can be found at
-<a href="https://github.com/djcarter85/ChampionsLeagueDraw">https://github.com/djcarter85/ChampionsLeagueDraw</a>,
+<p>The source code for how I did this can be found
+<a href="https://github.com/djcarter85/ChampionsLeagueDraw">on Github</a>,
 but there's a summmary below.</p>
 <p>I started off with a <code>Team</code> class, adding the attributes that were necessary for
 this problem.</p>
-<h5>C#</h5>
 <pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Team</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token function">Team</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">string</span></span> name<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">bool</span></span> isEnglish<span class="token punctuation">)</span>
@@ -128,7 +128,6 @@ this problem.</p>
 <p>Then I added a simple <code>Match</code> class, containing a property for calculating the
 information we are interested in, namely whether the match contains two English
 teams.</p>
-<h5>C#</h5>
 <pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Match</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token function">Match</span><span class="token punctuation">(</span><span class="token class-name">Team</span> home<span class="token punctuation">,</span> <span class="token class-name">Team</span> away<span class="token punctuation">)</span>
@@ -144,7 +143,6 @@ teams.</p>
     <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> IsAllEnglish <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>Home<span class="token punctuation">.</span>IsEnglish <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>Away<span class="token punctuation">.</span>IsEnglish<span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
 <p>Then the simulation is mainly done in the <code>FixtureList</code> class.</p>
-<h5>C#</h5>
 <pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FixtureList</span>
 <span class="token punctuation">{</span>
     <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">IReadOnlyList<span class="token punctuation">&lt;</span>Team<span class="token punctuation">></span></span> Teams <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">[</span><span class="token punctuation">]</span>
@@ -183,7 +181,6 @@ teams.</p>
 <code>Shuffle</code> and <code>Batch</code> here.</p>
 <p>Then it's a case of running this a large number of times and collating the
 results. Here's what I found with 100,000,000 simulations:</p>
-<h5>Output</h5>
 <pre><code>Simulating 100,000,000 fixture lists ...
 Fixture lists with 0 all-English matches: 22,851,251 (22.85%)
 Fixture lists with 1 all-English match: 68,576,647 (68.58%)
@@ -226,51 +223,40 @@ calculating it by hand won't work.</p>
 <p>Whether or not an English team brings home the Champions League trophy, we now
 all know a little more about tomorrow's quarter final draw. It's coming home ...</p>
 
-    </article>
-  </div>
-</section>
-<section class="post-comments mt-5">
+  </article>
+</div>
+
+<div class="container py-6">
   <script src="https://utteranc.es/client.js" repo="djcarter85/codingblog" issue-term="url" label="comments"
-    theme="github-light" crossorigin="anonymous" async>
-    </script>
-</section>
-  <footer class="footer mt-5 py-3 bg-dark">
-  <div class="container text-center">
-    <div class="row">
-      <div class="col">
+    theme="github-light" crossorigin="anonymous" async></script>
+</div>
+  
+  <footer class="footer mt-auto py-4 bg-blue-800 text-gray-50">
+    <div class="container flex flex-col gap-2">
+      <div class="flex flex-row gap-4 justify-center">
         
-        <a href="https://github.com/djcarter85" title="GitHub">
+        <a class="p-2 rounded-lg hover:bg-blue-500" href="https://github.com/djcarter85" title="GitHub">
           <i class="fab fa-github fa-2x"></i>
         </a>
         
-        <a href="/Feed/" title="RSS">
+        <a class="p-2 rounded-lg hover:bg-blue-500" href="/Feed/" title="RSS">
           <i class="fa fa-rss fa-2x"></i>
         </a>
         
       </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <div class="copyright">
-          &copy; Dan Carter 2023
-        </div>
+      <div class="text-center">
+        &copy; Dan Carter 2023
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
+  
+  <!-- JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+    integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 
-<!-- JS -->
-<script defer src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
-  integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
 </body>
 
 </html>
