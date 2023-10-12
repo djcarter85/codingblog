@@ -20,7 +20,7 @@
   }
 
   .prose img {
-    @apply mx-auto;
+    @apply mx-auto my-5;
   }
 
   .prose h1,
