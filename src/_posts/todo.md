@@ -1,6 +1,9 @@
 # TODO
 
-- rename to `ProcGen Fun`
+- rename to `ProcGen Fun` in code
+  - repo
+  - namespaces
+  - files
 
 ## Post 0
 
