@@ -75,7 +75,7 @@ dealing with a problem so big that evaluating the probabilities mathematically
 is infeasible.
 
 The source code for how I did this can be found
-[on Github](https://github.com/djcarter85/ChampionsLeagueDraw),
+[on GitHub](https://github.com/djcarter85/ChampionsLeagueDraw),
 but there's a summmary below.
 
 I started off with a `Team` class, adding the attributes that were necessary for
