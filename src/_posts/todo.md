@@ -4,9 +4,6 @@
 
 ## Post 1
 
-- write monad code in repo
-- write monad bit in post
-- write conclusion
 - review it
 
 ## Post 2 - mazes
