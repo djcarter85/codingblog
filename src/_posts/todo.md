@@ -1,5 +1,7 @@
 # TODO
 
+- maybe have one RNG at top
+
 ## Post 0
 
 ## Post 1
