@@ -179,7 +179,8 @@ teams.</p>
 
     <span class="token keyword">public</span> <span class="token return-type class-name">IReadOnlyList<span class="token punctuation">&lt;</span>Match<span class="token punctuation">></span></span> Matches <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
 
-    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> NumberOfAllEnglishMatches <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span>Matches<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>m <span class="token operator">=></span> m<span class="token punctuation">.</span>IsAllEnglish<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> NumberOfAllEnglishMatches <span class="token operator">=></span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Matches<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>m <span class="token operator">=></span> m<span class="token punctuation">.</span>IsAllEnglish<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">FixtureList</span> <span class="token function">CreateRandom</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token punctuation">{</span>
