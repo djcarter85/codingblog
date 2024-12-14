@@ -125,7 +125,10 @@ var date = new System.DateTime(2019, 1, 2);
 The simplest way to compose strings is by using the `+` operator:
 
 ```cs
-var output = "We sold " + amount.ToString() + " mars bars on " + date.ToString("D", new CultureInfo("en-US")) + ", each costing £" + price.ToString("N2") + ".";
+var output =
+    "We sold " + amount.ToString() + " mars bars on " +
+    date.ToString("D", new CultureInfo("en-US")) +
+    ", each costing £" + price.ToString("N2") + ".";
 ```
 
 This gives `"We sold 5 mars bars on Wednesday, January 2, 2019, each costing
@@ -135,7 +138,9 @@ You can omit the `ToString` call if you like, and .NET will do an implicit cast
 to `string`, which is equivalent to calling `ToString` with no arguments:
 
 ```cs
-var output = "We sold " + amount + " mars bars on " + date + ", each costing £" + price + ".";
+var output =
+    "We sold " + amount + " mars bars on " + date + ", each costing £" +
+    price + ".";
 ```
 
 This gives `"We sold 5 mars bars on 1/2/19 12:00:00 AM, each costing £1.2."`. As
@@ -151,7 +156,12 @@ method will format them and insert them into the placeholders.
 It's best explained with an example:
 
 ```cs
-var output = string.Format("We sold {0} mars bars on {1}, each costing £{2}.", amount, date, price);
+var output =
+    string.Format(
+      "We sold {0} mars bars on {1}, each costing £{2}.",
+      amount,
+      date,
+      price);
 ```
 
 This gives `"We sold 5 mars bars on 1/2/19 12:00:00 AM, each costing £1.2."`, as
@@ -161,7 +171,12 @@ inserted them into the placeholders using zero-based indexing.
 You can also specify format strings, like so:
 
 ```cs
-var output = string.Format("We sold {0} mars bars on {1:D}, each costing £{2:N2}.", amount, date, price);
+var output =
+    string.Format(
+        "We sold {0} mars bars on {1:D}, each costing £{2:N2}.",
+        amount,
+        date,
+        price);
 ```
 
 This gives `"We sold 5 mars bars on Wednesday, January 2, 2019, each costing

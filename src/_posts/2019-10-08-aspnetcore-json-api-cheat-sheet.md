@@ -140,7 +140,8 @@ You can disable this behaviour during startup by adding the following to your
 services.AddMvc()
     .AddJsonOptions(o =>
     {
-        o.SerializerSettings.Converters.Add(new StringEnumConverter { AllowIntegerValues = false });
+        o.SerializerSettings.Converters.Add(
+            new StringEnumConverter { AllowIntegerValues = false });
     });
 ```
 

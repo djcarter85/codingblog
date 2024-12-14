@@ -65,7 +65,8 @@ public static class DistributionExtensions
     }
 
     // Modified version to avoid infinite loop
-    public static IEnumerable<T> TakeSamples<T>(this IDistribution<T> distribution, int numberOfSamples)
+    public static IEnumerable<T> TakeSamples<T>(
+        this IDistribution<T> distribution, int numberOfSamples)
     {
         for (var i = 0; i < numberOfSamples; i++)
         {
@@ -114,7 +115,8 @@ This is then used in my program's main method as follows:
 ```cs
 public static class Program
 {
-    private static readonly IDistribution<FixtureList> Distribution = new FixtureListDistribution();
+    private static readonly IDistribution<FixtureList> Distribution =
+        new FixtureListDistribution();
 
     // ...
 
@@ -163,7 +165,8 @@ The call site then changes to:
 ```cs
 public static class Program
 {
-    private static readonly IDistribution<FixtureList> Distribution = new FixtureListDistribution();
+    private static readonly IDistribution<FixtureList> Distribution =
+        new FixtureListDistribution();
 
     // ...
 
@@ -171,7 +174,8 @@ public static class Program
     {
         // ...
 
-        foreach (var fixtureList in Distribution.TakeSamples(totalNumberOfFixtureLists))
+        foreach (var fixtureList in
+            Distribution.TakeSamples(totalNumberOfFixtureLists))
         {
             // Collate results ...
         }
@@ -204,7 +208,9 @@ public class ShuffleDistribution<T> : IDistribution<IReadOnlyList<T>>
 
         for (var index1 = 0; index1 < totalNumberOfItems; index1++)
         {
-            var randomIndex2 = StandardDiscreteUniform.Distribution(index1, totalNumberOfItems - 1).Sample();
+            var randomIndex2 =
+                StandardDiscreteUniform.Distribution(index1, totalNumberOfItems - 1)
+                    .Sample();
             SwapItemsAtIndexes(array, index1, randomIndex2);
         }
 

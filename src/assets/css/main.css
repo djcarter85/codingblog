@@ -47,7 +47,7 @@
   }
 
   .prose pre {
-    @apply my-5 overflow-x-scroll rounded-lg bg-blue-800 p-4 text-base text-gray-100;
+    @apply my-5 overflow-x-scroll rounded-lg bg-blue-800 p-4 text-sm text-gray-100;
   }
 
   .prose ul {

@@ -279,7 +279,9 @@ public class CustomerControllerTests
 
         var actionResult = controller.GetAllCustomers();
 
-        Assert.That(actionResult, Is.InstanceOf<OkResult>().Or.InstanceOf<OkObjectResult>());
+        Assert.That(
+            actionResult,
+            Is.InstanceOf<OkResult>().Or.InstanceOf<OkObjectResult>());
     }
 
     [Test]

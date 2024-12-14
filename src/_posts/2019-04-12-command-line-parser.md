@@ -101,7 +101,8 @@ class Program
 {
     static int Main(string[] args)
     {
-        return CommandLine.Parser.Default.ParseArguments<AddOptions, CommitOptions, CloneOptions>(args)
+        return CommandLine.Parser.Default
+            .ParseArguments<AddOptions, CommitOptions, CloneOptions>(args)
             .MapResult(
                 (CloneOptions o) => {
                     // clone
@@ -139,10 +140,12 @@ class Options
     [Value(0, HelpText = "The file to display information for.")]
     public string FilePath { get; set; }
 
-    [Option('d', "detailed", HelpText = "Whether to output detailed information about the file.")]
+    [Option('d', "detailed",
+        HelpText = "Whether to output detailed information about the file.")]
     public bool Detailed { get; set; }
 
-    [Option('o', "output", HelpText = "If specified, a file to output the results to.")]
+    [Option('o', "output",
+        HelpText = "If specified, a file to output the results to.")]
     public string Output { get; set; }
 }
 ```

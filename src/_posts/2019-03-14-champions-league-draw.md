@@ -141,7 +141,8 @@ public class FixtureList
 
     public IReadOnlyList<Match> Matches { get; }
 
-    public int NumberOfAllEnglishMatches => this.Matches.Count(m => m.IsAllEnglish);
+    public int NumberOfAllEnglishMatches =>
+        this.Matches.Count(m => m.IsAllEnglish);
 
     public static FixtureList CreateRandom()
     {

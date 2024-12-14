@@ -37,7 +37,8 @@ class Distance
     public Distance Convert(DistanceUnit targetUnit)
     {
         return new Distance(
-            this.Value * ConversionFactorToKilometres(this.Unit) / ConversionFactorToKilometres(targetUnit),
+            this.Value * ConversionFactorToKilometres(this.Unit) /
+                ConversionFactorToKilometres(targetUnit),
             targetUnit);
     }
 
@@ -93,7 +94,8 @@ class Distance
     {
         var attribute = (ConversionFactorToKilometresAttribute)typeof(DistanceUnit)
             .GetMember(unit.ToString())[0]
-            .GetCustomAttributes(typeof(ConversionFactorToKilometresAttribute), false)
+            .GetCustomAttributes(
+                typeof(ConversionFactorToKilometresAttribute), false)
             .Single();
         return attribute.Factor;
     }
