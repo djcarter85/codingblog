@@ -1,0 +1,178 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>ProcGen Fun 0: Introduction | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      ProcGen Fun 0: Introduction
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">18 December 2024</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">Introductory post to a series combining procedural generation and functional programming.</p>
+
+  <article class="prose"><p>Here begins a series of blog posts combining two concepts I've long since been
+interested in: <strong>procedural generation</strong> and <strong>functional programming</strong>.</p>
+<p><a href="https://en.wikipedia.org/wiki/Procedural_generation">Procedural generation
+(procgen)</a> is the technique
+of creating data algorithmically instead of manually. It's typically powered by
+randomness operating within certain constraints. This allows you to generate
+many different instances of a structure which all follow a coherent pattern.</p>
+<p>I'm utterly fascinated by the idea of giving a computer a set of rules and a
+random number generator and it giving you something beautiful in return! For
+example, the beautiful village map below was generated procedurally using <a href="https://watabou.itch.io/village-generator">Oleg
+Dolya's village generator</a>. I love
+seeing what people come up with on the <a href="https://www.reddit.com/r/proceduralgeneration/">r/proceduralgeneration
+subreddit</a>.</p>
+<p><img src="/assets/images/2024-12-18-PGF-00/village.png" alt="Procedurally generated village"></p>
+<p><a href="https://en.wikipedia.org/wiki/Functional_programming">Functional programming
+(FP)</a> is a programming
+paradigm which centres on the idea of composing functions. It's often considered
+in contrast to <em>imperative programming</em>, where successive statements update the
+state of the program. As much as possible, functions in FP should be <em>pure</em>,
+meaning:</p>
+<ul>
+<li>A given set of inputs must always produce the same output (such functions are
+said to be <em>deterministic</em>).</li>
+<li>The function must not cause <em>side-effects</em>; that is, observable behaviour
+apart from the return value of the function. For example, a function should
+return values instead of modifying the inputs passed in (known as
+<em>immutability</em>).</li>
+</ul>
+<p>In my experience, applying principles from functional programming tends to make
+your code much easier to read and reason about. For example, avoiding
+side-effects means that you can focus on just the inputs and outputs to a called
+function.</p>
+<p>At first glance it might seem odd to combine procedural generation and
+functional programming. Randomness is an inherently impure concept; by
+definition, you don't always get the same answer when you ask for a random
+number! However, there are ways of expressing randomness in a functional
+way (as we shall see), and I'm intrigued to see whether we're able to reap the
+benefits of functional principles within an intrinsically random system.</p>
+<p>In this series I'll be using C#. This might seem an odd choice, as F# is the
+functional-first language within the .NET ecosystem. However, C# has embraced
+many functional principles in recent years, and it's much more familiar to me
+(and probably my readers). Perhaps a post later on in this series could explore
+migrating the functional core to F#.</p>
+<p>The source code for this series can be found <a href="https://github.com/djcarter85/ProcGenFun">on
+GitHub</a>; each post will have its own
+branch so you can follow along if you like.</p>
+<h2>List of posts</h2>
+<p>Here's a list of posts in the series so far; I'll update this as new posts are
+added!</p>
+<ul>
+<li><a href="/2024/12/18/PGF-00">0: Introduction</a></li>
+</ul>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2024
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
