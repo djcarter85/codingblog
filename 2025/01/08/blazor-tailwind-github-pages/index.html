@@ -1,0 +1,303 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>Deploying a Blazor site to GitHub Pages | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      Deploying a Blazor site to GitHub Pages
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200"> 8 January 2025</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">How to create a Blazor WebAssembly website using Tailwind CSS and deploy it to GitHub Pages.</p>
+
+  <article class="prose"><p>As a brief interlude to my <a href="/2024/12/18/PGF-00/">ProcGen Fun</a> series, I'd like
+to write up how I created a <a href="https://procgenfun.carterdan.net/">playground
+website</a> which allows you to run the code
+I've been writing in that series.</p>
+<p>The procedural generation is all being written in C#, so we need a website which
+can run .NET code (directly or indirectly). For many years the way to do this
+would be to build a static website (using HTML, CSS and JavaScript) which called
+a web API implemented in .NET. However, with the recent advent of <a href="https://webassembly.org/">WebAssembly
+(WASM)</a> we can now run binary code client-side.
+<a href="https://blazor.net">Blazor</a> is the .NET technology which uses WASM to run .NET
+code in the browser, using a templating syntax called Razor.</p>
+<p>In my case, I've built a static website using Blazor, using <a href="https://tailwindcss.com/">Tailwind
+CSS</a> for styling, and deployed it to <a href="https://pages.github.com/">GitHub
+Pages</a>. What follows is a list of steps that you can
+follow, based on what I did. I hope some or all of it is helpful!</p>
+<h2>1. Add a blank Blazor project</h2>
+<p>In Visual Studio, create a new blank Blazor project. You can do this using &quot;Add
+New Project&quot; and selecting the &quot;Blazor WebAssembly App Empty&quot; template. You can
+also do this via the command line, using the following command.</p>
+<pre class="language-cmd"><code class="language-cmd">dotnet new blazorwasm-empty -o YourProjectName</code></pre>
+<p>The reason I suggest using the &quot;empty&quot; template is that the standard template
+comes with Bootstrap CSS pre-installed, and we want to use Tailwind CSS.</p>
+<h2>2. Upgrade to the latest .NET</h2>
+<p>For some reason, on my machine step 1 generated a Blazor project targetting .NET
+7, which is out of support. If this happens to you, I suggest upgrading to .NET
+8 (the latest LTS version of .NET at the time of writing).</p>
+<p>To do this, change the <code>TargetFramework</code> property in the project file to
+<code>net8.0</code>, and upgrade the two Blazor NuGet packages to the latest v8 release.</p>
+<h2>3. Add Tailwind</h2>
+<p>The easiest way to add Tailwind CSS to a project is to install it using <code>npm</code>,
+and then use the <code>init</code> command to create a blank config file.</p>
+<pre class="language-cmd"><code class="language-cmd">npm install -D tailwindcss
+npx tailwindcss init</code></pre>
+<p>In your newly-created config file, set the template paths (the <code>content</code>
+setting) as follows. This tells Tailwind where to look for class names when
+compiling the CSS.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">/** @type {import('tailwindcss').Config} */</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">content</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"./**/*.{razor,html}"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">theme</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">extend</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>Then create your main CSS file. I called mine <code>tailwind.css</code> and put it in the
+<code>Styles</code> directory.</p>
+<pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@tailwind</span> base<span class="token punctuation">;</span></span>
+<span class="token atrule"><span class="token rule">@tailwind</span> components<span class="token punctuation">;</span></span>
+<span class="token atrule"><span class="token rule">@tailwind</span> utilities<span class="token punctuation">;</span></span></code></pre>
+<p>The build script we're going to use (see below) will compile this file and
+output the result to <code>css/tailwind.css</code>. So in your <code>index.html</code> file, add a
+reference to this path in the head:</p>
+<pre class="language-html"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+  ...
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>css/tailwind.css<span class="token punctuation">"</span></span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  ...
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+  ...
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<p>Now we can use Tailwind classes in our HTML files and Razor components.</p>
+<p>For more information on how to configure Tailwind, see <a href="https://tailwindcss.com/docs/installation">the official
+docs</a>.</p>
+<h2>4. Add deployment to GitHub Pages</h2>
+<p>There are a few things which need to be done before you can publish your site to
+GitHub Pages. Fortunately there is a NuGet package called
+<a href="https://github.com/jsakamoto/PublishSPAforGitHubPages.Build">PublishSPAforGitHubPages.Build</a>
+which does lots of the work for you! I suggest having a read of the
+documentation to understand what it does.</p>
+<p>You can install it using this command.</p>
+<pre class="language-cmd"><code class="language-cmd">dotnet add package PublishSPAforGitHubPages.Build</code></pre>
+<p>Then you need a GitHub Actions script, to be run on every push to your main
+branch. This should be placed in a YAML file (I called mine <code>gh-pages.yml</code>) in
+the <code>.github/workflows</code> folder of your repository.</p>
+<p>Here's the script I used. If you use this script then you might need to change
+various branch names and paths to match your setup.</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> GitHub Pages Deployment
+
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> main
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">permissions</span><span class="token punctuation">:</span>
+      <span class="token key atrule">contents</span><span class="token punctuation">:</span> write
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token comment"># Checkout the code</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4
+
+      <span class="token comment"># Install .NET SDK</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Setup .NET SDK
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>dotnet@v4
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">dotnet-version</span><span class="token punctuation">:</span> 8.0.x
+
+      <span class="token comment"># Install NPM dependencies</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install NPM dependencies
+        <span class="token key atrule">working-directory</span><span class="token punctuation">:</span> ./ProcGenFun.Blazor
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> npm i
+
+      <span class="token comment"># Compile Tailwind CSS</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Compile Tailwind CSS
+        <span class="token key atrule">working-directory</span><span class="token punctuation">:</span> ./ProcGenFun.Blazor
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> npx tailwindcss <span class="token punctuation">-</span>i ./Styles/tailwind.css <span class="token punctuation">-</span>o ./wwwroot/css/tailwind.css
+
+      <span class="token comment"># Publish the site</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Publish
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> dotnet publish ./ProcGenFun.Blazor/ProcGenFun.Blazor.csproj <span class="token punctuation">-</span>c<span class="token punctuation">:</span>Release <span class="token punctuation">-</span>o<span class="token punctuation">:</span>publish <span class="token punctuation">-</span>p<span class="token punctuation">:</span>GHPages=true
+
+      <span class="token comment"># Deploy the site</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> peaceiris/actions<span class="token punctuation">-</span>gh<span class="token punctuation">-</span>pages@v4
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">github_token</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span><span class="token punctuation">{</span> secrets.GITHUB_TOKEN <span class="token punctuation">}</span><span class="token punctuation">}</span>
+          <span class="token key atrule">publish_dir</span><span class="token punctuation">:</span> publish/wwwroot
+          <span class="token key atrule">force_orphan</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+          <span class="token key atrule">publish_branch</span><span class="token punctuation">:</span> gh<span class="token punctuation">-</span>pages</code></pre>
+<p>The key thing here is that we compile the Tailwind CSS before compiling the
+Blazor project, so that the CSS output is included in the compiled bundle. We
+then push this bundle in a single orphaned commit to the <code>gh-pages</code> branch.</p>
+<p>The final step is to set up GitHub Pages to deploy from the <code>gh-pages</code> branch.
+This means that every time the <code>gh-pages</code> branch changes (i.e. when our script
+is run), GitHub Pages will update our public website to match the contents of
+the repository on that branch. In the GitHub web UI, go to Settings (for the
+repository), click on Pages, and then under &quot;branch&quot; select <code>gh-pages</code>.</p>
+<h2>5. Add custom domain</h2>
+<p>Your site will now be deployed at <code>{username}.github.io/{repository}</code> (e.g. mine
+was available at <code>djcarter85.github.io/ProcGenFun</code>). Often you'll want to use a
+custom domain instead; for example, I have published mine at
+<a href="https://procgenfun.carterdan.net">procgenfun.carterdan.net</a>.</p>
+<p>The <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site">GitHub
+docs</a>
+for this are reasonably clear (including how to configure the settings with your
+DNS provider), but it's worth noting that if you use the GitHub web UI to
+configure the custom domain, it'll make a change on your <code>gh-pages</code> branch which
+will be overwritten the next time the GitHub Actions script is run. Instead, add
+the <code>CNAME</code> file yourself in the <code>wwwroot</code> directory of your Blazor project,
+specifying your desired custom domain name on a single line. This will then be
+placed in the right location within your published bundle.</p>
+<p>As a final step, you'll need to set the site's base path in your build script.
+The NuGet package referenced above assumes you're not using a custom domain
+name, and sets the base path to <code>/{repository}</code>. You can set the base path back
+to <code>/</code> by adding the <code>GHPagesBase</code> parameter when publishing the site in your
+GitHub Actions script:</p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token punctuation">...</span>
+      <span class="token comment"># Publish the site</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Publish
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> dotnet publish ./ProcGenFun.Blazor/ProcGenFun.Blazor.csproj <span class="token punctuation">-</span>c<span class="token punctuation">:</span>Release <span class="token punctuation">-</span>o<span class="token punctuation">:</span>publish <span class="token punctuation">-</span>p<span class="token punctuation">:</span>GHPages=true <span class="token punctuation">-</span>p<span class="token punctuation">:</span>GHPagesBase=/
+<span class="token punctuation">...</span></code></pre>
+<h2>Appendix: development</h2>
+<p>The easiest way I found to develop using this setup is to use VSCode. In one
+terminal I set up Tailwind to automatically recompile the CSS when anything
+changes.</p>
+<pre class="language-cmd"><code class="language-cmd">cd ProcGenFun.Blazor
+npx tailwindcss -i .\Styles\tailwind.css -o .\wwwroot\css\tailwind.css --watch</code></pre>
+<p>And then in another terminal I started the Blazor project, using the <code>watch</code>
+command to reload the site when anything changes.</p>
+<pre class="language-cmd"><code class="language-cmd">cd ProcGenFun.Blazor
+dotnet watch</code></pre>
+<p>This gives you fast feedback on the changes you make as you're developing your
+site.</p>
+<h2>Further reading</h2>
+<p>Here's a couple of related blog posts which I found helpful.</p>
+<ul>
+<li><a href="https://positiwise.medium.com/deploying-an-asp-net-blazor-webassembly-app-to-github-pages-9f7bc476938a">Deploying an ASP.NET Blazor WebAssembly App to GitHub
+Pages</a></li>
+<li><a href="https://timdeschryver.dev/blog/integrating-tailwind-css-in-blazor">Integrating Tailwind CSS in
+Blazor</a></li>
+</ul>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2025
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
