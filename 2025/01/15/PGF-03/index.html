@@ -1,0 +1,368 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>ProcGen Fun 3: Simple mazes | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      ProcGen Fun 3: Simple mazes
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">15 January 2025</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">Implementing the binary tree algorithm to generate a maze.</p>
+
+  <article class="prose"><p>[<a href="/2024/12/18/PGF-00/#list-of-posts">List of posts</a> | <a href="https://github.com/djcarter85/ProcGenFun/tree/post-03">source code for this
+post</a>]</p>
+<p>So far in this series we have given ourseleves the ability to generate random
+values corresponding to some distribution. In this post we're going to actually
+start generating something pretty, namely some mazes!</p>
+<p>Much of the next few posts takes inspiration from the book <a href="https://amzn.eu/d/2OqU3WZ">Mazes for
+Programmers</a> by <a href="https://weblog.jamisbuck.org/">Jamis
+Buck</a>. It's well worth a read!</p>
+<p>Since the last post in this series, I've put together a <a href="https://procgenfun.carterdan.net/">playground
+website</a> where you can run the algorithms for
+yourself and see the results. This will be particularly fun to watch as we look
+at procedural generation of mazes.</p>
+<h2>Representing a maze in code</h2>
+<p>To start with, we need a grid to work on. A grid is made up of cells, which we
+can partition into rows and columns.</p>
+<p><img src="/assets/images/2025-01-15-PGF-03/maze-all-walls.svg" alt="Maze with all walls"></p>
+<p>We can refer to columns using an X coordinate and rows using a Y coordinate
+(0-indexed, of course!). For example, the highlighted cell in the below image is
+the cell with X=4 and Y=6.</p>
+<p><img src="/assets/images/2025-01-15-PGF-03/grid.svg" alt="Maze grid"></p>
+<p>We can represent this in code with <code>Cell</code> and <code>Grid</code> types.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">record</span> <span class="token class-name">Cell</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> X<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> Y<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Grid</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Grid</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> width<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> height<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Width <span class="token operator">=</span> width<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Height <span class="token operator">=</span> height<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Cells <span class="token operator">=</span>
+            <span class="token punctuation">(</span><span class="token keyword">from</span> y <span class="token keyword">in</span> Enumerable<span class="token punctuation">.</span><span class="token function">Range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>Height<span class="token punctuation">)</span>
+             <span class="token keyword">from</span> x <span class="token keyword">in</span> Enumerable<span class="token punctuation">.</span><span class="token function">Range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>Width<span class="token punctuation">)</span>
+             <span class="token keyword">select</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Cell</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+             <span class="token punctuation">.</span><span class="token function">ToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> Width <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> Height <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span>Cell<span class="token punctuation">></span></span> Cells <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We also need to keep track of which walls are present between cells in any
+particular maze. I've chosen to represent this using the four cardinal
+directions on a map, but another approach could be to store a wall as the pair
+of cells on either side of the wall.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">enum</span> <span class="token class-name">Direction</span> <span class="token punctuation">{</span> North<span class="token punctuation">,</span> East<span class="token punctuation">,</span> South<span class="token punctuation">,</span> West <span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Maze</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> <span class="token class-name">ImmutableDictionary<span class="token punctuation">&lt;</span>Cell<span class="token punctuation">,</span> ImmutableList<span class="token punctuation">&lt;</span>Direction<span class="token punctuation">></span><span class="token punctuation">></span></span> cellWalls<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token function">Maze</span><span class="token punctuation">(</span>
+        <span class="token class-name">Grid</span> grid<span class="token punctuation">,</span>
+        <span class="token class-name">ImmutableDictionary<span class="token punctuation">&lt;</span>Cell<span class="token punctuation">,</span> ImmutableList<span class="token punctuation">&lt;</span>Direction<span class="token punctuation">></span><span class="token punctuation">></span></span> cellWalls<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Grid <span class="token operator">=</span> grid<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>cellWalls <span class="token operator">=</span> cellWalls<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">Grid</span> Grid <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">Maze</span> <span class="token function">WithAllWalls</span><span class="token punctuation">(</span><span class="token class-name">Grid</span> grid<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name"><span class="token keyword">var</span></span> cellWalls <span class="token operator">=</span> ImmutableDictionary<span class="token operator">&lt;</span>Cell<span class="token punctuation">,</span> ImmutableList<span class="token operator">&lt;</span>Direction<span class="token operator">>></span><span class="token punctuation">.</span>Empty<span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> cell <span class="token keyword">in</span> grid<span class="token punctuation">.</span>Cells<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            cellWalls <span class="token operator">=</span> cellWalls<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>
+                cell<span class="token punctuation">,</span>
+                <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Direction<span class="token punctuation">.</span>North</span><span class="token punctuation">,</span> <span class="token class-name">Direction<span class="token punctuation">.</span>East</span><span class="token punctuation">,</span> <span class="token class-name">Direction<span class="token punctuation">.</span>South</span><span class="token punctuation">,</span> <span class="token class-name">Direction<span class="token punctuation">.</span>West</span></span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Maze</span><span class="token punctuation">(</span>grid<span class="token punctuation">,</span> cellWalls<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> <span class="token function">WallExists</span><span class="token punctuation">(</span><span class="token class-name">Cell</span> cell<span class="token punctuation">,</span> <span class="token class-name">Direction</span> direction<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>cellWalls<span class="token punctuation">[</span>cell<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">Contains</span><span class="token punctuation">(</span>direction<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Here I'm using a couple of types from the <code>System.Collections.Immutable</code>
+namespace. The idea behind these is that instead of (say) adding a new value to
+a list, you call a method which returns you a new list with that value added.</p>
+<p>The <code>Maze</code> class works in the same way: you can't modify it, but you can call a
+method to give you a new maze with one wall removed.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token return-type class-name">Maze</span> <span class="token function">RemoveWall</span><span class="token punctuation">(</span><span class="token class-name">Cell</span> cell<span class="token punctuation">,</span> <span class="token class-name">Direction</span> direction<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> adjacentCell <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>Grid<span class="token punctuation">.</span><span class="token function">AdjacentCellOrNull</span><span class="token punctuation">(</span>cell<span class="token punctuation">,</span> direction<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>adjacentCell <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">InvalidOperationException</span><span class="token punctuation">(</span>
+            <span class="token interpolation-string"><span class="token string">$"</span><span class="token interpolation"><span class="token punctuation">{</span><span class="token expression language-csharp">direction</span><span class="token punctuation">}</span></span><span class="token string"> wall cannot be removed."</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Maze</span><span class="token punctuation">(</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Grid<span class="token punctuation">,</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>cellWalls
+            <span class="token punctuation">.</span><span class="token function">SetItem</span><span class="token punctuation">(</span>cell<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>cellWalls<span class="token punctuation">[</span>cell<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>direction<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">SetItem</span><span class="token punctuation">(</span>
+                adjacentCell<span class="token punctuation">,</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span>cellWalls<span class="token punctuation">[</span>adjacentCell<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>direction<span class="token punctuation">.</span><span class="token function">Opposite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>To keep the set of walls consistent, we must remove the wall from the cells on
+both side of the wall.</p>
+<h2>The binary tree algorithm</h2>
+<p>Enough chat; you came here for mazes, so let's make one!</p>
+<p>The <em>binary tree algorithm</em> is probably the simplest maze generation algorithm.
+For each cell in the grid, choose randomly between South and East, and remove
+the wall in that direction. That's it!</p>
+<p>If you try and implement this yourself, you'll notice that there are a few edge
+cases (quite literally). Along the South edge, you can't remove the South wall
+because it's the edge of the grid, so you only have one option: to remove the
+East wall. Similarly, along the East edge, you can only remove the South wall.
+You then ignore the South-East cell entirely, as there are no walls you can
+remove.</p>
+<p>Here's what you end up with!</p>
+<p><img src="/assets/images/2025-01-15-PGF-03/binary-tree.svg" alt="Maze generated using the binary tree
+algorithm"></p>
+<p>Notice the unbroken corridors along the South and East sides of the maze. The
+binary tree algorithm unfortunately always generates mazes like this, but it's a
+good first start as we explore maze generation. Later in the series we'll
+generate mazes with less obvious biases.</p>
+<h2>Binary tree algorithm in code</h2>
+<p>The code for this demonstrates really nicely the idea of composing distributions
+to create new ones. All the functions shown below are entirely pure: they only
+depend on their inputs and produce no side-effects. The final result is not a
+maze, but a distribution <em>which when sampled</em> produces a maze.</p>
+<h3>Outline</h3>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>Maze<span class="token punctuation">></span></span> <span class="token function">MazeDist</span><span class="token punctuation">(</span><span class="token class-name">Grid</span> grid<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token class-name">IDistribution<span class="token punctuation">&lt;</span>Maze<span class="token punctuation">></span></span> mazeDist <span class="token operator">=</span> <span class="token function">InitialMazeDist</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> cell <span class="token keyword">in</span> grid<span class="token punctuation">.</span>Cells<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        mazeDist <span class="token operator">=</span> mazeDist<span class="token punctuation">.</span><span class="token function">SelectMany</span><span class="token punctuation">(</span>m <span class="token operator">=></span> <span class="token function">NextStepDist</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> grid<span class="token punctuation">,</span> cell<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> mazeDist<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Starting from an initial distribution, we loop through all the cells and update
+the distribution based on the different (random) outcomes that could occur at
+each step.</p>
+<p>The use of <code>SelectMany()</code> here instead of <code>Select()</code> is crucial: it tells us
+that for a given maze so far, there could (in general) be multiple different
+ways for the maze to evolve. This corresponds with the fact that (in general)
+there are multiple possibilities for which wall we choose to remove.</p>
+<h3>Initial distribution</h3>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>Maze<span class="token punctuation">></span></span> <span class="token function">InitialMazeDist</span><span class="token punctuation">(</span><span class="token class-name">Grid</span> grid<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> initialState <span class="token operator">=</span> Maze<span class="token punctuation">.</span><span class="token function">WithAllWalls</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> Singleton<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span>initialState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>In future we'll see algorithms with a random initial state, but in this case
+there is only one way to start the process. For this we use the singleton
+distribution: a distribution which gives the same value every time it is
+sampled.</p>
+<h3>Updating the distribution</h3>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>Maze<span class="token punctuation">></span></span> <span class="token function">NextStepDist</span><span class="token punctuation">(</span><span class="token class-name">Maze</span> maze<span class="token punctuation">,</span> <span class="token class-name">Grid</span> grid<span class="token punctuation">,</span> <span class="token class-name">Cell</span> cell<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> validDirections <span class="token operator">=</span> <span class="token function">GetValidDirections</span><span class="token punctuation">(</span>cell<span class="token punctuation">,</span> grid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>UniformDistribution<span class="token punctuation">.</span><span class="token function">TryCreate</span><span class="token punctuation">(</span>validDirections<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token class-name"><span class="token keyword">var</span></span> directionDist<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> directionDist<span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>dir <span class="token operator">=></span> maze<span class="token punctuation">.</span><span class="token function">RemoveWall</span><span class="token punctuation">(</span>cell<span class="token punctuation">,</span> dir<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> Singleton<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span>maze<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span>Direction<span class="token punctuation">></span></span> <span class="token function">GetValidDirections</span><span class="token punctuation">(</span><span class="token class-name">Cell</span> cell<span class="token punctuation">,</span> <span class="token class-name">Grid</span> grid<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token keyword">new</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">{</span> Direction<span class="token punctuation">.</span>South<span class="token punctuation">,</span> Direction<span class="token punctuation">.</span>East <span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">Where</span><span class="token punctuation">(</span>dir <span class="token operator">=></span> grid<span class="token punctuation">.</span><span class="token function">CanRemoveWall</span><span class="token punctuation">(</span>cell<span class="token punctuation">,</span> dir<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The function above takes in a maze (the result so far) and returns a
+distribution describing the possible ways a maze could look after randomly
+removing the South or East wall. If it's possible to remove either (or both) of
+them, then we choose between them randomly (represented as a distribution, of
+course). If not, we leave the maze as-is.</p>
+<h2>Visualising the algorithm at work</h2>
+<p>We now have the ability to generate a maze image.</p>
+<p><img src="/assets/images/2025-01-15-PGF-03/binary-tree.svg" alt="Maze generated using the binary tree
+algorithm"></p>
+<p>This is nice enough, but it would be even better to be able to see the algorithm
+at work, and generate a series of images showing the algorithm as it loops
+through the cells removing walls.</p>
+<p>If we were coding this imperatively (as opposed to functionally), then we'd
+probably loop through the cells and generate the maze image at each step.
+However, because we're not allowing ourselves to sample any random values within
+the functional core, we can't do this.</p>
+<p>If you're not used to coding functionally then this sort of problem can seem
+quite daunting. The solution (as is often the case) is to take a step back. What
+random value do we actually want? Or, put another way, for which type <code>T</code> do we
+want an <code>IDistribution&lt;T&gt;</code>?</p>
+<p>We currently have a function returning an <code>IDistribution&lt;Maze&gt;</code>; that is, a
+random maze. In order to visualise the process we need not a random <em>maze</em>, but
+the random <em>series of steps</em> which got us there.</p>
+<p>So, let's introduce a new type which can be used as the <code>T</code> in our
+<code>IDistribution&lt;T&gt;</code>. We need to store not just the current maze, but also the
+steps we took to get there.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">record</span> <span class="token class-name">BinaryTreeState</span><span class="token punctuation">(</span>
+    <span class="token class-name">Maze</span> Initial<span class="token punctuation">,</span> <span class="token class-name">ImmutableList<span class="token punctuation">&lt;</span>BinaryTreeStep<span class="token punctuation">></span></span> Steps<span class="token punctuation">,</span> <span class="token class-name">Maze</span> Current<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">record</span> <span class="token class-name">BinaryTreeStep</span><span class="token punctuation">(</span><span class="token class-name">Cell</span> Cell<span class="token punctuation">,</span> <span class="token class-name">Maze</span> Maze<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We then need to make a few changes to our algorithm. The code remains unchanged
+for both the initial distribution and how to move from one step to the next, but
+some changes are needed to the top-level function to compose the distributions
+differently.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>BinaryTreeState<span class="token punctuation">></span></span> <span class="token function">StateDist</span><span class="token punctuation">(</span><span class="token class-name">Grid</span> grid<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> stateDist <span class="token operator">=</span>
+        <span class="token keyword">from</span> maze <span class="token keyword">in</span> <span class="token function">InitialMazeDist</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span>
+        <span class="token keyword">select</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">BinaryTreeState</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">Initial</span><span class="token punctuation">:</span> maze<span class="token punctuation">,</span> <span class="token named-parameter punctuation">Steps</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">Current</span><span class="token punctuation">:</span> maze<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> cell <span class="token keyword">in</span> grid<span class="token punctuation">.</span>Cells<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        stateDist <span class="token operator">=</span> stateDist<span class="token punctuation">.</span><span class="token function">SelectMany</span><span class="token punctuation">(</span>state <span class="token operator">=></span>
+            <span class="token keyword">from</span> maze <span class="token keyword">in</span> <span class="token function">NextStepDist</span><span class="token punctuation">(</span>state<span class="token punctuation">.</span>Current<span class="token punctuation">,</span> grid<span class="token punctuation">,</span> cell<span class="token punctuation">)</span>
+            <span class="token keyword">select</span> state <span class="token keyword">with</span>
+            <span class="token punctuation">{</span>
+                Steps <span class="token operator">=</span> state<span class="token punctuation">.</span>Steps<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token constructor-invocation class-name">BinaryTreeStep</span><span class="token punctuation">(</span>cell<span class="token punctuation">,</span> maze<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                Current <span class="token operator">=</span> maze
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> stateDist<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The key difference here is within the loop. Once we've got the next step we
+don't just update the current value; we also add it (with the cell we've just
+processed) to the history.</p>
+<p>Notice how immutability is really helping us here. If we were modifying the maze
+as we go then we wouldn't be able to keep track of the history, as the previous
+state would be lost.</p>
+<p>If we sample from this distribution and generate a series of images (one for
+each step), we can turn them into an animation showing how we made our maze.</p>
+<p><img src="/assets/images/2025-01-15-PGF-03/maze-animation.gif" alt="Animation showing the steps involved in generating a maze using the binary
+tree algorithm"></p>
+<p>I don't know about you, but I could sit watching this for hours!</p>
+<h2>Conclusion</h2>
+<p>The binary tree algorithm is very easy to implement, but the mazes it generates
+are noticeably lop-sided. In the next post we'll implement an algorithm with
+less bias.</p>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2025
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
