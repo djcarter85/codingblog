@@ -81,7 +81,7 @@ public static bool ThreePeopleShareBirthdayOnCamp(
 
 In order to estimate the probability of a particular event within a certain
 distribution, I can sample from the distribution a large number of times and
-then count how many times the even occurs.
+then count how many times the event occurs.
 
 This is a very general idea so I've written a general method for it. Notice that
 the return value is a distribution - this represents the fact that each time I
