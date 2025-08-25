@@ -1,0 +1,460 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>Shared birthdays, revisited | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      Shared birthdays, revisited
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">25 August 2025</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">How do you sample from a non-uniform distribution?</p>
+
+  <article class="prose"><p>In <a href="/2025/08/07/birthdays">my last post</a> I described how I estimated the
+probability of three people from a group of 71 sharing a birthday within a given
+nine days. One of the assumptions I made was that birthdays are uniformly
+distributed throughout the year. Although close, this is not true!</p>
+<p>In this post I'd like to revisit that assumption and use the true distribution
+of birthdays throughout the year, and see whether that changes my results. Along
+the way we'll discover a clever algorithm for sampling from a weighted
+distribution.</p>
+<h2>Getting the data</h2>
+<p>The Office for National Statistics (ONS) has published <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/articles/howpopularisyourbirthday/2015-12-18">an article showing the
+distribution of birthdays over a 20-year
+period</a>.
+It's quite an interesting read (at least, I found it interesting!) and it shows
+how more babies are born in late September than any other time of the year.</p>
+<p>It also contains a link to the raw data (as a CSV file), showing the average
+number of births for each date in that time period. This isn't quite what I need
+for two reasons:</p>
+<ol>
+<li>The algorithm I'm going to use needs integer weights, and most of the
+averages are decimal numbers.</li>
+<li>The leap day (29 February) has been adjusted for the fact it only occurs once
+every four years (so that the averages are comparable).</li>
+</ol>
+<p>So I multiplied the numbers from the raw data by the number of times the date
+occurred in the period (5 times for the leap day, 20 times for every other date)
+to get the total number of births by date. These are all integers, so can be
+used in my algorithm. I've put the results in a <a href="https://github.com/djcarter85/ProcGenFun/blob/birthdays-revisited/ProcGenFun/BirthdayWeights.csv">CSV
+file</a>,
+should you wish to take a look.</p>
+<h2>Example</h2>
+<p>If you're anything like me, then the best way to understand an algorithm is with
+an example. Suppose we want to sample from the following weighted distribution.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>5</td>
+</tr>
+<tr>
+<td>B</td>
+<td>2</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+</tr>
+<tr>
+<td>D</td>
+<td>3</td>
+</tr>
+<tr>
+<td>E</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>We can visualise this with a bar chart, where each bar's width represents the
+weight given to that value.</p>
+<p><img src="/assets/images/2025-08-25-birthdays-revisited/graph-00.svg" alt="Bar chart showing relative weights for each
+value"></p>
+<h2>Rejection sampling</h2>
+<p>Looking at this graph, we can quite quickly come up with an algorithm for
+sampling from this distribution:</p>
+<ol>
+<li>Randomly choose a cell from the 2D grid, using a uniform distribution.</li>
+<li>If the cell is covered by a coloured bar, return the value corresponding to
+that bar.</li>
+<li>Otherwise, start from step 1 again.</li>
+</ol>
+<p>This technique is known as <em>rejection sampling</em>, as we reject any empty cells.
+It's a simple approach; however, if most weights are a lot smaller than the
+maximum, then there's lots of blank space on the grid and you end up rejecting
+lots of values. Hence it can be very inefficient.</p>
+<h2>A better approach</h2>
+<p>After some more research I came across an algorithm which doesn't have this
+problem. The general idea is to move parts of some of the coloured bars around
+so that you have a 2D grid which is completely covered. That way, you only have
+to pick a cell once.</p>
+<p>We can work out how wide the 2D grid needs to be by looking at the average
+weight. In our case the average weight is 2.4 (shown with a vertical red line
+below).</p>
+<p><img src="/assets/images/2025-08-25-birthdays-revisited/graph-01.svg" alt="Bar chart showing relative weights for each value along with average
+weight"></p>
+<p>To avoid any issues with floating point rounding errors, we're going to scale up
+the weights so that the average is an integer. In our example we need to
+multiply each weight by 5, making the total weight 60 and the average 12.</p>
+<p><img src="/assets/images/2025-08-25-birthdays-revisited/graph-02.svg" alt="Bar chart showing scaled-up weights for each
+value"></p>
+<p>What we're going to do is fill up the blank space in an &quot;underfull&quot; row (one
+with weight lower than average) with some or all of the weight from an
+&quot;overfull&quot; row (one with weight higher than average). We repeat until each row
+is exactly full (its weight is equal to the average).</p>
+<p>In our case, rows A and D are overfull and rows B, C and E are underfull. Let's
+pick D (overfull) and E (underfull). There's a blank space of width 7 in row E
+(12-5), so we transfer 7 across from row D to row E. This reduces the weight in
+row D to 8 (15-7).</p>
+<p><img src="/assets/images/2025-08-25-birthdays-revisited/graph-03.svg" alt="Bar chart showing weights after one
+step"></p>
+<p>Row E is now full up, but there is still some blank space on the grid, so we go
+again. The only overfull row is A (25) and let's pick underfull row D (8). Row D
+has space for 4, so we transfer 4 from row A to row D, leaving row A with weight
+21.</p>
+<p><img src="/assets/images/2025-08-25-birthdays-revisited/graph-04.svg" alt="Bar chart showing weights after two
+steps"></p>
+<p>Rinse and repeat. This time we move 7 from row A to row C.</p>
+<p><img src="/assets/images/2025-08-25-birthdays-revisited/graph-05.svg" alt="Bar chart showing weights after three
+steps"></p>
+<p>And then the final step is to move 2 from row A to row B.</p>
+<p><img src="/assets/images/2025-08-25-birthdays-revisited/graph-06.svg" alt="Bar chart showing final
+weights"></p>
+<p>At this point, each row has a width of exactly 12, made up of either one or two
+values. The weight of each value (A-E) hasn't changed (all we did was move some
+of the blocks around), and so this distribution is identical to the one we
+started with.</p>
+<p>In order to sample from this distribution, we pick a cell on the grid
+(uniformly) and then return the value covered by that cell. We can do this by
+first picking a row, and then picking from within the available values in that
+row, based on the relative weightings in that row. So, for example, suppose we
+randomly pick row C; then we'd pick C with probability 5/12 and A with
+probability 7/12.</p>
+<p>In this way we've reduced the problem of sampling from an arbitrarily-big
+weighted distribution into sampling from two simpler distributions:</p>
+<ul>
+<li>a uniform distribution (to choose the row), and</li>
+<li>a weighted distribution of one or two values (to choose the value within the
+chosen row).</li>
+</ul>
+<p>The latter is either a singleton or a
+<a href="https://en.wikipedia.org/wiki/Bernoulli_distribution">Bernoulli</a> distribution,
+both of which are very easy to implement.</p>
+<p>This algorithm is known as the <em>alias method</em>, because the blank space in each
+row is &quot;aliased&quot; to return a different value.</p>
+<h2>Implementation</h2>
+<p>Now let's look at how I implemented this in code. You can find the full thing on
+the <a href="https://github.com/djcarter85/ProcGenFun/tree/birthdays-revisited"><code>birthdays-revisited</code> branch in the ProcGenFun
+repo</a>, should
+you wish to take a look.</p>
+<p>To start with, we need a data structure to store a value and its associated
+weight. For this I've created a simple record.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">record</span> <span class="token generic-method"><span class="token function">Weighting</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token class-name">T</span> Value<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> Weight<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We're going to end up with a function which takes in a collection of these
+weightings and returns a distribution matching those weightings. For this I've
+added a new class and method.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">WeightedDiscreteDistribution</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span> <span class="token generic-method"><span class="token function">New</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token class-name">IEnumerable<span class="token punctuation">&lt;</span>Weighting<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span><span class="token punctuation">></span></span> weightings<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token comment">// Implementation goes here ...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The first job is to normalise the weights.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> unnormalisedWeightings <span class="token operator">=</span> weightings<span class="token punctuation">.</span><span class="token function">ToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// We need the average weight to be an integer. One way to guarantee</span>
+<span class="token comment">// this is to scale each weight by the number of weights in the list.</span>
+<span class="token comment">// It would be possible (but more complicated) to work out a smaller</span>
+<span class="token comment">// number to scale by in some situations.</span>
+<span class="token class-name"><span class="token keyword">var</span></span> scaleFactor <span class="token operator">=</span> unnormalisedWeightings<span class="token punctuation">.</span>Count<span class="token punctuation">;</span>
+
+<span class="token class-name"><span class="token keyword">var</span></span> normalisedWeightings <span class="token operator">=</span> unnormalisedWeightings
+    <span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>w <span class="token operator">=></span> w <span class="token keyword">with</span> <span class="token punctuation">{</span> Weight <span class="token operator">=</span> w<span class="token punctuation">.</span>Weight <span class="token operator">*</span> scaleFactor <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">ToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token class-name"><span class="token keyword">var</span></span> averageWeight <span class="token operator">=</span> unnormalisedWeightings<span class="token punctuation">.</span><span class="token function">Sum</span><span class="token punctuation">(</span>w <span class="token operator">=></span> w<span class="token punctuation">.</span>Weight<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Then we need to set up two collections for the under/overfull rows ...</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> underfullWeightings <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Stack<span class="token punctuation">&lt;</span>Weighting<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name"><span class="token keyword">var</span></span> overfullWeightings <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Stack<span class="token punctuation">&lt;</span>Weighting<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>... and a collection to store the distributions for each row.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token class-name"><span class="token keyword">var</span></span> distributions <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">List<span class="token punctuation">&lt;</span>IDistribution<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The list of distributions only ever gets added to, so I've made it a list. The
+under/overfull collections have items added and removed throughout the process,
+so a stack seems more appropriate.</p>
+<p>We'll need a function which categorises a given weighting into one of these
+collections.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">CategoriseWeighting</span><span class="token punctuation">(</span><span class="token class-name">Weighting<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span> weighting<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>weighting<span class="token punctuation">.</span>Weight <span class="token operator">&lt;</span> averageWeight<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        underfullWeightings<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>weighting<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>weighting<span class="token punctuation">.</span>Weight <span class="token operator">></span> averageWeight<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        overfullWeightings<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>weighting<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span>
+    <span class="token punctuation">{</span>
+        distributions<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>Singleton<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span>weighting<span class="token punctuation">.</span>Value<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We start by categorising all of the weightings.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">var</span></span> weighting <span class="token keyword">in</span> normalisedWeightings<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">CategoriseWeighting</span><span class="token punctuation">(</span>weighting<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And then the bulk of the work is done within a loop, transferring weight to
+gradually fill up the underfull rows.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">while</span> <span class="token punctuation">(</span>underfullWeightings<span class="token punctuation">.</span><span class="token function">Any</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">// "Under" and "over" refer to the average weight. So if there</span>
+    <span class="token comment">// is an underfull weighting there must be an overfull</span>
+    <span class="token comment">// weighting too.</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> underfullWeighting <span class="token operator">=</span> underfullWeightings<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> overfullWeighting <span class="token operator">=</span> overfullWeightings<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token class-name"><span class="token keyword">var</span></span> transferredWeight <span class="token operator">=</span> averageWeight <span class="token operator">-</span> underfullWeighting<span class="token punctuation">.</span>Weight<span class="token punctuation">;</span>
+    finalDistributions<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>
+        <span class="token function">CreateBernoulliByWeights</span><span class="token punctuation">(</span>
+            underfullWeighting<span class="token punctuation">,</span>
+            overfullWeighting <span class="token keyword">with</span> <span class="token punctuation">{</span> Weight <span class="token operator">=</span> transferredWeight <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token class-name"><span class="token keyword">var</span></span> adjustedWeight <span class="token operator">=</span> overfullWeighting<span class="token punctuation">.</span>Weight <span class="token operator">-</span> transferredWeight<span class="token punctuation">;</span>
+    <span class="token function">CategoriseWeighting</span><span class="token punctuation">(</span>
+        overfullWeighting <span class="token keyword">with</span> <span class="token punctuation">{</span> Weight <span class="token operator">=</span> adjustedWeight <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Once we've done this we simply need to return a distribution which, when
+sampled, samples uniformly from the rows available and then samples from the
+distribution for the chosen row.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">return</span>
+    <span class="token keyword">from</span> dist <span class="token keyword">in</span> UniformDistribution<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span>distributions<span class="token punctuation">)</span>
+    <span class="token keyword">from</span> <span class="token keyword">value</span> <span class="token keyword">in</span> dist
+    <span class="token keyword">select</span> <span class="token keyword">value</span><span class="token punctuation">;</span></code></pre>
+<p>It's nice to see how the abstractions we have created so far (and which are
+available to us via the RandN package) help us to create new distributions out
+of existing ones! If you want to look at the whole thing, it's on the
+<a href="https://github.com/djcarter85/ProcGenFun/tree/birthdays-revisited"><code>birthdays-revisited</code> branch in the ProcGenFun
+repo</a>.</p>
+<h2>Results</h2>
+<p>I've tested out my general function here using the example I walked through
+earlier. Sampling many times from the generated distribution, here's what I
+ended up with.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Weight</th>
+<th>Probability</th>
+<th>Actual proportion of samples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>5</td>
+<td>41.67%</td>
+<td>41.86%</td>
+</tr>
+<tr>
+<td>B</td>
+<td>2</td>
+<td>16.67%</td>
+<td>16.46%</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+<td>8.33%</td>
+<td>8.38%</td>
+</tr>
+<tr>
+<td>D</td>
+<td>3</td>
+<td>25%</td>
+<td>24.99%</td>
+</tr>
+<tr>
+<td>E</td>
+<td>1</td>
+<td>8.33%</td>
+<td>8.30%</td>
+</tr>
+</tbody>
+</table>
+<p>With results like these, I'm reasonably confident this is working as expected!</p>
+<p>Now for the moment of truth. I loaded in the weights for birthdays throughout
+the year and then ran the same simulations from the previous post. Here are my
+results:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Probability estimate (uniform distribution of birthdays)</th>
+<th>Probability estimate (true distribution of birthdays)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>23 people, 2 people share a birthday</td>
+<td>50.71%</td>
+<td>50.71%</td>
+</tr>
+<tr>
+<td>71 people, 2 people share a birthday</td>
+<td>99.93%</td>
+<td>99.93%</td>
+</tr>
+<tr>
+<td>71 people, 2 people share a birthday on camp</td>
+<td>13.97%</td>
+<td>14.45%</td>
+</tr>
+<tr>
+<td>71 people, 3 people share a birthday</td>
+<td>31.61%</td>
+<td>31.71%</td>
+</tr>
+<tr>
+<td>71 people, 3 people share a birthday on camp</td>
+<td>0.93%</td>
+<td>0.98%</td>
+</tr>
+</tbody>
+</table>
+<p>In summary, using the true distribution of birthdays doesn't change the results
+very much at all. It seems that assuming a uniform distribution of birthdays
+throughout the year was not a bad assumption to make!</p>
+<h2>Further reading</h2>
+<p>If you'd like to learn more, I recommend the following articles.</p>
+<ul>
+<li>Eric Lippert has written a series of blog posts on representing probability
+distributions, called <em>Fixing Random</em>. Posts
+<a href="https://ericlippert.com/2019/02/26/fixing-random-part-8/">8</a> and
+<a href="https://ericlippert.com/2019/02/28/fixing-random-part-9/">9</a> in the series
+are about the alias method, and formed the basis of my implementation in this
+article.</li>
+<li>The <a href="https://en.wikipedia.org/wiki/Alias_method">Wikipedia article on the alias
+method</a> gives a good explanation
+of the algorithm.</li>
+</ul>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2025
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
