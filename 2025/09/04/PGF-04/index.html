@@ -64,7 +64,7 @@
 
 
 <div class="container py-6">
-  <p class="mb-6 text-3xl italic text-gray-500">A more functional way of implementing a repeat distribution</p>
+  <p class="mb-6 text-3xl italic text-gray-500">Can we implement the "repeat" distribution in a more functional way?</p>
 
   <article class="prose"><p>[<a href="/2024/12/18/PGF-00/#list-of-posts">List of posts</a> | <a href="https://github.com/djcarter85/ProcGenFun/tree/post-04">source code for this
 post</a>]</p>
@@ -131,8 +131,25 @@ distribution.</p>
 value, and then sample from the distribution once and append it to the result.
 Using query syntax for this works quite well I think, as it's clear that we're
 building up the resultant distribution from simpler ones.</p>
-<p>So there you have it: proof that sometimes solutions to problems just pop into
-your head. Next time I'll fulfil my promise of more mazes!</p>
+<p>Let's just test it out quickly, to make sure we haven't broken anything. I'll
+open the &quot;visualise distributions&quot; screen from post 1 as that uses the <code>Repeat</code>
+method to generate a large number of samples.</p>
+<p><img src="/assets/images/2025-09-04-PGF-04/error.png" alt="Screenshot of a
+StackOverflowException"></p>
+<p>Oh dear! By implementing this using recursion instead of a loop, we've made it
+so that sampling from the distribution uses up one frame on the stack per sample
+we need. I'm asking for 100,000 samples here, which blows way past the limit of
+around 7000 that C# allows.</p>
+<p>So why didn't this work? Isn't this how you would implement an algorithm like
+this in functional languages like Haskell or F#? The key is that if a function
+is <a href="https://en.wikipedia.org/wiki/Tail_call">tail recursive</a> (the final
+statement in a function is a call to itself) then it's possible for the
+recursion to be replaced with a loop. In many languages the compiler does this
+for you to avoid exceptions like this; C# happens not to be one of them!</p>
+<p>So, alas, my grand idea of implementing this using recursion has failed. Never
+mind; often in programming you have to compromise on your lofty theoretical
+goals in order to make something that actually works. Let's revert these changes
+and move on. Next time I'll fulfil my promise of more mazes!</p>
 </article>
 </div>
 
