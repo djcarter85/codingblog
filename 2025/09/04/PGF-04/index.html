@@ -143,7 +143,7 @@ around 7000 that C# allows.</p>
 <p>So why didn't this work? Isn't this how you would implement an algorithm like
 this in functional languages like Haskell or F#? The key is that if a function
 is <a href="https://en.wikipedia.org/wiki/Tail_call">tail recursive</a> (the final
-statement in a function is a call to itself) then it's possible for the
+statement in a function contains a call to itself) then it's possible for the
 recursion to be replaced with a loop. In many languages the compiler does this
 for you to avoid exceptions like this; C# happens not to be one of them!</p>
 <p>So, alas, my grand idea of implementing this using recursion has failed. Never
