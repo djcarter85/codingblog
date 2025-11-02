@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" width="200" height="200" viewBox="0, 0, 200, 200">
+  <rect x="25" y="25" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="50" y="25" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="75" y="25" width="25" height="25" style="fill:#87C5E8;" />
+  <rect x="100" y="25" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="125" y="25" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="150" y="25" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="25" y="50" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="50" y="50" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="75" y="50" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="100" y="50" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="125" y="50" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="150" y="50" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="25" y="75" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="50" y="75" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="75" y="75" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="100" y="75" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="125" y="75" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="150" y="75" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="25" y="100" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="50" y="100" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="75" y="100" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="100" y="100" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="125" y="100" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="150" y="100" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="25" y="125" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="50" y="125" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="75" y="125" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="100" y="125" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="125" y="125" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="150" y="125" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="25" y="150" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="50" y="150" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="75" y="150" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="100" y="150" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="125" y="150" width="25" height="25" style="fill:#DCDEE0;" />
+  <rect x="150" y="150" width="25" height="25" style="fill:#DCDEE0;" />
+  <path d="M25 25 L50 25 L75 25 L100 25 L125 25 L150 25 L175 25 M25 50 L50 50 L75 50 L100 50 L125 50 L150 50 L175 50 M25 75 L50 75 L75 75 L100 75 L125 75 L150 75 L175 75 M25 100 L50 100 L75 100 L100 100 L125 100 L150 100 L175 100 M25 125 L50 125 L75 125 L100 125 L125 125 L150 125 L175 125 M25 150 L50 150 L75 150 L100 150 L125 150 L150 150 L175 150 M25 175 L50 175 L75 175 L100 175 L125 175 L150 175 L175 175 M25 25 L25 50 L25 75 L25 100 L25 125 L25 150 L25 175 M50 25 L50 50 L50 75 L50 100 L50 125 L50 150 L50 175 M75 25 L75 50 L75 75 L75 100 L75 125 L75 150 L75 175 M100 25 L100 50 L100 75 L100 100 L100 125 L100 150 L100 175 M125 25 L125 50 L125 75 L125 100 L125 125 L125 150 L125 175 M150 25 L150 50 L150 75 L150 100 L150 125 L150 150 L150 175 M175 25 L175 50 L175 75 L175 100 L175 125 L175 150 L175 175" stroke-width="1" style="stroke:#05324D;" />
+</svg>
