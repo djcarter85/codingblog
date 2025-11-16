@@ -1,0 +1,379 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>ProcGen Fun 6: The Recursive Backtracker algorithm | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      ProcGen Fun 6: The Recursive Backtracker algorithm
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">16 November 2025</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">Generating mazes by retracing your steps</p>
+
+  <article class="prose"><p>[<a href="/2024/12/18/PGF-00/#list-of-posts">List of posts</a> | <a href="https://github.com/djcarter85/ProcGenFun/tree/post-06">source code for this
+post</a>]</p>
+<p>The animation below demonstrates the inner workings of the <strong>Recursive
+Backtracker</strong> algorithm for maze generation.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/maze-animation.gif" alt="Animation of a maze generated using the Recursive Backtracker
+algorithm"></p>
+<p>You can probably figure out how it works just by watching this animation.
+However, in this post I'll give a more detailed example, define the algorithm
+precisely, and then implement it in C#.</p>
+<h2>Example</h2>
+<p>Let's use a smaller grid for our example.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0000.svg" alt="Recursive Backtracker step 0"></p>
+<p>To start with, pick a cell at random.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0001.svg" alt="Recursive Backtracker step 1"></p>
+<p>Then pick one of its neighbours at random, remove the wall in that direction,
+and move to this as your new current cell.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0002.svg" alt="Recursive Backtracker step 2"></p>
+<p>I'm using blue for the current cell, and light yellow for the cells we've
+already visited.</p>
+<p>Repeat the process with the new current cell: pick a random neighbour and move
+to it, this time making sure you haven't visited that cell before.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0003.svg" alt="Recursive Backtracker step 3"></p>
+<p>Repeat the process, each time picking a random unvisited neighbour and moving to
+it.</p>
+<p>Eventually you'll end up in a situation where you're fenced in and you've
+already visited all of the current cell's neighbours.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0016.svg" alt="Recursive Backtracker step
+16"></p>
+<p>If this happens, retrace your steps to the previous cell.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0017.svg" alt="Recursive Backtracker step
+17"></p>
+<p>I'm using white to denote the cells which we won't need to visit again.</p>
+<p>Continue with the same rules: if there's an unvisited neighbour then randomly
+pick one and move to it; otherwise, retrace your steps.</p>
+<p>In this case, we have a neighbour we can move to.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0018.svg" alt="Recursive Backtracker step
+18"></p>
+<p>Eventually, all the cells will have been visited.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0040.svg" alt="Recursive Backtracker step
+40"></p>
+<p>At this point, keep following the same rules, and retrace your steps all the way
+back to the beginning.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/frame_0071.svg" alt="Recursive Backtracker step
+71"></p>
+<p>Here's this example as a full animation.</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/maze-animation-2.gif" alt="Recursive Backtracker small
+animation"></p>
+<h2>The algorithm</h2>
+<p>Now we've seen an example, here's a more precise definition of the Recursive
+Backtracker algorithm.</p>
+<p>As you go through the process, keep track of the following pieces of state.</p>
+<ul>
+<li>Which cell walls are present</li>
+<li>The current cell</li>
+<li>The path you took to get to the current cell</li>
+<li>Which cells have been visited</li>
+</ul>
+<p>Here's the algorithm.</p>
+<ol>
+<li>Start with all the cell walls present, and pick a current cell at random.</li>
+<li>Identify whether the current cell has any unvisited neighbours.
+<ul>
+<li>If so, add the current cell to the path, pick one of the unvisited
+neighbours at random to be the new current cell, and remove the wall
+between the previous and new current cells.</li>
+<li>If not, remove the most recently visited cell from the path and make it the
+current cell.</li>
+</ul>
+</li>
+<li>Repeat step 2 until all the cells have been visited and the path is empty.</li>
+</ol>
+<p>What I love about this algorithm is that it's so intuitive. You can imagine that
+the maze grid is a set of brick walls and you're walking through it with a
+sledgehammer, leaving a trail of breadcrumbs along the way!</p>
+<h2>Random walks</h2>
+<p>Before I get to the implementation of Recursive Backtracker, I'd like to take a
+short detour to discuss <em>random walks</em>. A random walk is a sequence of random
+steps within some state space.</p>
+<p>That definition is a bit abstract, so let's consider an example. Suppose you
+draw out a number line on a piece of paper, and you place a coin on the number
+0. Then you flip the coin; if it comes up heads you move it one space to the
+right (+1), and if it comes up tails you move it one space to the left (-1). The
+sequence of numbers you end up with is a random walk through the state space of
+integers.</p>
+<p>The Recursive Backtracker algorithm uses a form of random walk. Instead of
+walking randomly between the numbers on a number line, we walk randomly around
+the grid until we've walked all the way back to the start and our maze is
+complete.</p>
+<p>A random walk is a stochastic process which gives us a sequence of values from
+some state space. We can express this in code with a function which returns us a
+distribution of sequences of values.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">RandomWalk</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>IEnumerable<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span><span class="token punctuation">></span></span> <span class="token generic-method"><span class="token function">New</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>
+        <span class="token class-name">T</span> initial<span class="token punctuation">,</span> <span class="token class-name">Func<span class="token punctuation">&lt;</span>T<span class="token punctuation">,</span> IDistribution<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span><span class="token punctuation">></span></span> stepDist<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RandomWalkDistribution<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span><span class="token punctuation">(</span>initial<span class="token punctuation">,</span> stepDist<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token generic-method"><span class="token function">RandomWalkDistribution</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span></span><span class="token punctuation">(</span>
+        <span class="token class-name">T</span> initial<span class="token punctuation">,</span> <span class="token class-name">Func<span class="token punctuation">&lt;</span>T<span class="token punctuation">,</span> IDistribution<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span><span class="token punctuation">></span></span> stepDist<span class="token punctuation">)</span> 
+        <span class="token punctuation">:</span> IDistribution<span class="token operator">&lt;</span>IEnumerable<span class="token operator">&lt;</span>T<span class="token operator">>></span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span>T<span class="token punctuation">></span></span> <span class="token generic-method"><span class="token function">Sample</span><span class="token generic class-name"><span class="token punctuation">&lt;</span>TRng<span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token class-name">TRng</span> rng<span class="token punctuation">)</span>
+            <span class="token keyword">where</span> <span class="token class-name">TRng</span> <span class="token punctuation">:</span> <span class="token type-list"><span class="token keyword">notnull</span><span class="token punctuation">,</span> <span class="token class-name">IRng</span></span>
+        <span class="token punctuation">{</span>
+            <span class="token class-name"><span class="token keyword">var</span></span> state <span class="token operator">=</span> initial<span class="token punctuation">;</span>
+
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">yield</span> <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+                state <span class="token operator">=</span> <span class="token function">stepDist</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Sample</span><span class="token punctuation">(</span>rng<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We need to specify the type <code>T</code> whose state space we're exploring, an initial
+value of type <code>T</code>, and a function which gives us the distribution of the next
+step based on where we are now.</p>
+<p>A little care needs to be taken here, as each sample from this distribution is
+an infinite sequence (the implementation contains a <code>while (true)</code> loop).
+However, it's pretty straightforward to limit the sequence to some finite number
+of values, as we'll see shortly.</p>
+<p>We can apply this to our example with a number line and a coin. The type <code>T</code>
+will be <code>int</code> (representing all integers), the initial value will be 0, and we
+can build a distribution for the next step using a Bernoulli distribution to
+represent the coin toss.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span> <span class="token function">StepDist</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> current<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token keyword">from</span> b <span class="token keyword">in</span> Bernoulli<span class="token punctuation">.</span><span class="token function">FromRatio</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">numerator</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token named-parameter punctuation">denominator</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> step <span class="token operator">=</span> b <span class="token punctuation">?</span> <span class="token operator">+</span><span class="token number">1</span> <span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span>
+    <span class="token keyword">select</span> current <span class="token operator">+</span> step<span class="token punctuation">;</span>
+
+<span class="token class-name"><span class="token keyword">var</span></span> randomWalkDist <span class="token operator">=</span> RandomWalk<span class="token punctuation">.</span><span class="token generic-method"><span class="token function">New</span><span class="token generic class-name"><span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span></span><span class="token punctuation">(</span><span class="token named-parameter punctuation">initial</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> StepDist<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// This returns an infinite random walk.</span>
+<span class="token class-name"><span class="token keyword">var</span></span> randomWalk <span class="token operator">=</span> randomWalkDist<span class="token punctuation">.</span><span class="token function">Sample</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>rng<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Take 100 steps as an example.</span>
+<span class="token class-name"><span class="token keyword">var</span></span> steps <span class="token operator">=</span> randomWalk<span class="token punctuation">.</span><span class="token function">Take</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Here's some sample output.</p>
+<pre class="language-txt"><code class="language-txt">0, -1, -2, -3, -2, -1, 0, 1, 2, 1, 0, 1, 0, -1, 0, -1, 0, -1, 0,
+-1, 0, 1, 0, -1, -2, -1, -2, -3, -2, -1, 0, 1, 2, 3, 2, 3, 4, 3,
+2, 3, 2, 3, 2, 3, 4, 3, 4, 3, 4, 5, 6, 7, 6, 5, 6, 7, 6, 5, 4, 5,
+4, 3, 2, 1, 0, -1, 0, 1, 2, 3, 2, 3, 4, 3, 2, 1, 0, -1, 0, 1, 2,
+1, 0, -1, -2, -1, 0, -1, 0, 1, 0, 1, 2, 3, 2, 1, 2, 1, 0, -1</code></pre>
+<h2>Implementing Recursive Backtracker</h2>
+<p>Now we have the ability to generate random walks, we have enough to start
+implementing Recursive Backtracker.</p>
+<p>We need to be able to calculate the neighbours of any given cell, so let's add a
+little code to the grid for that.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">record</span> <span class="token class-name">Neighbour</span><span class="token punctuation">(</span><span class="token class-name">Cell</span> Cell<span class="token punctuation">,</span> <span class="token class-name">Direction</span> Direction<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Grid</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">readonly</span> <span class="token class-name">IEnumerable<span class="token punctuation">&lt;</span>Direction<span class="token punctuation">></span></span> AllDirections <span class="token operator">=</span>
+        <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Direction<span class="token punctuation">.</span>North</span><span class="token punctuation">,</span> <span class="token class-name">Direction<span class="token punctuation">.</span>East</span><span class="token punctuation">,</span> <span class="token class-name">Direction<span class="token punctuation">.</span>South</span><span class="token punctuation">,</span> <span class="token class-name">Direction<span class="token punctuation">.</span>West</span></span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span>Neighbour<span class="token punctuation">></span></span> <span class="token function">GetNeighbours</span><span class="token punctuation">(</span><span class="token class-name">Cell</span> cell<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token keyword">from</span> direction <span class="token keyword">in</span> AllDirections
+        <span class="token keyword">let</span> adjacentCellOrNull <span class="token operator">=</span> <span class="token function">AdjacentCellOrNull</span><span class="token punctuation">(</span>cell<span class="token punctuation">,</span> direction<span class="token punctuation">)</span>
+        <span class="token keyword">where</span> <span class="token class-name">adjacentCellOrNull</span> <span class="token operator">!=</span> <span class="token keyword">null</span>
+        <span class="token keyword">select</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">Neighbour</span><span class="token punctuation">(</span><span class="token named-parameter punctuation">Cell</span><span class="token punctuation">:</span> adjacentCellOrNull<span class="token punctuation">,</span> <span class="token named-parameter punctuation">Direction</span><span class="token punctuation">:</span> direction<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Existing members ...</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Next, we need to define the state space around which we will be walking.
+Earlier, when <a href="#the-algorithm">I defined the algorithm</a>, I said:</p>
+<blockquote>
+<p>As you go through the process, keep track of the following pieces of state:</p>
+<ul>
+<li>Which cell walls are present</li>
+<li>The current cell</li>
+<li>The path you took to get there</li>
+<li>Which cells have been visited</li>
+</ul>
+</blockquote>
+<p>This translates into C# in a reasonably straightforward manner.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">record</span> <span class="token class-name">RecursiveBacktrackerState</span><span class="token punctuation">(</span>
+    <span class="token class-name">Maze</span> Maze<span class="token punctuation">,</span>
+    <span class="token class-name">Cell</span> CurrentCell<span class="token punctuation">,</span>
+    <span class="token class-name">ImmutableStack<span class="token punctuation">&lt;</span>Cell<span class="token punctuation">></span></span> Path<span class="token punctuation">,</span>
+    <span class="token class-name">ImmutableList<span class="token punctuation">&lt;</span>Cell<span class="token punctuation">></span></span> Visited<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>There are two options for each step in the process; I've called them &quot;proceed&quot;
+(pick an unvisited neighbour and move to it) and &quot;backtrack&quot; (move back to the
+previous cell).</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>RecursiveBacktrackerState<span class="token punctuation">></span></span> <span class="token function">ProceedDist</span><span class="token punctuation">(</span>
+    <span class="token class-name">RecursiveBacktrackerState</span> state<span class="token punctuation">,</span>
+    <span class="token class-name">IDistribution<span class="token punctuation">&lt;</span>Neighbour<span class="token punctuation">></span></span> unvisitedNeighbourDist<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token keyword">from</span> neighbour <span class="token keyword">in</span> unvisitedNeighbourDist
+    <span class="token keyword">select</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RecursiveBacktrackerState</span><span class="token punctuation">(</span>
+        <span class="token named-parameter punctuation">Maze</span><span class="token punctuation">:</span> state<span class="token punctuation">.</span>Maze<span class="token punctuation">.</span><span class="token function">RemoveWall</span><span class="token punctuation">(</span>state<span class="token punctuation">.</span>CurrentCell<span class="token punctuation">,</span> neighbour<span class="token punctuation">.</span>Direction<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token named-parameter punctuation">CurrentCell</span><span class="token punctuation">:</span> neighbour<span class="token punctuation">.</span>Cell<span class="token punctuation">,</span>
+        <span class="token named-parameter punctuation">Path</span><span class="token punctuation">:</span> state<span class="token punctuation">.</span>Path<span class="token punctuation">.</span><span class="token function">Push</span><span class="token punctuation">(</span>state<span class="token punctuation">.</span>CurrentCell<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token named-parameter punctuation">Visited</span><span class="token punctuation">:</span> state<span class="token punctuation">.</span>Visited<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>neighbour<span class="token punctuation">.</span>Cell<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">RecursiveBacktrackerState</span> <span class="token function">Backtrack</span><span class="token punctuation">(</span>
+    <span class="token class-name">RecursiveBacktrackerState</span> state<span class="token punctuation">)</span> <span class="token operator">=></span>
+    state <span class="token keyword">with</span> <span class="token punctuation">{</span> Path <span class="token operator">=</span> state<span class="token punctuation">.</span>Path<span class="token punctuation">.</span><span class="token function">Pop</span><span class="token punctuation">(</span><span class="token keyword">out</span> <span class="token class-name"><span class="token keyword">var</span></span> cell<span class="token punctuation">)</span><span class="token punctuation">,</span> CurrentCell <span class="token operator">=</span> cell <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>Using the <code>ImmutableStack</code> class for the path makes it easy to implement the
+&quot;backtrack&quot; step.</p>
+<p>In order to create a random walk, we need to define the initial state and the
+distribution of the next step given the current state. In our case, the initial
+state is actually random, so we need a distribution rather than a concrete
+value.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>RecursiveBacktrackerState<span class="token punctuation">></span></span> <span class="token function">InitialStateDist</span><span class="token punctuation">(</span>
+    <span class="token class-name">Grid</span> grid<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token keyword">from</span> cell <span class="token keyword">in</span> UniformDistribution<span class="token punctuation">.</span><span class="token function">Create</span><span class="token punctuation">(</span>grid<span class="token punctuation">.</span>Cells<span class="token punctuation">)</span>
+    <span class="token keyword">select</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">RecursiveBacktrackerState</span><span class="token punctuation">(</span>
+        <span class="token named-parameter punctuation">Maze</span><span class="token punctuation">:</span> Maze<span class="token punctuation">.</span><span class="token function">WithAllWalls</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token named-parameter punctuation">CurrentCell</span><span class="token punctuation">:</span> cell<span class="token punctuation">,</span>
+        <span class="token named-parameter punctuation">Path</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token named-parameter punctuation">Visited</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">cell</span></span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>RecursiveBacktrackerState<span class="token punctuation">></span></span> <span class="token function">NextStateDist</span><span class="token punctuation">(</span>
+    <span class="token class-name">Grid</span> grid<span class="token punctuation">,</span> <span class="token class-name">RecursiveBacktrackerState</span> state<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token class-name"><span class="token keyword">var</span></span> unvisitedNeighbours <span class="token operator">=</span> grid<span class="token punctuation">.</span><span class="token function">GetNeighbours</span><span class="token punctuation">(</span>state<span class="token punctuation">.</span>CurrentCell<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">Where</span><span class="token punctuation">(</span>n <span class="token operator">=></span> <span class="token operator">!</span>state<span class="token punctuation">.</span>Visited<span class="token punctuation">.</span><span class="token function">Contains</span><span class="token punctuation">(</span>n<span class="token punctuation">.</span>Cell<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> UniformDistribution<span class="token punctuation">.</span>TryCreate<span class="token return-type class-name"><span class="token punctuation">(</span>
+            unvisitedNeighbours<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">var</span> unvisitedNeighbourDist<span class="token punctuation">)</span> <span class="token punctuation">?</span></span>
+        <span class="token function">ProceedDist</span><span class="token punctuation">(</span>state<span class="token punctuation">,</span> unvisitedNeighbourDist<span class="token punctuation">)</span> <span class="token punctuation">:</span>
+        Singleton<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token function">Backtrack</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Next, we need to define when to stop the process; otherwise we'll carry on
+forever!</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> <span class="token function">StopIteration</span><span class="token punctuation">(</span><span class="token class-name">RecursiveBacktrackerState</span> state<span class="token punctuation">,</span> <span class="token class-name">Grid</span> grid<span class="token punctuation">)</span> <span class="token operator">=></span> 
+    <span class="token function">AllCellsVisited</span><span class="token punctuation">(</span>state<span class="token punctuation">,</span> grid<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> state<span class="token punctuation">.</span>Path<span class="token punctuation">.</span>IsEmpty<span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> <span class="token function">AllCellsVisited</span><span class="token punctuation">(</span><span class="token class-name">RecursiveBacktrackerState</span> state<span class="token punctuation">,</span> <span class="token class-name">Grid</span> grid<span class="token punctuation">)</span> <span class="token operator">=></span>
+    state<span class="token punctuation">.</span>Visited<span class="token punctuation">.</span>Count <span class="token operator">==</span> grid<span class="token punctuation">.</span>CellCount<span class="token punctuation">;</span></code></pre>
+<p>And then, finally, we can compose our building blocks to give us a distribution.
+As in previous posts, I've implemented one function to give us the history (so
+we can make an animation) and one function if we just want the maze at the end
+of it.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>IReadOnlyList<span class="token punctuation">&lt;</span>RecursiveBacktrackerState<span class="token punctuation">></span><span class="token punctuation">></span></span> <span class="token function">HistoryDist</span><span class="token punctuation">(</span>
+    <span class="token class-name">Grid</span> grid<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token keyword">from</span> initial <span class="token keyword">in</span> <span class="token function">InitialStateDist</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span>
+    <span class="token keyword">from</span> randomWalk <span class="token keyword">in</span> RandomWalk<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span>initial<span class="token punctuation">,</span> s <span class="token operator">=></span> <span class="token function">NextStateDist</span><span class="token punctuation">(</span>grid<span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">select</span> randomWalk<span class="token punctuation">.</span><span class="token function">TakeWhile</span><span class="token punctuation">(</span>s <span class="token operator">=></span> <span class="token operator">!</span><span class="token function">StopIteration</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> grid<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">ToReadOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">IDistribution<span class="token punctuation">&lt;</span>Maze<span class="token punctuation">></span></span> <span class="token function">MazeDist</span><span class="token punctuation">(</span><span class="token class-name">Grid</span> grid<span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token keyword">from</span> history <span class="token keyword">in</span> <span class="token function">HistoryDist</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span>
+    <span class="token keyword">select</span> history<span class="token punctuation">.</span><span class="token function">Last</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Maze<span class="token punctuation">;</span></code></pre>
+<h2>Results</h2>
+<p>To finish, I've generated a maze on a 25x25 grid, because why not?!</p>
+<p><img src="/assets/images/2025-11-16-PGF-06/maze-animation-big.gif" alt="Animation of a maze generated using the Recursive Backtracker algorithm on a
+larger grid"></p>
+<p>I've also updated <a href="https://procgenfun.carterdan.net/mazes">the playground
+website</a> with support for the Recursive
+Backtracker algorithm.</p>
+<h2>Up next</h2>
+<p>One thing you might have spotted is that, unlike the previous two algorithms,
+Recursive Backtracker doesn't rely on using a rectangular grid: all that matters
+is that we know which cells are neighbours. In the next post we'll investigate
+drawing mazes on more interesting-looking grids.</p>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2025
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
