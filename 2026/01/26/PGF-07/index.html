@@ -1,0 +1,281 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>ProcGen Fun 7: Hexagon mazes | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      ProcGen Fun 7: Hexagon mazes
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">26 January 2026</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">Rectangular grids are boring; let's use hexagons!</p>
+
+  <article class="prose"><p>[<a href="/2024/12/18/PGF-00/#list-of-posts">List of posts</a> |
+<a href="https://procgenfun.carterdan.net">playground</a> | <a href="https://github.com/djcarter85/ProcGenFun/tree/post-07">source code for this
+post</a>]</p>
+<p>So far in this series we've focussed on creating mazes on rectangular grids. In
+fact, the first two algorithms we came across (Binary Tree and Sidewinder)
+explicitly rely on a rectangular grid, because they give special meaning to the
+four cardinal directions (North, South, East and West).</p>
+<p>However, the eagle-eyed among you might have noticed that the Recursive
+Backtracker algorithm (which we covered <a href="/2025/11/16/PGF-06">last time</a>) only
+relies on being able to determine which pairs of cells are neighbours. So in
+this post, we're going to apply the Recursive Backtracker algorithm to a hexagon
+grid.</p>
+<p>Perhaps this is a bit of a spoiler, but I think the results are really cool so
+I'm going to show you one now!</p>
+<p><img src="/assets/images/2026-01-26-PGF-07/hex-maze.svg" alt="Maze on a hexagon grid"></p>
+<h2>Refactoring</h2>
+<p>Before we implement a maze on a hexagon grid, we'll need to do some <em>refactoring</em>.</p>
+<p>I'd imagine that most of my readers will know what that means, but for those
+that don't know here's a quick definition: refactoring means changing the
+structure of code without changing its behaviour. For example, you might change
+the name of something in your code and update all the references to it to use
+the new name. Nothing has changed about what your code actually does, but the
+way it gets to the result has changed.</p>
+<p>In our case, our <code>Maze</code> class is tied to the notion of cells within a
+rectangular grid. We need to make it more generic, so that it can be applied to
+any type of cell.</p>
+<p>I won't bore you with all of the details (<a href="https://github.com/djcarter85/ProcGenFun/commits/post-07/">you can go and look at the
+commits</a> if you
+like), but the key change was to define the maze in terms of adjacency; that is,
+which pairs of cells are neighbours. Previously the maze was defined in terms of
+which walls each cell had, which limited me to a rectangular grid. I also
+changed the code for the Recursive Backtracker algorithm to be generic in the
+same way.</p>
+<h2>Hexagon grids</h2>
+<p>Now all we need to do is create some types to model a hexagon grid.</p>
+<p>My entire understanding of how to implement hexagons in code comes from <a href="https://www.redblobgames.com/grids/hexagons/">this
+excellent guide by Red Blob
+Games</a>. I won't be able explain
+things any better here, so instead I'll just show you my code.</p>
+<p>We have a type to represent a cell in a hexagon grid. I've chosen to use <a href="https://www.redblobgames.com/grids/hexagons/#coordinates-cube">cube
+coordinates</a>,
+represented here with the letters q, r and s.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">record</span> <span class="token class-name">HexCell</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">HexCell</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> q<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> r<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> s<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">CoordinatesValid</span><span class="token punctuation">(</span>q<span class="token punctuation">,</span> r<span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">ArgumentException</span><span class="token punctuation">(</span><span class="token string">"q, r and s must sum to zero"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Q <span class="token operator">=</span> q<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>R <span class="token operator">=</span> r<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>S <span class="token operator">=</span> s<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> Q <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> R <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> S <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> DistanceFromOrigin <span class="token operator">=></span> Coordinates<span class="token punctuation">.</span><span class="token function">Select</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span>Abs<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Max</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> <span class="token function">CoordinatesValid</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> q<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> r<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> s<span class="token punctuation">)</span> <span class="token operator">=></span> q <span class="token operator">+</span> r <span class="token operator">+</span> s <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">HexCell</span> <span class="token function">GetNeighbourInDirection</span><span class="token punctuation">(</span><span class="token class-name">HexDirection</span> direction<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token keyword">new</span><span class="token punctuation">(</span>Q <span class="token operator">+</span> direction<span class="token punctuation">.</span>Q<span class="token punctuation">,</span> R <span class="token operator">+</span> direction<span class="token punctuation">.</span>R<span class="token punctuation">,</span> S <span class="token operator">+</span> direction<span class="token punctuation">.</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We have a type representing the adjacency directions within a hexagon grid.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">record</span> <span class="token class-name">HexDirection</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token function">HexDirection</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> q<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> r<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> s<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Q <span class="token operator">=</span> q<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>R <span class="token operator">=</span> r<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>S <span class="token operator">=</span> s<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">HexDirection</span> NorthEast <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">HexDirection</span> East <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">HexDirection</span> SouthEast <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">HexDirection</span> SouthWest <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">HexDirection</span> West <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">HexDirection</span> NorthWest <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span>HexDirection<span class="token punctuation">></span></span> <span class="token function">GetAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+    <span class="token punctuation">[</span>
+        NorthEast<span class="token punctuation">,</span>
+        East<span class="token punctuation">,</span>
+        SouthEast<span class="token punctuation">,</span>
+        SouthWest<span class="token punctuation">,</span>
+        West<span class="token punctuation">,</span>
+        NorthWest<span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> Q <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>    
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> R <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> S <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>We also need a type to represent the grid itself. I've chosen to define the grid in
+a radial fashion, including an origin at the centre and all cells up to a specified
+distance away from the origin.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HexGrid</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">HexGrid</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> maxDistanceFromOrigin<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>MaxDistanceFromOrigin <span class="token operator">=</span> maxDistanceFromOrigin<span class="token punctuation">;</span>
+
+        <span class="token class-name"><span class="token keyword">var</span></span> cells <span class="token operator">=</span>
+            <span class="token keyword">from</span> q <span class="token keyword">in</span> <span class="token function">RangeBetweenInclusive</span><span class="token punctuation">(</span><span class="token operator">-</span>maxDistanceFromOrigin<span class="token punctuation">,</span> maxDistanceFromOrigin<span class="token punctuation">)</span>
+            <span class="token keyword">from</span> r <span class="token keyword">in</span> <span class="token function">RangeBetweenInclusive</span><span class="token punctuation">(</span><span class="token operator">-</span>maxDistanceFromOrigin<span class="token punctuation">,</span> maxDistanceFromOrigin<span class="token punctuation">)</span>
+            <span class="token keyword">from</span> s <span class="token keyword">in</span> <span class="token function">RangeBetweenInclusive</span><span class="token punctuation">(</span><span class="token operator">-</span>maxDistanceFromOrigin<span class="token punctuation">,</span> maxDistanceFromOrigin<span class="token punctuation">)</span>
+            <span class="token keyword">where</span> <span class="token class-name">HexCell</span><span class="token punctuation">.</span><span class="token function">CoordinatesValid</span><span class="token punctuation">(</span>q<span class="token punctuation">,</span> r<span class="token punctuation">,</span> s<span class="token punctuation">)</span>
+            <span class="token keyword">select</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">HexCell</span><span class="token punctuation">(</span>q<span class="token punctuation">,</span> r<span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span>Cells <span class="token operator">=</span> cells<span class="token punctuation">.</span><span class="token function">ToList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">int</span></span> MaxDistanceFromOrigin <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">IReadOnlyList<span class="token punctuation">&lt;</span>HexCell<span class="token punctuation">></span></span> Cells <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span>HexCell<span class="token punctuation">></span></span> <span class="token function">GetNeighbours</span><span class="token punctuation">(</span><span class="token class-name">HexCell</span> cell<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token keyword">from</span> direction <span class="token keyword">in</span> HexDirection<span class="token punctuation">.</span><span class="token function">GetAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">let</span> neighbour <span class="token operator">=</span> cell<span class="token punctuation">.</span><span class="token function">GetNeighbourInDirection</span><span class="token punctuation">(</span>direction<span class="token punctuation">)</span>
+        <span class="token keyword">where</span> <span class="token class-name">this</span><span class="token punctuation">.</span><span class="token function">IsWithinBounds</span><span class="token punctuation">(</span>neighbour<span class="token punctuation">)</span>
+        <span class="token keyword">select</span> neighbour<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name">IEnumerable<span class="token punctuation">&lt;</span><span class="token keyword">int</span><span class="token punctuation">></span></span> <span class="token function">RangeBetweenInclusive</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">int</span></span> lowerBound<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> upperBound<span class="token punctuation">)</span> <span class="token operator">=></span>
+        Enumerable<span class="token punctuation">.</span><span class="token function">Range</span><span class="token punctuation">(</span>lowerBound<span class="token punctuation">,</span> upperBound <span class="token operator">-</span> lowerBound <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">bool</span></span> <span class="token function">IsWithinBounds</span><span class="token punctuation">(</span><span class="token class-name">HexCell</span> cell<span class="token punctuation">)</span> <span class="token operator">=></span> cell<span class="token punctuation">.</span>DistanceFromOrigin <span class="token operator">&lt;=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>MaxDistanceFromOrigin<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Drawing a hexagon grid mostly comes down to knowing where the vertices of each
+cell are. For this I refer you again to the <a href="https://www.redblobgames.com/grids/hexagons/">the article by Red Blob
+Games</a> (seriously, go and read
+it!). The code for this is in
+<a href="https://github.com/djcarter85/ProcGenFun/blob/post-07/ProcGenFun/Mazes/HexMazeImage.cs">HexMazeImage.cs</a>
+(it's quite long, so I won't reproduce it here.)</p>
+<p>Here's what the grid looks like if you set the size to 6.</p>
+<p><img src="/assets/images/2026-01-26-PGF-07/hex-grid.svg" alt="Hexagon grid"></p>
+<h2>Generating hexagon mazes</h2>
+<p>At this point, it's just a case of combining the code we already have for the
+Recursive Backtracker algorithm with the code defining hexagon grids.</p>
+<p>Here's what you end up with. I think the results are great!</p>
+<p><img src="/assets/images/2026-01-26-PGF-07/hex-maze-animation.gif" alt="Animation of a maze generated using the Recursive Backtracker algorithm on a
+hexagon grid"></p>
+<h2>Conclusion</h2>
+<p>When I started this blog series one of my aims was to generate visually
+appealing images (the other being to do it using as much functional code as
+possible). I'm really pleased that these hexagon mazes have come out looking so
+cool, and it's given me motivation to continue with this series and see what I
+can create!</p>
+<p>Up next: I'm not entirely sure at the moment! I've got some ideas for other
+types of mazes, but I'd also like to explore procedurally generating other
+structures. Watch this space ...</p>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2026
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
