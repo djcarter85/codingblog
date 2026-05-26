@@ -8,6 +8,7 @@ module.exports = function (eleventyConfig) {
     return collection.getFilteredByGlob("src/_posts/*.md");
   });
   eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.addGlobalData("timestamp", new Date().toISOString().replace(/[-:]|\.\d{3}/g, ''));
 
   return {
     dir: {
