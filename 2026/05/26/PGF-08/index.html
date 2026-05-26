@@ -1,0 +1,585 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>ProcGen Fun 8: Fun with flags | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/code.css" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      ProcGen Fun 8: Fun with flags
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">26 May 2026</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">Procedurally generating realistic country flags</p>
+
+  <article class="prose"><p>[<a href="/2024/12/18/PGF-00/#list-of-posts">List of posts</a> |
+<a href="https://procgenfun.carterdan.net">playground</a> | <a href="https://github.com/djcarter85/ProcGenFun/tree/post-08">source code for this
+post</a>]</p>
+<p>So far in this series we've mostly focussed on mazes. So I thought I'd try
+something completely different: <strong>flags</strong>!</p>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+    <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
+    <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
+    <circle cx="0" cy="0" r="250" transform="translate(900, 600)" style="fill:#FCD116;" />
+  </svg>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+    <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+    <path d="M600 0 l0 1200 M0 600 l1800 0" stroke-width="250" style="stroke:#006638;" />
+  </svg>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+    <rect x="0" y="0" width="600" height="1200" style="fill:#FFFFFF;" />
+    <rect x="600" y="0" width="600" height="1200" style="fill:#0033A0;" />
+    <rect x="1200" y="0" width="600" height="1200" style="fill:#C8102E;" />
+    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(900, 600)" style="fill:#FFFFFF;" />
+  </svg>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+    <rect x="0" y="0" width="1800" height="1200" style="fill:#FCD116;" />
+    <path d="M0 0 L1800 1200" stroke-width="350" style="stroke:#000000;" />
+    <path d="M0 0 L1800 1200" stroke-width="250" style="stroke:#0666DB;" />
+  </svg>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+    <rect x="0" y="0" width="1800" height="600" style="fill:#6CCFF6;" />
+    <rect x="0" y="600" width="1800" height="300" style="fill:#000000;" />
+    <rect x="0" y="900" width="1800" height="300" style="fill:#FFFFFF;" />
+  </svg>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+    <rect x="0" y="0" width="1800" height="1200" style="fill:#006638;" />
+    <g transform="translate(300, 300)">
+      <path d="M161.8034 117.5571 A200 200 0 1 1 161.8034 -117.5571 A160 160 0 1 0 161.8034 117.5571" style="fill:#FFFFFF;" />
+      <path d="M-4.371139E-06 -100 L58.77852 80.9017 L-95.10565 -30.9017 L95.10565 -30.9017 L-58.77852 80.9017" transform="translate(100, 0) rotate(18, 0, 0)" style="fill:#FFFFFF;" />
+    </g>
+  </svg>
+</div>
+<p>Vexillilogy (the study of flags) is full of patterns, which lends itself
+beautifully to procedural generation. So I've created a <a href="https://procgenfun.carterdan.net/flags">flag
+generator</a> which randomly generates
+realistic-looking flags, including the flags shown above. Why not have a go
+yourself? You can even download and share your favourites.</p>
+<p>In this article I'll give a brief overview of the building blocks which make up
+my flag generator.</p>
+<h2>Colours</h2>
+<p>First off, I needed a colour palette. Flags tend towards bright colours and away
+from pastels, so I've picked a range of bright colours similar to those you'd
+find on country flags.</p>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#FFFFFF] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>White</div>
+      <div class="text-sm text-gray-700">#FFFFFF</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#C8102E] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Red</div>
+      <div class="text-sm text-gray-700">#C8102E</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#0033A0] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Dark Blue</div>
+      <div class="text-sm text-gray-700">#0033A0</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#0666DB] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Royal Blue</div>
+      <div class="text-sm text-gray-700">#0666DB</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#6CCFF6] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Light Blue</div>
+      <div class="text-sm text-gray-700">#6CCFF6</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#006638] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Dark Green</div>
+      <div class="text-sm text-gray-700">#006638</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#00991C] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Light Green</div>
+      <div class="text-sm text-gray-700">#00991C</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#FCD116] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Yellow</div>
+      <div class="text-sm text-gray-700">#FCD116</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#000000] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Black</div>
+      <div class="text-sm text-gray-700">#000000</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#FF8200] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Orange</div>
+      <div class="text-sm text-gray-700">#FF8200</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#7A263A] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Maroon</div>
+      <div class="text-sm text-gray-700">#7A263A</div>
+    </div>
+  </div>
+  <div class="flex flex-row items-center gap-3">
+    <div class="w-10 h-10 outline -outline-offset-2 outline-black/10 bg-[#660099] rounded-lg"></div>
+    <div class="flex flex-col">
+      <div>Purple</div>
+      <div class="text-sm text-gray-700">#660099</div>
+    </div>
+  </div>
+</div>
+<p>The generator selects randomly from these twelve colours, with two particular
+caveats.</p>
+<ol>
+<li>Certain colour combinations are not so easy on the eyes (e.g. dark
+blue and dark green), so I've implemented restrictions on which colours can
+be placed next to each other.</li>
+<li>Certain colours (your reds, your whites, your blues) are much more common
+than others (looking at you, purple), so I've weighted them to keep the flags
+looking realistic.</li>
+</ol>
+<h2>Patterns</h2>
+<p>Next, how should the colours be arranged? There are a number of common patterns;
+here are the twelve I have chosen to use.</p>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#C8102E;" />
+</svg>
+<div class="text-center">Solid</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="900" height="1200" style="fill:#FFFFFF;" />
+  <rect x="900" y="0" width="900" height="1200" style="fill:#C8102E;" />
+</svg>
+<div class="text-center">Vertical Bisection</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
+  <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
+</svg>
+<div class="text-center">Horizontal Bisection</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="600" height="1200" style="fill:#C8102E;" />
+  <rect x="600" y="0" width="600" height="1200" style="fill:#FFFFFF;" />
+  <rect x="1200" y="0" width="600" height="1200" style="fill:#0033A0;" />
+</svg>
+<div class="text-center">Vertical Triband</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="400" style="fill:#C8102E;" />
+  <rect x="0" y="400" width="1800" height="400" style="fill:#FFFFFF;" />
+  <rect x="0" y="800" width="1800" height="400" style="fill:#0033A0;" />
+</svg>
+<div class="text-center">Horizontal Triband</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <path d="M0 0 L0 1200 L1800 1200 Z" style="fill:#C8102E;" />
+  <path d="M1800 0 L1800 1200 L0 0 Z" style="fill:#FFFFFF;" />
+</svg>
+<div class="text-center">Diagonal Bisection</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <path d="M0 0 L1800 1200" stroke-width="250" style="stroke:#C8102E;" />
+</svg>
+<div class="text-center">Diagonal Band</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <path d="M900 0 l0 1200 M0 600 l1800 0" stroke-width="250" style="stroke:#C8102E;" />
+</svg>
+<div class="text-center">Cross</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <path d="M0 0 L1800 0 L0 1200 L1800 1200 Z" style="fill:#FFFFFF;" />
+  <path d="M0 0 L0 1200 L1800 0 L1800 1200 Z" style="fill:#FFFFFF;" />
+  <path d="M0 0 L1800 1200 M0 1200 L1800 0" stroke-width="250" style="stroke:#C8102E;" />
+</svg>
+<div class="text-center">Saltire</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="900" height="600" style="fill:#FFFFFF;" />
+  <rect x="900" y="0" width="900" height="600" style="fill:#C8102E;" />
+  <rect x="900" y="600" width="900" height="600" style="fill:#FFFFFF;" />
+  <rect x="0" y="600" width="900" height="600" style="fill:#0033A0;" />
+</svg>
+<div class="text-center">Quadrisection</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+  <rect x="0" y="171.4286" width="1800" height="171.4286" style="fill:#C8102E;" />
+  <rect x="0" y="342.8571" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+  <rect x="0" y="514.2857" width="1800" height="171.4286" style="fill:#C8102E;" />
+  <rect x="0" y="685.7143" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+  <rect x="0" y="857.1429" width="1800" height="171.4286" style="fill:#C8102E;" />
+  <rect x="0" y="1028.571" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+</svg>
+<div class="text-center">Horizontal Striped</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="200" fill-opacity="0" style="fill:transparent;stroke:#C8102E;" />
+</svg>
+<div class="text-center">Pall</div>
+</div>
+</div>
+<p>Some patterns have additional variations. For example, diagonals can go either
+way, there can be varying numbers of stripes, and bisections and trisections can
+be uneven.</p>
+<h2>Decorations</h2>
+<p>Some flag patterns lend themselves nicely to additional decoration. A particular
+favourite of mine is <em>fimbriation</em>: a thin stripe which emphasises the border
+between two colours.</p>
+<div class="grid grid-cols-2 gap-4">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="300" fill-opacity="0" style="fill:transparent;stroke:#000000;" />
+  <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="200" fill-opacity="0" style="fill:transparent;stroke:#6CCFF6;" />
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="600" style="fill:#000000;" />
+  <rect x="0" y="600" width="1800" height="600" style="fill:#006638;" />
+  <line x1="0" y1="600" x2="1800" y2="600" stroke-width="75" style="stroke:#6CCFF6;" />
+</svg>
+</div>
+<p>Another concept seen in real country flags is to add extra blocks of colour to
+the <em>hoist</em> (that is, the side nearest the flagpole).</p>
+<div class="grid grid-cols-2 gap-4">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
+  <rect x="0" y="600" width="1800" height="600" style="fill:#00991C;" />
+  <path d="M0 0 L840 600 L0 1200 Z" style="fill:#0033A0;" />
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="600" style="fill:#0033A0;" />
+  <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
+  <rect x="0" y="0" width="600" height="1200" style="fill:#FCD116;" />
+</svg>
+</div>
+<h2>Charges</h2>
+<p>A charge is an emblem added on top of the basic pattern of a flag; I've chosen
+six simple variations.</p>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <circle cx="0" cy="0" r="300" transform="translate(900, 600)" style="fill:#C8102E;" />
+</svg>
+<div class="text-center">Circle</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <path d="M-1.311342E-05 -300 L176.3356 242.7051 L-285.317 -92.70511 L285.317 -92.7051 L-176.3356 242.7051" transform="translate(900, 600)" style="fill:#C8102E;" />
+</svg>
+<div class="text-center">Star</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <g transform="translate(900, 600)">
+    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(-440, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(0, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(440, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+  </g>
+</svg>
+<div class="text-center">Star Band</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <path d="M0 -300 L0 300 M-300 0 L300 0" transform="translate(900, 600)" stroke-width="150" style="stroke:#C8102E;" />
+</svg>
+<div class="text-center">Plus</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <g transform="translate(900, 600)">
+    <path d="M242.7051 176.3356 A300 300 0 1 1 242.7051 -176.3356 A240 240 0 1 0 242.7051 176.3356" style="fill:#C8102E;" />
+  </g>
+</svg>
+<div class="text-center">Crescent</div>
+</div>
+<div class="flex flex-col gap-2">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+  <g transform="translate(900, 600)">
+    <path d="M242.7051 176.3356 A300 300 0 1 1 242.7051 -176.3356 A240 240 0 1 0 242.7051 176.3356" style="fill:#C8102E;" />
+    <path d="M-6.556708E-06 -150 L88.16778 121.3526 L-142.6585 -46.35255 L142.6585 -46.35255 L-88.16778 121.3525" transform="translate(150, 0) rotate(18, 0, 0)" style="fill:#C8102E;" />
+  </g>
+</svg>
+<div class="text-center">Crescent and Star</div>
+</div>
+</div>
+<p>The size and placement of any charges depend on the pattern underneath. For
+example, if your base pattern is a vertical bisection then it makes most sense
+for a charge to be placed in either the left or right half of the flag. A solid
+flag is most likely to have an extra-large charge right in the centre.</p>
+<div class="grid grid-cols-2 gap-4">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="900" height="1200" style="fill:#FCD116;" />
+  <rect x="900" y="0" width="900" height="1200" style="fill:#000000;" />
+  <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(1350, 600)" style="fill:#FFFFFF;" />
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="1200" style="fill:#C8102E;" />
+  <circle cx="0" cy="0" r="300" transform="translate(900, 600)" style="fill:#FCD116;" />
+</svg>
+</div>
+<h2>Technical details</h2>
+<p>If you're not a programmer, feel free to skip this bit!</p>
+<p>Much of the implementation of my flag generator follows similar principles to
+the previous posts in this series, such as composition of distributions. However
+I'd like to particularly highlight the concept of a <em>discriminated union</em>, which
+was super helpful here.</p>
+<p>A discriminated union is a type whose values can take any one of a fixed set of
+types. If you're familiar with C# this might sound like an enumeration, but a
+discriminated union allows you to assign additional properties to the individual
+values. For example, each flag pattern has a different set of additional
+properties: a solid flag just needs a single colour defined, whereas a triband
+flag needs three. This makes a discriminated union an ideal data type to
+represent a flag pattern.</p>
+<pre class="language-cs"><code class="language-cs"><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Union</span></span><span class="token punctuation">]</span>
+<span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">FlagPattern</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">Solid</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Field<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">VerticalBisection</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Left<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">HorizontalBisection</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Top<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Bottom<span class="token punctuation">,</span> <span class="token class-name">HorizontalBisectionDecoration</span> Decoration<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">VerticalTriband</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Left<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Middle<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">HorizontalTriband</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Top<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Middle<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Bottom<span class="token punctuation">,</span> <span class="token class-name">HorizontalTribandSizing</span> Sizing<span class="token punctuation">,</span> <span class="token class-name">FlagColour<span class="token punctuation">?</span></span> Fimbriation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">DiagonalBisection</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Left<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Right<span class="token punctuation">,</span> <span class="token class-name">Diagonal</span> Diagonal<span class="token punctuation">,</span> <span class="token class-name">DiagonalBisectionDecoration</span> Decoration<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">DiagonalBand</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Field<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Band<span class="token punctuation">,</span> <span class="token class-name">Diagonal</span> Diagonal<span class="token punctuation">,</span> <span class="token class-name">FlagColour<span class="token punctuation">?</span></span> Fimbriation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">Cross</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Field<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Foreground<span class="token punctuation">,</span> <span class="token class-name">CrossType</span> CrossType<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">Saltire</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> NorthSouthField<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> EastWestField<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Foreground<span class="token punctuation">,</span> <span class="token class-name">FlagColour<span class="token punctuation">?</span></span> Fimbriation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">Quadrisection</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> TopLeft<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> TopRight<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> BottomRight<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> BottomLeft<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">HorizontalStriped</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Colour1<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Colour2<span class="token punctuation">,</span> <span class="token class-name"><span class="token keyword">int</span></span> StripeCount<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">partial</span> <span class="token keyword">record</span> <span class="token class-name">Pall</span><span class="token punctuation">(</span><span class="token class-name">FlagColour</span> Field<span class="token punctuation">,</span> <span class="token class-name">FlagColour</span> Foreground<span class="token punctuation">,</span> <span class="token class-name">FlagColour<span class="token punctuation">?</span></span> Fimbriation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Support for discriminated unions has been considered for C# for many years, and
+it’s finally coming in C# 15 later this year. In the meantime, I’ve used a
+package called <a href="https://github.com/domn1995/dunet">Dunet</a> to implement the
+discriminated unions I need. It’s particularly helpful in that the compiler will
+warn you if you have failed to consider one of the allowed values.</p>
+<h2>Conclusion</h2>
+<p>Of all the articles in this series, this has probably been my favourite to
+write! The variety of flags I've been able to generate from a handful of simple
+rules has been incredible. Sometimes I simply open up the <a href="https://procgenfun.carterdan.net/flags">flag
+generator</a> and share my favourite
+designs with friends and family.</p>
+<p>I've probably taken this as far as I want to for now, but some of my ideas for
+future expansion include:</p>
+<ul>
+<li>More base patterns, such as a <em>canton</em> (a rectangular emblem in the top-left
+corner)</li>
+<li>More charge shapes, such as animal designs (my wife really wants me to include
+a cat!)</li>
+<li>Multiple charges on one flag (such as the Southern Cross constellation on the
+<a href="https://en.wikipedia.org/wiki/Flag_of_Australia">flag of Australia</a>)</li>
+<li>More colour variations, including different shades of the same hue</li>
+<li>Different aspect ratios or even non-rectangular flags (check out the <a href="https://en.wikipedia.org/wiki/Flag_of_Nepal">flag of
+Nepal</a> if you haven't already!)</li>
+</ul>
+<p>And just for fun, here's six more of my favourites!</p>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="600" style="fill:#000000;" />
+  <rect x="0" y="600" width="1800" height="600" style="fill:#FFFFFF;" />
+  <rect x="0" y="0" width="600" height="1200" style="fill:#C8102E;" />
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="109.0909" style="fill:#0666DB;" />
+  <rect x="0" y="109.0909" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+  <rect x="0" y="218.1818" width="1800" height="109.0909" style="fill:#0666DB;" />
+  <rect x="0" y="327.2727" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+  <rect x="0" y="436.3636" width="1800" height="109.0909" style="fill:#0666DB;" />
+  <rect x="0" y="545.4546" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+  <rect x="0" y="654.5455" width="1800" height="109.0909" style="fill:#0666DB;" />
+  <rect x="0" y="763.6364" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+  <rect x="0" y="872.7273" width="1800" height="109.0909" style="fill:#0666DB;" />
+  <rect x="0" y="981.8182" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+  <rect x="0" y="1090.909" width="1800" height="109.0909" style="fill:#0666DB;" />
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="400" style="fill:#C8102E;" />
+  <rect x="0" y="400" width="1800" height="400" style="fill:#0666DB;" />
+  <rect x="0" y="800" width="1800" height="400" style="fill:#C8102E;" />
+  <line x1="0" y1="400" x2="1800" y2="400" stroke-width="75" style="stroke:#FFFFFF;" />
+  <line x1="0" y1="800" x2="1800" y2="800" stroke-width="75" style="stroke:#FFFFFF;" />
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <path d="M0 0 L1800 0 L0 1200 L1800 1200 Z" style="fill:#6CCFF6;" />
+  <path d="M0 0 L0 1200 L1800 0 L1800 1200 Z" style="fill:#6CCFF6;" />
+  <path d="M0 0 L1800 1200 M0 1200 L1800 0" stroke-width="250" style="stroke:#FFFFFF;" />
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="312" style="fill:#C8102E;" />
+  <rect x="0" y="312" width="1800" height="576" style="fill:#FFFFFF;" />
+  <rect x="0" y="888" width="1800" height="312" style="fill:#000000;" />
+  <g transform="translate(900, 600)">
+    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(0, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+  </g>
+</svg>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
+  <rect x="0" y="0" width="1800" height="600" style="fill:#FF8200;" />
+  <rect x="0" y="600" width="1800" height="600" style="fill:#006638;" />
+  <path d="M0 0 L840 600 L0 1200 Z" style="fill:#FCD116;" />
+  <path d="M-5.463924E-06 -125 L73.47314 101.1271 L-118.8821 -38.62713 L118.8821 -38.62712 L-73.47314 101.1271" transform="translate(300, 600)" style="fill:#C8102E;" />
+</svg>
+</div>
+<h2>Further reading</h2>
+<p>I found the following Wikipedia articles very helpful while researching flag
+designs!</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/List_of_flags_by_design">List of flags by
+design</a></li>
+<li><a href="https://en.wikipedia.org/wiki/List_of_national_flags_by_design">List of national flags by
+design</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Glossary_of_vexillology">Glossary of
+vexillology</a></li>
+</ul>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2026
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
