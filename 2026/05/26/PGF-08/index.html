@@ -14,8 +14,8 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="/assets/css/main.css?timestamp=20260526T151959Z" />
-    <link rel="stylesheet" href="/assets/css/code.css?timestamp=20260526T151959Z" />
+    <link rel="stylesheet" href="/assets/css/main.css?timestamp=20260527T070917Z" />
+    <link rel="stylesheet" href="/assets/css/code.css?timestamp=20260527T070917Z" />
 
     <link
       rel="alternate"
@@ -72,38 +72,50 @@ post</a>]</p>
 <p>So far in this series we've mostly focussed on mazes. So I thought I'd try
 something completely different: <strong>flags</strong>!</p>
 <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-    <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
-    <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
-    <circle cx="0" cy="0" r="250" transform="translate(900, 600)" style="fill:#FCD116;" />
-  </svg>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-    <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-    <path d="M600 0 l0 1200 M0 600 l1800 0" stroke-width="250" style="stroke:#006638;" />
-  </svg>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-    <rect x="0" y="0" width="600" height="1200" style="fill:#FFFFFF;" />
-    <rect x="600" y="0" width="600" height="1200" style="fill:#0033A0;" />
-    <rect x="1200" y="0" width="600" height="1200" style="fill:#C8102E;" />
-    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(900, 600)" style="fill:#FFFFFF;" />
-  </svg>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-    <rect x="0" y="0" width="1800" height="1200" style="fill:#FCD116;" />
-    <path d="M0 0 L1800 1200" stroke-width="350" style="stroke:#000000;" />
-    <path d="M0 0 L1800 1200" stroke-width="250" style="stroke:#0666DB;" />
-  </svg>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-    <rect x="0" y="0" width="1800" height="600" style="fill:#6CCFF6;" />
-    <rect x="0" y="600" width="1800" height="300" style="fill:#000000;" />
-    <rect x="0" y="900" width="1800" height="300" style="fill:#FFFFFF;" />
-  </svg>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-    <rect x="0" y="0" width="1800" height="1200" style="fill:#006638;" />
-    <g transform="translate(300, 300)">
-      <path d="M161.8034 117.5571 A200 200 0 1 1 161.8034 -117.5571 A160 160 0 1 0 161.8034 117.5571" style="fill:#FFFFFF;" />
-      <path d="M-4.371139E-06 -100 L58.77852 80.9017 L-95.10565 -30.9017 L95.10565 -30.9017 L-58.77852 80.9017" transform="translate(100, 0) rotate(18, 0, 0)" style="fill:#FFFFFF;" />
-    </g>
-  </svg>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
+      <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
+      <circle cx="0" cy="0" r="250" transform="translate(900, 600)" style="fill:#FCD116;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <path d="M600 0 l0 1200 M0 600 l1800 0" stroke-width="250" style="stroke:#006638;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="600" height="1200" style="fill:#FFFFFF;" />
+      <rect x="600" y="0" width="600" height="1200" style="fill:#0033A0;" />
+      <rect x="1200" y="0" width="600" height="1200" style="fill:#C8102E;" />
+      <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(900, 600)" style="fill:#FFFFFF;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FCD116;" />
+      <path d="M0 0 L1800 1200" stroke-width="350" style="stroke:#000000;" />
+      <path d="M0 0 L1800 1200" stroke-width="250" style="stroke:#0666DB;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#6CCFF6;" />
+      <rect x="0" y="600" width="1800" height="300" style="fill:#000000;" />
+      <rect x="0" y="900" width="1800" height="300" style="fill:#FFFFFF;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#006638;" />
+      <g transform="translate(300, 300)">
+        <path d="M161.8034 117.5571 A200 200 0 1 1 161.8034 -117.5571 A160 160 0 1 0 161.8034 117.5571" style="fill:#FFFFFF;" />
+        <path d="M-4.371139E-06 -100 L58.77852 80.9017 L-95.10565 -30.9017 L95.10565 -30.9017 L-58.77852 80.9017" transform="translate(100, 0) rotate(18, 0, 0)" style="fill:#FFFFFF;" />
+      </g>
+    </svg>
+  </div>
 </div>
 <p>Vexillilogy (the study of flags) is full of patterns, which lends itself
 beautifully to procedural generation. So I've created a <a href="https://procgenfun.carterdan.net/flags">flag
@@ -216,99 +228,99 @@ looking realistic.</li>
 <p>Next, how should the colours be arranged? There are a number of common patterns;
 here are the twelve I have chosen to use.</p>
 <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#C8102E;" />
-</svg>
-<div class="text-center">Solid</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="900" height="1200" style="fill:#FFFFFF;" />
-  <rect x="900" y="0" width="900" height="1200" style="fill:#C8102E;" />
-</svg>
-<div class="text-center">Vertical Bisection</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
-  <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
-</svg>
-<div class="text-center">Horizontal Bisection</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="600" height="1200" style="fill:#C8102E;" />
-  <rect x="600" y="0" width="600" height="1200" style="fill:#FFFFFF;" />
-  <rect x="1200" y="0" width="600" height="1200" style="fill:#0033A0;" />
-</svg>
-<div class="text-center">Vertical Triband</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="400" style="fill:#C8102E;" />
-  <rect x="0" y="400" width="1800" height="400" style="fill:#FFFFFF;" />
-  <rect x="0" y="800" width="1800" height="400" style="fill:#0033A0;" />
-</svg>
-<div class="text-center">Horizontal Triband</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <path d="M0 0 L0 1200 L1800 1200 Z" style="fill:#C8102E;" />
-  <path d="M1800 0 L1800 1200 L0 0 Z" style="fill:#FFFFFF;" />
-</svg>
-<div class="text-center">Diagonal Bisection</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <path d="M0 0 L1800 1200" stroke-width="250" style="stroke:#C8102E;" />
-</svg>
-<div class="text-center">Diagonal Band</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <path d="M900 0 l0 1200 M0 600 l1800 0" stroke-width="250" style="stroke:#C8102E;" />
-</svg>
-<div class="text-center">Cross</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <path d="M0 0 L1800 0 L0 1200 L1800 1200 Z" style="fill:#FFFFFF;" />
-  <path d="M0 0 L0 1200 L1800 0 L1800 1200 Z" style="fill:#FFFFFF;" />
-  <path d="M0 0 L1800 1200 M0 1200 L1800 0" stroke-width="250" style="stroke:#C8102E;" />
-</svg>
-<div class="text-center">Saltire</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="900" height="600" style="fill:#FFFFFF;" />
-  <rect x="900" y="0" width="900" height="600" style="fill:#C8102E;" />
-  <rect x="900" y="600" width="900" height="600" style="fill:#FFFFFF;" />
-  <rect x="0" y="600" width="900" height="600" style="fill:#0033A0;" />
-</svg>
-<div class="text-center">Quadrisection</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="171.4286" style="fill:#FFFFFF;" />
-  <rect x="0" y="171.4286" width="1800" height="171.4286" style="fill:#C8102E;" />
-  <rect x="0" y="342.8571" width="1800" height="171.4286" style="fill:#FFFFFF;" />
-  <rect x="0" y="514.2857" width="1800" height="171.4286" style="fill:#C8102E;" />
-  <rect x="0" y="685.7143" width="1800" height="171.4286" style="fill:#FFFFFF;" />
-  <rect x="0" y="857.1429" width="1800" height="171.4286" style="fill:#C8102E;" />
-  <rect x="0" y="1028.571" width="1800" height="171.4286" style="fill:#FFFFFF;" />
-</svg>
-<div class="text-center">Horizontal Striped</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="200" fill-opacity="0" style="fill:transparent;stroke:#C8102E;" />
-</svg>
-<div class="text-center">Pall</div>
-</div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#C8102E;" />
+    </svg>
+    <div class="text-center">Solid</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="900" height="1200" style="fill:#FFFFFF;" />
+      <rect x="900" y="0" width="900" height="1200" style="fill:#C8102E;" />
+    </svg>
+    <div class="text-center">Vertical Bisection</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
+      <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
+    </svg>
+    <div class="text-center">Horizontal Bisection</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="600" height="1200" style="fill:#C8102E;" />
+      <rect x="600" y="0" width="600" height="1200" style="fill:#FFFFFF;" />
+      <rect x="1200" y="0" width="600" height="1200" style="fill:#0033A0;" />
+    </svg>
+    <div class="text-center">Vertical Triband</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="400" style="fill:#C8102E;" />
+      <rect x="0" y="400" width="1800" height="400" style="fill:#FFFFFF;" />
+      <rect x="0" y="800" width="1800" height="400" style="fill:#0033A0;" />
+    </svg>
+    <div class="text-center">Horizontal Triband</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <path d="M0 0 L0 1200 L1800 1200 Z" style="fill:#C8102E;" />
+      <path d="M1800 0 L1800 1200 L0 0 Z" style="fill:#FFFFFF;" />
+    </svg>
+    <div class="text-center">Diagonal Bisection</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <path d="M0 0 L1800 1200" stroke-width="250" style="stroke:#C8102E;" />
+    </svg>
+    <div class="text-center">Diagonal Band</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <path d="M900 0 l0 1200 M0 600 l1800 0" stroke-width="250" style="stroke:#C8102E;" />
+    </svg>
+    <div class="text-center">Cross</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <path d="M0 0 L1800 0 L0 1200 L1800 1200 Z" style="fill:#FFFFFF;" />
+      <path d="M0 0 L0 1200 L1800 0 L1800 1200 Z" style="fill:#FFFFFF;" />
+      <path d="M0 0 L1800 1200 M0 1200 L1800 0" stroke-width="250" style="stroke:#C8102E;" />
+    </svg>
+    <div class="text-center">Saltire</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="900" height="600" style="fill:#FFFFFF;" />
+      <rect x="900" y="0" width="900" height="600" style="fill:#C8102E;" />
+      <rect x="900" y="600" width="900" height="600" style="fill:#FFFFFF;" />
+      <rect x="0" y="600" width="900" height="600" style="fill:#0033A0;" />
+    </svg>
+    <div class="text-center">Quadrisection</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+      <rect x="0" y="171.4286" width="1800" height="171.4286" style="fill:#C8102E;" />
+      <rect x="0" y="342.8571" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+      <rect x="0" y="514.2857" width="1800" height="171.4286" style="fill:#C8102E;" />
+      <rect x="0" y="685.7143" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+      <rect x="0" y="857.1429" width="1800" height="171.4286" style="fill:#C8102E;" />
+      <rect x="0" y="1028.571" width="1800" height="171.4286" style="fill:#FFFFFF;" />
+    </svg>
+    <div class="text-center">Horizontal Striped</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="200" fill-opacity="0" style="fill:transparent;stroke:#C8102E;" />
+    </svg>
+    <div class="text-center">Pall</div>
+  </div>
 </div>
 <p>Some patterns have additional variations. For example, diagonals can go either
 way, there can be varying numbers of stripes, and bisections and trisections can
@@ -318,101 +330,113 @@ be uneven.</p>
 favourite of mine is <em>fimbriation</em>: a thin stripe which emphasises the border
 between two colours.</p>
 <div class="grid grid-cols-2 gap-4">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="300" fill-opacity="0" style="fill:transparent;stroke:#000000;" />
-  <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="200" fill-opacity="0" style="fill:transparent;stroke:#6CCFF6;" />
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="600" style="fill:#000000;" />
-  <rect x="0" y="600" width="1800" height="600" style="fill:#006638;" />
-  <line x1="0" y1="600" x2="1800" y2="600" stroke-width="75" style="stroke:#6CCFF6;" />
-</svg>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="300" fill-opacity="0" style="fill:transparent;stroke:#000000;" />
+      <path d="M0 0 L840 600 L1800 600 M0 1200 L840 600" stroke-width="200" fill-opacity="0" style="fill:transparent;stroke:#6CCFF6;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#000000;" />
+      <rect x="0" y="600" width="1800" height="600" style="fill:#006638;" />
+      <line x1="0" y1="600" x2="1800" y2="600" stroke-width="75" style="stroke:#6CCFF6;" />
+    </svg>
+  </div>
 </div>
 <p>Another concept seen in real country flags is to add extra blocks of colour to
 the <em>hoist</em> (that is, the side nearest the flagpole).</p>
 <div class="grid grid-cols-2 gap-4">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
-  <rect x="0" y="600" width="1800" height="600" style="fill:#00991C;" />
-  <path d="M0 0 L840 600 L0 1200 Z" style="fill:#0033A0;" />
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="600" style="fill:#0033A0;" />
-  <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
-  <rect x="0" y="0" width="600" height="1200" style="fill:#FCD116;" />
-</svg>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#FFFFFF;" />
+      <rect x="0" y="600" width="1800" height="600" style="fill:#00991C;" />
+      <path d="M0 0 L840 600 L0 1200 Z" style="fill:#0033A0;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#0033A0;" />
+      <rect x="0" y="600" width="1800" height="600" style="fill:#C8102E;" />
+      <rect x="0" y="0" width="600" height="1200" style="fill:#FCD116;" />
+    </svg>
+  </div>
 </div>
 <h2>Charges</h2>
 <p>A charge is an emblem added on top of the basic pattern of a flag; I've chosen
 six simple variations.</p>
 <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <circle cx="0" cy="0" r="300" transform="translate(900, 600)" style="fill:#C8102E;" />
-</svg>
-<div class="text-center">Circle</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <path d="M-1.311342E-05 -300 L176.3356 242.7051 L-285.317 -92.70511 L285.317 -92.7051 L-176.3356 242.7051" transform="translate(900, 600)" style="fill:#C8102E;" />
-</svg>
-<div class="text-center">Star</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <g transform="translate(900, 600)">
-    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(-440, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
-    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(0, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
-    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(440, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
-  </g>
-</svg>
-<div class="text-center">Star Band</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <path d="M0 -300 L0 300 M-300 0 L300 0" transform="translate(900, 600)" stroke-width="150" style="stroke:#C8102E;" />
-</svg>
-<div class="text-center">Plus</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <g transform="translate(900, 600)">
-    <path d="M242.7051 176.3356 A300 300 0 1 1 242.7051 -176.3356 A240 240 0 1 0 242.7051 176.3356" style="fill:#C8102E;" />
-  </g>
-</svg>
-<div class="text-center">Crescent</div>
-</div>
-<div class="flex flex-col gap-2">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
-  <g transform="translate(900, 600)">
-    <path d="M242.7051 176.3356 A300 300 0 1 1 242.7051 -176.3356 A240 240 0 1 0 242.7051 176.3356" style="fill:#C8102E;" />
-    <path d="M-6.556708E-06 -150 L88.16778 121.3526 L-142.6585 -46.35255 L142.6585 -46.35255 L-88.16778 121.3525" transform="translate(150, 0) rotate(18, 0, 0)" style="fill:#C8102E;" />
-  </g>
-</svg>
-<div class="text-center">Crescent and Star</div>
-</div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <circle cx="0" cy="0" r="300" transform="translate(900, 600)" style="fill:#C8102E;" />
+    </svg>
+    <div class="text-center">Circle</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <path d="M-1.311342E-05 -300 L176.3356 242.7051 L-285.317 -92.70511 L285.317 -92.7051 L-176.3356 242.7051" transform="translate(900, 600)" style="fill:#C8102E;" />
+    </svg>
+    <div class="text-center">Star</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <g transform="translate(900, 600)">
+        <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(-440, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+        <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(0, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+        <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(440, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+      </g>
+    </svg>
+    <div class="text-center">Star Band</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <path d="M0 -300 L0 300 M-300 0 L300 0" transform="translate(900, 600)" stroke-width="150" style="stroke:#C8102E;" />
+    </svg>
+    <div class="text-center">Plus</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <g transform="translate(900, 600)">
+        <path d="M242.7051 176.3356 A300 300 0 1 1 242.7051 -176.3356 A240 240 0 1 0 242.7051 176.3356" style="fill:#C8102E;" />
+      </g>
+    </svg>
+    <div class="text-center">Crescent</div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#FFFFFF;" />
+      <g transform="translate(900, 600)">
+        <path d="M242.7051 176.3356 A300 300 0 1 1 242.7051 -176.3356 A240 240 0 1 0 242.7051 176.3356" style="fill:#C8102E;" />
+        <path d="M-6.556708E-06 -150 L88.16778 121.3526 L-142.6585 -46.35255 L142.6585 -46.35255 L-88.16778 121.3525" transform="translate(150, 0) rotate(18, 0, 0)" style="fill:#C8102E;" />
+      </g>
+    </svg>
+    <div class="text-center">Crescent and Star</div>
+  </div>
 </div>
 <p>The size and placement of any charges depend on the pattern underneath. For
 example, if your base pattern is a vertical bisection then it makes most sense
 for a charge to be placed in either the left or right half of the flag. A solid
 flag is most likely to have an extra-large charge right in the centre.</p>
 <div class="grid grid-cols-2 gap-4">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="900" height="1200" style="fill:#FCD116;" />
-  <rect x="900" y="0" width="900" height="1200" style="fill:#000000;" />
-  <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(1350, 600)" style="fill:#FFFFFF;" />
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="1200" style="fill:#C8102E;" />
-  <circle cx="0" cy="0" r="300" transform="translate(900, 600)" style="fill:#FCD116;" />
-</svg>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="900" height="1200" style="fill:#FCD116;" />
+      <rect x="900" y="0" width="900" height="1200" style="fill:#000000;" />
+      <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(1350, 600)" style="fill:#FFFFFF;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="1200" style="fill:#C8102E;" />
+      <circle cx="0" cy="0" r="300" transform="translate(900, 600)" style="fill:#FCD116;" />
+    </svg>
+  </div>
 </div>
 <h2>Technical details</h2>
 <p>If you're not a programmer, feel free to skip this bit!</p>
@@ -469,50 +493,62 @@ Nepal</a> if you haven't already!)</li>
 </ul>
 <p>And just for fun, here's six more of my favourites!</p>
 <div class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="600" style="fill:#000000;" />
-  <rect x="0" y="600" width="1800" height="600" style="fill:#FFFFFF;" />
-  <rect x="0" y="0" width="600" height="1200" style="fill:#C8102E;" />
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="109.0909" style="fill:#0666DB;" />
-  <rect x="0" y="109.0909" width="1800" height="109.0909" style="fill:#FFFFFF;" />
-  <rect x="0" y="218.1818" width="1800" height="109.0909" style="fill:#0666DB;" />
-  <rect x="0" y="327.2727" width="1800" height="109.0909" style="fill:#FFFFFF;" />
-  <rect x="0" y="436.3636" width="1800" height="109.0909" style="fill:#0666DB;" />
-  <rect x="0" y="545.4546" width="1800" height="109.0909" style="fill:#FFFFFF;" />
-  <rect x="0" y="654.5455" width="1800" height="109.0909" style="fill:#0666DB;" />
-  <rect x="0" y="763.6364" width="1800" height="109.0909" style="fill:#FFFFFF;" />
-  <rect x="0" y="872.7273" width="1800" height="109.0909" style="fill:#0666DB;" />
-  <rect x="0" y="981.8182" width="1800" height="109.0909" style="fill:#FFFFFF;" />
-  <rect x="0" y="1090.909" width="1800" height="109.0909" style="fill:#0666DB;" />
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="400" style="fill:#C8102E;" />
-  <rect x="0" y="400" width="1800" height="400" style="fill:#0666DB;" />
-  <rect x="0" y="800" width="1800" height="400" style="fill:#C8102E;" />
-  <line x1="0" y1="400" x2="1800" y2="400" stroke-width="75" style="stroke:#FFFFFF;" />
-  <line x1="0" y1="800" x2="1800" y2="800" stroke-width="75" style="stroke:#FFFFFF;" />
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <path d="M0 0 L1800 0 L0 1200 L1800 1200 Z" style="fill:#6CCFF6;" />
-  <path d="M0 0 L0 1200 L1800 0 L1800 1200 Z" style="fill:#6CCFF6;" />
-  <path d="M0 0 L1800 1200 M0 1200 L1800 0" stroke-width="250" style="stroke:#FFFFFF;" />
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="312" style="fill:#C8102E;" />
-  <rect x="0" y="312" width="1800" height="576" style="fill:#FFFFFF;" />
-  <rect x="0" y="888" width="1800" height="312" style="fill:#000000;" />
-  <g transform="translate(900, 600)">
-    <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(0, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
-  </g>
-</svg>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200" class="">
-  <rect x="0" y="0" width="1800" height="600" style="fill:#FF8200;" />
-  <rect x="0" y="600" width="1800" height="600" style="fill:#006638;" />
-  <path d="M0 0 L840 600 L0 1200 Z" style="fill:#FCD116;" />
-  <path d="M-5.463924E-06 -125 L73.47314 101.1271 L-118.8821 -38.62713 L118.8821 -38.62712 L-73.47314 101.1271" transform="translate(300, 600)" style="fill:#C8102E;" />
-</svg>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#000000;" />
+      <rect x="0" y="600" width="1800" height="600" style="fill:#FFFFFF;" />
+      <rect x="0" y="0" width="600" height="1200" style="fill:#C8102E;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="109.0909" style="fill:#0666DB;" />
+      <rect x="0" y="109.0909" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+      <rect x="0" y="218.1818" width="1800" height="109.0909" style="fill:#0666DB;" />
+      <rect x="0" y="327.2727" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+      <rect x="0" y="436.3636" width="1800" height="109.0909" style="fill:#0666DB;" />
+      <rect x="0" y="545.4546" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+      <rect x="0" y="654.5455" width="1800" height="109.0909" style="fill:#0666DB;" />
+      <rect x="0" y="763.6364" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+      <rect x="0" y="872.7273" width="1800" height="109.0909" style="fill:#0666DB;" />
+      <rect x="0" y="981.8182" width="1800" height="109.0909" style="fill:#FFFFFF;" />
+      <rect x="0" y="1090.909" width="1800" height="109.0909" style="fill:#0666DB;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="400" style="fill:#C8102E;" />
+      <rect x="0" y="400" width="1800" height="400" style="fill:#0666DB;" />
+      <rect x="0" y="800" width="1800" height="400" style="fill:#C8102E;" />
+      <line x1="0" y1="400" x2="1800" y2="400" stroke-width="75" style="stroke:#FFFFFF;" />
+      <line x1="0" y1="800" x2="1800" y2="800" stroke-width="75" style="stroke:#FFFFFF;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <path d="M0 0 L1800 0 L0 1200 L1800 1200 Z" style="fill:#6CCFF6;" />
+      <path d="M0 0 L0 1200 L1800 0 L1800 1200 Z" style="fill:#6CCFF6;" />
+      <path d="M0 0 L1800 1200 M0 1200 L1800 0" stroke-width="250" style="stroke:#FFFFFF;" />
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="312" style="fill:#C8102E;" />
+      <rect x="0" y="312" width="1800" height="576" style="fill:#FFFFFF;" />
+      <rect x="0" y="888" width="1800" height="312" style="fill:#000000;" />
+      <g transform="translate(900, 600)">
+        <path d="M-8.742278E-06 -200 L117.557 161.8034 L-190.2113 -61.80341 L190.2113 -61.8034 L-117.557 161.8034" transform="translate(0, 0) rotate(0, 0, 0)" style="fill:#C8102E;" />
+      </g>
+    </svg>
+  </div>
+  <div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xml="http://www.w3.org/XML/1998/namespace" viewBox="0, 0, 1800, 1200">
+      <rect x="0" y="0" width="1800" height="600" style="fill:#FF8200;" />
+      <rect x="0" y="600" width="1800" height="600" style="fill:#006638;" />
+      <path d="M0 0 L840 600 L0 1200 Z" style="fill:#FCD116;" />
+      <path d="M-5.463924E-06 -125 L73.47314 101.1271 L-118.8821 -38.62713 L118.8821 -38.62712 L-73.47314 101.1271" transform="translate(300, 600)" style="fill:#C8102E;" />
+    </svg>
+  </div>
 </div>
 <h2>Further reading</h2>
 <p>I found the following Wikipedia articles very helpful while researching flag
