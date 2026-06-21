@@ -1,0 +1,200 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#05324d" />
+
+    <title>Alphabetic World Cup | DC Coding</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Rubik:ital,wght@0,400;0,700;1,400;1,700&family=Trirong:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/assets/css/main.css?timestamp=20260621T150018Z" />
+    <link rel="stylesheet" href="/assets/css/code.css?timestamp=20260621T150018Z" />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS Feed for DC Coding"
+      href="/Feed/"
+    />
+  </head>
+
+  <body class="flex min-h-screen flex-col bg-gray-100">
+    <nav class="bg-gray-800">
+      <div class="container flex flex-row justify-center px-6">
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/"
+          >Home</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/Archive"
+          >Archive</a
+        >
+        
+        <a
+          class="px-4 py-2 text-lg text-gray-100 hover:bg-gray-700 hover:underline"
+          href="/About"
+          >About</a
+        >
+        
+      </div>
+    </nav>
+
+    
+ <div class="bg-blue-800">
+  <div class="container py-8">
+    <h1 class="font-title text-5xl font-bold italic text-gray-50">
+      Alphabetic World Cup
+    </h1>
+    
+    <p class="mt-2 text-lg text-gray-200">21 June 2026</p>
+    
+  </div>
+</div>
+
+
+<div class="container py-6">
+  <p class="mb-6 text-3xl italic text-gray-500">What if the World Cup could only contain one team for each letter of the alphabet?</p>
+
+  <article class="prose"><p>Like many others at the moment, I've got World Cup fever and have really enjoyed
+watching as many matches as possible on TV.</p>
+<p>While I was watching Argentina vs Algeria the other day, I was thinking about
+how some letters of the alphabet are well-represented by countries of the world
+(such as <code>A</code>), while others are less common. I then got to thinking: if you were
+to restrict the World Cup to only one representative for each letter of the
+alphabet, which teams would you pick? Thus began a rabbit hole which my wife has
+described as &quot;delightfully nerdy&quot;.</p>
+<p>This blog post isn't really about programming, but it's got an &quot;optimisation&quot;
+element to it, so I hope regular readers will indulge me!</p>
+<h2>Rules</h2>
+<p>Before we get started picking teams, lets draw up some rules.</p>
+<p>Because we're only allowed to have one country per letter of the alphabet, we
+can have a maximum of 26 countries. 24 is a more normal number for a tournament
+like this (e.g. Euro 2024) so we'll go with that.</p>
+<p>I've also decided to restrict the number of countries allowed from each
+continent, to make it more realistic. Here's the allocation I've gone with; it's
+proportionally based on the allocation for World Cup 2026.</p>
+<table>
+<thead>
+<tr>
+<th>Confederation</th>
+<th>Continent</th>
+<th>Places</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AFC</td>
+<td>Asia</td>
+<td>4 or 5</td>
+</tr>
+<tr>
+<td>CAF</td>
+<td>Africa</td>
+<td>4 or 5</td>
+</tr>
+<tr>
+<td>CONCACAF</td>
+<td>North and Central America</td>
+<td>3 or 4</td>
+</tr>
+<tr>
+<td>CONMEBOL</td>
+<td>South America</td>
+<td>3 or 4</td>
+</tr>
+<tr>
+<td>OFC</td>
+<td>Oceania</td>
+<td>0 or 1</td>
+</tr>
+<tr>
+<td>UEFA</td>
+<td>Europe</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<p>For the avoidance of doubt, I've gone with the official names of FIFA members <a href="https://inside.fifa.com/associations">as
+listed on the FIFA website</a>. This doesn't
+completely match how we might commonly refer to countries; for example, South
+Korea is listed as Korea Republic.</p>
+<h2>Process</h2>
+<p>OK, let's fill out the list of teams!</p>
+<div class="grid-cols-[auto_1fr]">
+  <div>A</div>
+  <div>Argentina</div>
+  <div>
+<svg class="w-4 h-4" id="Layer_1" enable-background="new 0 0 512 512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m512 256c0-31.314-5.633-61.311-15.923-89.043l-240.077-11.131-240.077 11.13c-10.29 27.733-15.923 57.73-15.923 89.044s5.633 61.311 15.923 89.043l240.077 11.131 240.077-11.13c10.29-27.733 15.923-57.73 15.923-89.044z" fill="#f0f0f0"/><path d="m256 512c110.071 0 203.906-69.472 240.077-166.957h-480.154c36.171 97.485 130.006 166.957 240.077 166.957z" fill="#0052b4"/><path d="m15.923 166.957h480.155c-36.172-97.485-130.007-166.957-240.078-166.957s-203.906 69.472-240.077 166.957z" fill="#d80027"/><g fill="#338af3"><path d="m322.783 178.088h-44.522l7.421-55.653 29.68-22.261 29.681 22.261v44.522z"/><path d="m189.217 178.088h44.522l-7.421-55.653-29.681-22.261-29.68 22.261v44.522z"/></g><path d="m285.682 178.088h-59.364v-55.653l29.682-22.261 29.682 22.261z" fill="#0052b4"/><path d="m166.957 166.958v122.434c0 29.153 14.082 55.079 35.802 71.332l15.583-3.899 19.664 19.782c5.815 1.198 11.832 1.829 17.995 1.829 6.13 0 12.117-.623 17.901-1.809l22.447-18.69 12.892 2.751c21.711-16.252 35.803-42.151 35.803-71.296v-122.434z" fill="#f0f0f0"/><g fill="#d80027"><path d="m166.957 166.957h35.617v35.617h-35.617z"/><path d="m238.191 166.957h35.617v35.617h-35.617z"/><path d="m309.426 166.957h35.617v35.617h-35.617z"/><path d="m202.574 202.574h35.617v35.617h-35.617z"/><path d="m273.809 202.574h35.617v35.617h-35.617z"/><path d="m166.957 238.18h35.617v35.617h-35.617z"/><path d="m202.574 273.798h35.617v35.617h-35.617z"/><path d="m238.191 238.18h35.617v35.617h-35.617z"/><path d="m309.426 238.18h35.617v35.617h-35.617z"/><path d="m273.809 273.798h35.617v35.617h-35.617z"/><path d="m238.191 309.415h35.617v35.617h-35.617z"/><path d="m202.574 309.418h-33.319c3.056 13.24 9.064 25.355 17.302 35.617h16.017z"/><path d="m309.426 345.036h16.016c8.24-10.262 14.246-22.378 17.302-35.617h-33.318z"/><path d="m202.574 345.036v15.541c10.359 7.795 22.465 13.384 35.617 16.066v-31.607z"/><path d="m273.809 345.036v31.607c13.153-2.68 25.258-8.271 35.617-16.066v-15.541z"/></g><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/></svg>
+<p>B</div></p>
+  <div>Brazil</div>
+</div>
+<h2>draw</h2>
+</article>
+</div>
+
+<div class="container py-6">
+  <script
+    src="https://utteranc.es/client.js"
+    repo="djcarter85/codingblog"
+    issue-term="url"
+    label="comments"
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+
+    <footer class="footer mt-auto bg-blue-800 py-4 text-gray-50">
+      <div class="container flex flex-col gap-2">
+        <div class="flex flex-row justify-center gap-4">
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="https://github.com/djcarter85"
+            title="GitHub"
+          >
+            <i class="fab fa-github fa-2x"></i>
+          </a>
+          
+          <a
+            class="rounded-lg p-2 hover:bg-blue-500"
+            href="/Feed/"
+            title="RSS"
+          >
+            <i class="fa fa-rss fa-2x"></i>
+          </a>
+          
+        </div>
+        <div class="text-center">
+          &copy; Dan Carter 2026
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.6.3/js/all.js"
+      integrity="sha384-EIHISlAOj4zgYieurP0SdoiBYfGJKkgWedPHH4jCzpCXLmzVsw1ouK59MuUtP4a1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      type="text/javascript"
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+    ></script>
+  </body>
+</html>
