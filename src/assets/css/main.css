@@ -1,89 +1,194 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@layer components {
-  .container {
-    @apply mx-auto max-w-3xl px-6;
+@theme {
+  --color-*: initial;
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  --color-gray-50: #f7f7f8;
+  --color-gray-100: #ecedee;
+  --color-gray-200: #dcdee0;
+  --color-gray-300: #bfc3c5;
+  --color-gray-400: #9fa4a8;
+  --color-gray-500: #747c81;
+  --color-gray-600: #52585b;
+  --color-gray-700: #3d4143;
+  --color-gray-800: #27292b;
+  --color-gray-900: #131515;
+  --color-gray-950: #0a0a0b;
+
+  --color-blue-50: #f6fbfe;
+  --color-blue-100: #e8f5fd;
+  --color-blue-200: #c8e7f9;
+  --color-blue-300: #87c5e8;
+  --color-blue-400: #51b3ec;
+  --color-blue-500: #218cca;
+  --color-blue-600: #166ea2;
+  --color-blue-700: #0d4d73;
+  --color-blue-800: #05324d;
+  --color-blue-900: #032030;
+  --color-blue-950: #00101a;
+
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+  --color-green-950: #052e16;
+
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-red-900: #7f1d1d;
+  --color-red-950: #450a0a;
+
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  --color-amber-700: #b45309;
+  --color-amber-800: #92400e;
+  --color-amber-900: #78350f;
+  --color-amber-950: #451a03;
+
+  --font-sans:
+    Rubik, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif:
+    Libre Baskerville, ui-serif, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
+  --font-mono:
+    Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  --font-title:
+    Trirong, ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
   }
+}
 
-  .prose {
-    @apply text-lg text-blue-900;
-  }
+@utility container {
+  @apply mx-auto max-w-3xl px-6;
+}
 
-  .prose p {
+@utility prose {
+  @apply text-lg text-blue-900;
+
+  & p {
     @apply my-5;
   }
 
-  .prose a {
+  & a {
     @apply text-blue-500 underline hover:no-underline;
   }
 
-  .prose img {
+  & img {
     @apply mx-auto my-5;
   }
 
-  .prose h1,
-  .prose h2,
-  .prose h3,
-  .prose h4 {
+  & h1 {
     @apply mb-6 mt-10 font-bold uppercase;
   }
 
-  .prose h2 {
+  & h2 {
+    @apply mb-6 mt-10 font-bold uppercase;
+  }
+
+  & h3 {
+    @apply mb-6 mt-10 font-bold uppercase;
+  }
+
+  & h4 {
+    @apply mb-6 mt-10 font-bold uppercase;
+  }
+
+  & h2 {
     @apply text-3xl;
   }
 
-  .prose h3 {
+  & h3 {
     @apply text-2xl;
   }
 
-  .prose h4 {
+  & h4 {
     @apply text-xl;
   }
 
-  .prose *:not(pre) code {
-    @apply rounded-sm bg-gray-300 px-1 align-baseline font-mono text-base font-bold;
+  & *:not(pre) code {
+    @apply rounded-xs bg-gray-300 px-1 align-baseline font-mono text-base font-bold;
   }
 
-  .prose pre {
+  & pre {
     @apply my-5 overflow-x-scroll rounded-lg bg-blue-800 p-4 text-sm text-gray-100;
   }
 
-  .prose ul {
+  & ul {
     @apply ml-10 list-disc;
   }
 
-  .prose ol {
+  & ol {
     @apply ml-10 list-decimal;
   }
 
-  .prose li {
+  & li {
     @apply my-1 pl-2;
   }
 
-  .prose blockquote {
+  & blockquote {
     @apply border-l-4 border-gray-200 pl-6 italic;
   }
 
-  .prose table {
+  & table {
     @apply w-full table-auto;
   }
 
-  .prose td,
-  .prose th {
+  & td {
     @apply border border-gray-300 p-2 align-top;
   }
 
-  .fa-pen-square {
-    @apply text-amber-500;
+  & th {
+    @apply border border-gray-300 p-2 align-top;
   }
+}
 
-  .fa-plus-square {
-    @apply text-green-600;
-  }
+@utility fa-pen-square {
+  @apply text-amber-500;
+}
 
-  .fa-minus-square {
-    @apply text-red-600;
-  }
+@utility fa-plus-square {
+  @apply text-green-600;
+}
+
+@utility fa-minus-square {
+  @apply text-red-600;
 }
